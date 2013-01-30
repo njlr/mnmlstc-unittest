@@ -13,6 +13,29 @@ internals) can be found in its documentation.
 
 MNMLSTC Unittest is released under the Apache 2.0 license.
 
+Basic Example
+--------------
+
+A basic example of how unittest would be used::
+
+    #include <mnmlstc/unittest.hpp>
+
+    auto main () -> int {
+      using namespace unittest;
+
+      suite("all-tests") = {
+        test("my-test") = {
+          step("first") = [self]{
+            self.assert_equal(1, 2, "1 == 2");
+            self.assert_raises<my_exception_type>([]{
+              throw my_exception_type;
+            });
+          },
+          step("second") = [self]{ self.fail(); }
+        },
+      };
+    }
+
 Requirements
 ------------
 
