@@ -69,16 +69,17 @@ configure_package_config_file(
   CMAKE_INSTALL_DIR
 )
 
-configure_file(
-  ${PROJECT_SOURCE_DIR}/configure/configure.hpp.in
-  ${PROJECT_BINARY_DIR}/include/unittest/configure.hpp
-)
-
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-#add_library(unittest
-#  ${PROJECT_SOURCE_DIR}/lib
-#)
+add_compiler_export_flags()
+add_library(unittest SHARED
+  ${PROJECT_SOURCE_DIR}/lib/suite.cpp
+)
+generate_export_header(unittest
+  EXPORT_MACRO_NAME UNITTEST_EXPORT_API
+  EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/include/unittest/export.hpp
+  DEPRECATED_MACRO_NAME UNITTEST_DEPRECATED
+)
 
 #------------------------------------------------------------------------------
 # Install
@@ -87,4 +88,9 @@ install(FILES
   ${PROJECT_BINARY_DIR}/unittest-config-version.cmake
   ${PROJECT_BINARY_DIR}/unittest-config.cmake
   DESTINATION ${CMAKE_INSTALL_DIR}
+)
+
+install(FILES
+  ${PROJECT_BINARY_DIR}/include/unittest/export.hpp
+  DESTINATION ${INCLUDE_INSTALL_DIR}
 )
