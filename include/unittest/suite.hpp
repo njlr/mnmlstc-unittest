@@ -5,16 +5,16 @@
 #include <initializer_list>
 #include <string>
 
+#include <unittest/export.hpp>
+
 namespace unittest {
 inline namespace v1 {
 
-class test;
-
-class UNITTEST_API_EXPORT suite final {
+class UNITTEST_EXPORT_API suite final {
   std::string label;
 
-  auto operator = (suite const&) = delete;
-  auto operator = (suite&&) = delete;
+  auto operator = (suite const&) noexcept -> suite& = delete;
+  auto operator = (suite&&) noexcept -> suite& = delete;
 
   suite () = delete;
 
@@ -24,7 +24,7 @@ public:
 
   suite (const char*) noexcept;
 
-  auto operator = (std::initializer_list<test>) noexcept -> suite&;
+  auto operator = (std::initializer_list<class test>) noexcept -> suite&;
   auto name () const noexcept -> std::string const&;
 };
 
