@@ -86,6 +86,7 @@ endif ()
 add_compiler_export_flags()
 add_library(unittest SHARED
   ${PROJECT_SOURCE_DIR}/lib/suite.cpp
+  ${PROJECT_SOURCE_DIR}/lib/test.cpp
 )
 
 generate_export_header(unittest
