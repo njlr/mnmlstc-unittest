@@ -30,6 +30,7 @@ if (NOT MSVC)
   check_cxx_compiler_flag("-flto" CAN_USE_LTO)
 
   check_cxx_compiler_flag("-Wnoexcept" CAN_WARN_NOEXCEPT)
+  check_cxx_compiler_flag("-Wall" CAN_WARN_ALL)
 else ()
   check_cxx_compiler_flag("/Ehsc" CAN_USE_EXCEPTIONS)
   check_cxx_compiler_flag("/sdl" CAN_USE_SECURITY)
@@ -78,10 +79,15 @@ if (CAN_USE_CXX11)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif ()
 
+if (CAN_USE_WALL)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+endif ()
+
 add_compiler_export_flags()
 add_library(unittest SHARED
   ${PROJECT_SOURCE_DIR}/lib/suite.cpp
 )
+
 generate_export_header(unittest
   EXPORT_MACRO_NAME UNITTEST_EXPORT_API
   EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/include/unittest/export.hpp
