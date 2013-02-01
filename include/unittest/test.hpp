@@ -22,9 +22,9 @@ public:
   test (test const&) noexcept;
   test (test&&) noexcept;
 
-  explicit test (const char*);
+  explicit test (const char*) noexcept;
 
-  auto operator = (std::initializer_list<class step> steps) noexcept -> test&;
+  auto operator = (std::initializer_list<class step>) noexcept -> test&;
   auto name () const noexcept -> std::string const&;
 };
 
