@@ -22,7 +22,7 @@ public:
   suite (suite const&) noexcept;
   suite (suite&&) noexcept;
 
-  suite (const char*) noexcept;
+  explicit suite (const char*) noexcept;
 
   auto operator = (std::initializer_list<class test>) noexcept -> suite&;
   auto name () const noexcept -> std::string const&;
