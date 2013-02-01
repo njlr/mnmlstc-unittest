@@ -69,7 +69,14 @@ configure_package_config_file(
   CMAKE_INSTALL_DIR
 )
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+)
+
+if (CAN_USE_CXX11)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+endif ()
 
 add_compiler_export_flags()
 add_library(unittest SHARED
