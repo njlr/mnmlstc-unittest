@@ -16,7 +16,7 @@ suite::suite (const char* label) noexcept : label { label } { }
 
 auto suite::name () const noexcept -> string const& { return this->label; }
 
-auto suite::operator = (initializer_list<test>) noexcept -> suite& {
+auto suite::operator = (initializer_list<test> tests) noexcept -> suite& {
   return *this;
 };
 
