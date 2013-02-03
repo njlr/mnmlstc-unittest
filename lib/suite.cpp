@@ -12,7 +12,8 @@ inline namespace v1 {
 
 suite::suite (suite const& that) noexcept : label { that.label } { }
 suite::suite (suite&& that) noexcept : label { move(that.label) } { }
-suite::suite (const char* label) noexcept : label { label } { }
+
+suite::suite (string&& label) noexcept : label { move(label) } { }
 
 auto suite::name () const noexcept -> string const& { return this->label; }
 
