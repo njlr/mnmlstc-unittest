@@ -23,10 +23,10 @@ public:
   step (step const&) noexcept;
   step (step&&) noexcept;
 
-  explicit step (const char*) noexcept;
+  explicit step (std::string&&) noexcept;
 
-  auto operator = (std::function<void(void)> function) noexcept -> step&;
-  auto operator () () const -> void;
+  auto operator = (std::function<void(void)>&&) noexcept -> step&;
+  auto operator () () const noexcept -> void;
 
   auto name () const noexcept -> std::string const&;
 };
