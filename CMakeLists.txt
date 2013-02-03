@@ -67,7 +67,6 @@ configure_package_config_file(
   PATH_VARS
   INCLUDE_INSTALL_DIR
   LIBRARY_INSTALL_DIR
-  CMAKE_INSTALL_DIR
 )
 
 include_directories(
@@ -84,9 +83,10 @@ if (CAN_USE_WALL)
 endif ()
 
 add_compiler_export_flags()
-add_library(unittest SHARED
+add_library(unittest STATIC
   ${PROJECT_SOURCE_DIR}/lib/suite.cpp
   ${PROJECT_SOURCE_DIR}/lib/test.cpp
+  ${PROJECT_SOURCE_DIR}/lib/step.cpp
 )
 
 generate_export_header(unittest
