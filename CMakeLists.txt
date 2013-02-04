@@ -42,11 +42,9 @@ else ()
 endif ()
 
 check_include_file_cxx(initializer_list HAVE_INITIALIZER_LIST)
-check_include_file_cxx(unordered_map HAVE_UNORDERED_MAP)
 check_include_file_cxx(system_error HAVE_SYSTEM_ERROR)
 check_include_file_cxx(type_traits HAVE_TYPE_TRAITS)
 check_include_file_cxx(functional HAVE_FUNCTIONAL)
-check_include_file_cxx(tuple HAVE_TUPLE)
 
 check_include_file_cxx(cstdint HAVE_CSTDINT)
 check_include_file_cxx(cstddef HAVE_CSTDDEF)
@@ -67,6 +65,11 @@ configure_package_config_file(
   PATH_VARS
   INCLUDE_INSTALL_DIR
   LIBRARY_INSTALL_DIR
+)
+
+configure_file(
+  ${PROJECT_SOURCE_DIR}/configure/configure.hpp.in
+  ${PROJECT_BINARY_DIR}/include/unittest/configure.hpp
 )
 
 include_directories(
@@ -105,6 +108,7 @@ install(FILES
 )
 
 install(FILES
+  ${PROJECT_BINARY_DIR}/include/unittest/configure.hpp
   ${PROJECT_BINARY_DIR}/include/unittest/export.hpp
-  DESTINATION ${INCLUDE_INSTALL_DIR}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/unittest
 )
