@@ -10,6 +10,7 @@ include(CheckCXXCompilerFlag)
 include(CheckIncludeFileCXX)
 include(CTest)
 
+#option(BUILD_WITH_LIBCXX "Build unittest with libc++" OFF)
 #option(BUILD_SHARED "Build unittest as a DLL" OFF)
 
 set(INCLUDE_INSTALL_DIR "include" CACHE INTERNAL "Header Files")
@@ -25,7 +26,6 @@ if (NOT MSVC)
   check_cxx_compiler_flag("-std=c++11" CAN_USE_CXX11)
 
   check_cxx_compiler_flag("-fno-omit-frame-pointer" CAN_USE_NO_OMIT_FRAME_PTR)
-  check_cxx_compiler_flag("-fvisibility=hidden" CAN_USE_VISIBILITY_HIDDEN)
   check_cxx_compiler_flag("-fexceptions" CAN_USE_EXCEPTIONS)
   check_cxx_compiler_flag("-flto" CAN_USE_LTO)
 
