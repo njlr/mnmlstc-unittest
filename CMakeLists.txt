@@ -81,6 +81,10 @@ if (CAN_USE_CXX11)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif ()
 
+if (CAN_USE_LIBCXX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+endif ()
+
 if (CAN_USE_WALL)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 endif ()
