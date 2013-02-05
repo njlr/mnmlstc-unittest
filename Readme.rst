@@ -19,16 +19,13 @@ Below is a basic example of how unittest can be used::
     auto main () -> int {
       using namespace unittest;
 
-      suite("all-tests") = {
-        test("my-test") = {
-          step("first") = [self]{
-            self.assert_equal(1, 2, "1 == 2");
-            self.assert_raises<my_exception_type>([]{
-              throw my_exception_type;
-            });
-          },
-          step("second") = [self]{ self.fail(); }
+      test("first-test") = {
+        step("first") = [self] {
+          self.assert_equal(1, 2);
+          self.assert_raises<my_exception_type>(function());
         },
+        step("second") = [self] { self.fail(); },
+        step("third") = skip("always-skip") = [self] { self.fail(); }
       };
     }
 
