@@ -1,22 +1,14 @@
 #include <unittest/test.hpp>
-#include <unittest/step.hpp>
-
-#include <utility>
-
-using std::initializer_list;
-using std::string;
-using std::move;
 
 namespace unittest {
 inline namespace v1 {
 
-test::test (test const& that) noexcept : label { that.label } { }
-test::test (test&& that) noexcept : label { move(that.label) } { }
-test::test (std::string&& label) noexcept : label { move(label) } { }
+using task = pair<string, function>;
 
-auto test::name () const noexcept -> string const& { return this->label; }
-auto test::operator = (initializer_list<step> steps) noexcept -> test& {
-  return *this;
+test::test (const char* str) noexcept : label { str } { }
+test::~test () noexcept { }
+auto test::operator = (initializer_list<task> tasks) noexcept -> void {
+  // TODO: Submit this->label, task<0>, and task<1> to internal registry
 }
 
 }} /* namespace unittest::v1 */

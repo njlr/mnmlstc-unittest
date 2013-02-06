@@ -2,30 +2,27 @@
 #define UNITTEST_TEST_HPP
 #pragma once
 
-#include <initializer_list>
-#include <string>
-
+#include <unittest/configure.hpp>
 #include <unittest/export.hpp>
 
 namespace unittest {
 inline namespace v1 {
 
 class UNITTEST_EXPORT_API test final {
-  std::string label;
+  const char* label;
 
   auto operator = (test const&) noexcept -> test& = delete;
   auto operator = (test&&) noexcept -> test& = delete;
 
+  test (test const&) noexcept = delete;
+  test (test&&) noexcept = delete;
   test () noexcept = delete;
 
 public:
-  test (test const&) noexcept;
-  test (test&&) noexcept;
+  explicit test (const char*) noexcept;
+  ~test () noexcept;
 
-  explicit test (std::string&&) noexcept;
-
-  auto operator = (std::initializer_list<class step>) noexcept -> test&;
-  auto name () const noexcept -> std::string const&;
+  auto operator = (initializer_list<pair<string, function>>) noexcept -> void;
 };
 
 }} /* namespace unittest::v1 */

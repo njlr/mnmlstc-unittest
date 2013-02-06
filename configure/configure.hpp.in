@@ -3,18 +3,27 @@
 #pragma once
 
 #include <initializer_list>
+#include <system_error>
 #include <functional>
+#include <utility>
 #include <ostream>
-#include <vector>
+#include <future>
 #include <string>
+
+#include <cstdlib>
+#include <cstddef>
 
 namespace unittest {
 inline namespace v1 {
 
 using std::initializer_list;
+using std::error_condition;
 using std::ostream;
-using std::vector;
+using std::future;
 using std::string;
+using std::pair;
+
+using function = std::function<void()>;
 
 }} /* namespace unittest::v1 */
 

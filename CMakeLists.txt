@@ -89,12 +89,16 @@ if (CAN_USE_WALL)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 endif ()
 
-add_compiler_export_flags()
 add_library(unittest STATIC
   ${PROJECT_SOURCE_DIR}/lib/test.cpp
-  ${PROJECT_SOURCE_DIR}/lib/step.cpp
+  ${PROJECT_SOURCE_DIR}/lib/task.cpp
 )
 
+add_executable(unittest-task ${PROJECT_SOURCE_DIR}/tests/task.cpp)
+target_link_libraries(unittest-task unittest)
+add_test(task unittest-task)
+
+add_compiler_export_flags()
 generate_export_header(unittest
   EXPORT_MACRO_NAME UNITTEST_EXPORT_API
   EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/include/unittest/export.hpp
