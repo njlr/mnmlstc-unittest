@@ -10,6 +10,7 @@ include(CheckCXXCompilerFlag)
 include(CheckIncludeFileCXX)
 include(CTest)
 
+#TODO: Add option to disable building with RTTI
 #option(BUILD_WITH_LIBCXX "Build unittest with libc++" OFF)
 #option(BUILD_SHARED "Build unittest as a DLL" OFF)
 
@@ -94,10 +95,6 @@ add_library(unittest STATIC
   ${PROJECT_SOURCE_DIR}/lib/task.cpp
 )
 
-add_executable(unittest-task ${PROJECT_SOURCE_DIR}/tests/task.cpp)
-target_link_libraries(unittest-task unittest)
-add_test(task unittest-task)
-
 add_compiler_export_flags()
 generate_export_header(unittest
   EXPORT_MACRO_NAME UNITTEST_EXPORT_API
@@ -105,6 +102,21 @@ generate_export_header(unittest
   DEPRECATED_MACRO_NAME UNITTEST_DEPRECATED
 )
 
+# TODO: Do a check if RTTI is disabled and remove the equivalent tests (type)
+#       if it is.
+if (BUILD_TESTING)
+  add_executable(test-task-name ${PROJECT_SOURCE_DIR}/tests/task/name.cpp)
+  add_executable(test-task-call ${PROJECT_SOURCE_DIR}/tests/task/call.cpp)
+  add_executable(test-task-type ${PROJECT_SOURCE_DIR}/tests/task/type.cpp)
+
+  target_link_libraries(test-task-name unittest)
+  target_link_libraries(test-task-call unittest)
+  target_link_libraries(test-task-type unittest)
+
+  add_test(task test-task-name)
+  add_test(task test-task-call)
+  add_test(task test-task-type)
+endif ()
 #------------------------------------------------------------------------------
 # Install
 #------------------------------------------------------------------------------
