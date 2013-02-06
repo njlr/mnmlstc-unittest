@@ -12,6 +12,7 @@ include(CTest)
 
 #TODO: Add option to disable building with RTTI
 #option(BUILD_WITH_LIBCXX "Build unittest with libc++" OFF)
+#option(BUILD_WITH_RTTI "Build unittest with RTTI" ON)
 #option(BUILD_SHARED "Build unittest as a DLL" OFF)
 
 set(INCLUDE_INSTALL_DIR "include" CACHE INTERNAL "Header Files")
@@ -42,6 +43,19 @@ else ()
   check_cxx_compiler_flag("/W4" CAN_WARN_ALL)
 endif ()
 
+if (CAN_USE_CXX11)
+  set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -std=c++11")
+endif ()
+
+# XXX: This is temporary, and will be removed once a proper option to force
+#      the use of libc++ if it is available, or use libstdc++ if available.
+#      This will get a bit tricky for certain platforms, like Mac OS X, where
+#      a custom build of gcc might exist that is newer than 4.2.1 (the last
+#      gcc release on that platform from Apple)
+if (CAN_USE_LIBCXX)
+  set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -stdlib=libc++")
+endif ()
+
 # These headers are currently *required*
 check_include_file_cxx(initializer_list HAVE_INITIALIZER_LIST)
 check_include_file_cxx(system_error HAVE_SYSTEM_ERROR)
@@ -51,6 +65,7 @@ check_include_file_cxx(tuple HAVE_TUPLE)
 
 check_include_file_cxx(cstdint HAVE_CSTDINT)
 check_include_file_cxx(cstddef HAVE_CSTDDEF)
+
 
 # Handle insane environments
 if (NOT HAVE_INITIALIZER_LIST)
@@ -113,6 +128,7 @@ if (CAN_USE_CXX11)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif ()
 
+# TODO: See the note concerning this in the environment check section.
 if (CAN_USE_LIBCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif ()
@@ -133,21 +149,13 @@ generate_export_header(unittest
   DEPRECATED_MACRO_NAME UNITTEST_DEPRECATED
 )
 
-# TODO: Do a check if RTTI is disabled and remove the equivalent tests (type)
-#       if it is.
 if (BUILD_TESTING)
-  add_executable(test-task-name ${PROJECT_SOURCE_DIR}/tests/task/name.cpp)
-  add_executable(test-task-call ${PROJECT_SOURCE_DIR}/tests/task/call.cpp)
-  add_executable(test-task-type ${PROJECT_SOURCE_DIR}/tests/task/type.cpp)
-
-  target_link_libraries(test-task-name unittest)
-  target_link_libraries(test-task-call unittest)
-  target_link_libraries(test-task-type unittest)
-
-  add_test(task test-task-name)
-  add_test(task test-task-call)
-  add_test(task test-task-type)
+  set(CMAKE_TEST_COMMAND ctest)
+  set(TEST_SOURCE_DIR "${PROJECT_SOURCE_DIR}/tests")
+  set(TEST_BINARY_DIR "${PROJECT_BINARY_DIR}/tests")
+  add_subdirectory("${TEST_SOURCE_DIR}" "${TEST_BINARY_DIR}" EXCLUDE_FROM_ALL)
 endif ()
+
 #------------------------------------------------------------------------------
 # Install
 #------------------------------------------------------------------------------
@@ -161,4 +169,9 @@ install(FILES
   ${PROJECT_BINARY_DIR}/include/unittest/configure.hpp
   ${PROJECT_BINARY_DIR}/include/unittest/export.hpp
   DESTINATION ${INCLUDE_INSTALL_DIR}/unittest
+)
+
+install(TARGETS unittest
+  LIBRARY DESTINATION ${LIBRARY_INSTALL_DIR}
+  ARCHIVE DESTINATION ${LIBRARY_INSTALL_DIR}
 )
