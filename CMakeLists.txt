@@ -42,13 +42,44 @@ else ()
   check_cxx_compiler_flag("/W4" CAN_WARN_ALL)
 endif ()
 
+# These headers are currently *required*
 check_include_file_cxx(initializer_list HAVE_INITIALIZER_LIST)
 check_include_file_cxx(system_error HAVE_SYSTEM_ERROR)
 check_include_file_cxx(type_traits HAVE_TYPE_TRAITS)
 check_include_file_cxx(functional HAVE_FUNCTIONAL)
+check_include_file_cxx(tuple HAVE_TUPLE)
 
 check_include_file_cxx(cstdint HAVE_CSTDINT)
 check_include_file_cxx(cstddef HAVE_CSTDDEF)
+
+# Handle insane environments
+if (NOT HAVE_INITIALIZER_LIST)
+  message(FATAL_ERROR "Could not locate required header <initializer_list>")
+endif ()
+
+if (NOT HAVE_SYSTEM_ERROR)
+  message(FATAL_ERROR "Could not locate required header <system_error>")
+endif ()
+
+if (NOT HAVE_TYPE_TRAITS)
+  message(FATAL_ERROR "Could not locate required header <type_traits>")
+endif ()
+
+if (NOT HAVE_FUNCTIONAL)
+  message(FATAL_ERROR "Could not locate required header <functional>")
+endif ()
+
+if (NOT HAVE_TUPLE)
+  message(FATAL_ERROR "Could not locate required header <tuple>")
+endif ()
+
+if (NOT HAVE_CSTDINT)
+  message(FATAL_ERROR "Could not locate required header <cstdint>")
+endif ()
+
+if (NOT HAVE_CSTDDEF)
+  message(FATAL_ERROR "Could not locate required header <cstddef>")
+endif ()
 
 #------------------------------------------------------------------------------
 # Configuration
