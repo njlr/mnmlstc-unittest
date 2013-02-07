@@ -9,8 +9,8 @@ namespace unittest {
 inline namespace v1 {
 
 class UNITTEST_EXPORT_API skip {
+protected:
   const char* reason;
-
 public:
   auto operator = (skip const&) noexcept -> skip& = delete;
   auto operator = (skip&&) noexcept -> skip& = delete;
@@ -27,7 +27,6 @@ public:
 
 class UNITTEST_EXPORT_API skip_if final : skip {
   bool condition;
-
 public:
   auto operator = (skip_if const&) noexcept -> skip_if& = delete;
   auto operator = (skip_if&&) noexcept -> skip_if& = delete;
@@ -44,7 +43,6 @@ public:
 
 class UNITTEST_EXPORT_API skip_unless final : skip {
   bool condition;
-
 public:
   auto operator = (skip_unless const&) noexcept -> skip_unless& = delete;
   auto operator = (skip_unless&&) noexcept -> skip_unless& = delete;

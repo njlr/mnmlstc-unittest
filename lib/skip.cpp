@@ -11,8 +11,12 @@ skip_unless::skip_unless (bool condition, const char* reason) noexcept :
 { }
 skip_unless::~skip_unless () noexcept { this->condition = false; }
 auto skip_unless::operator = (function&& call) const noexcept -> function {
-  bool condition = this->condition;
-  return [condition]{};
+  auto condition = this->condition;
+  auto reason = this->reason;
+  return [condition, reason, call]{
+    if (not condition) { throw skip_error(reason); }
+    call();
+  };
 }
 
 /* skip_if */
@@ -33,8 +37,9 @@ auto skip_if::operator = (function&& call) const noexcept -> function {
 /* skip */
 skip::skip (const char* reason) noexcept : reason { reason } { }
 skip::~skip () noexcept { this->reason = nullptr; }
-auto skip::operator = (function&&) const noexcept -> function {
-  return []{};
+auto skip::operator = (function&& call) const noexcept -> function {
+  auto reason = this->reason;
+  return [reason]{ throw skip_error(reason); };
 }
 
 }} /* namespace unittest::v1 */
