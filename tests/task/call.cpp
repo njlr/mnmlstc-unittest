@@ -4,7 +4,7 @@
 #include <csignal>
 
 /* Tests the v1 interface for task's handling of a function */
-auto v1() -> void {
+auto v1 () -> void {
   int value = 0;
   auto pair = unittest::v1::task("") = [&value] { value += 2; };
 
