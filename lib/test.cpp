@@ -1,7 +1,7 @@
 #include <unittest/test.hpp>
 
 namespace unittest {
-inline namespace v1 {
+namespace v1 {
 
 using task = pair<string, function>;
 

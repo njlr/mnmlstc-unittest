@@ -1,7 +1,8 @@
+#include <unittest/error.hpp>
 #include <unittest/skip.hpp>
 
 namespace unittest {
-inline namespace v1 {
+namespace v1 {
 
 /* skip_unless */
 skip_unless::skip_unless (bool condition, const char* reason) noexcept :
@@ -9,9 +10,9 @@ skip_unless::skip_unless (bool condition, const char* reason) noexcept :
   skip { reason }
 { }
 skip_unless::~skip_unless () noexcept { this->condition = false; }
-auto skip_unless::operator = (function&&) const noexcept -> function {
+auto skip_unless::operator = (function&& call) const noexcept -> function {
   bool condition = this->condition;
-  return *static_cast<const skip*>(this) = [condition]{};
+  return [condition]{};
 }
 
 /* skip_if */
@@ -20,9 +21,12 @@ skip_if::skip_if (bool condition, const char* reason) noexcept :
   skip { reason }
 { }
 skip_if::~skip_if () noexcept { this->condition = false; }
-auto skip_if::operator = (function&&) const noexcept -> function {
-  bool condition = this->condition;
-  return *static_cast<const skip*>(this) = [condition]{};
+auto skip_if::operator = (function&& call) const noexcept -> function {
+  auto reason, condition = this->reason, this->condition;
+  return [condition, reason, call]{
+    if (condition) { throw skip_error(reason); }
+    call();
+  };
 }
 
 /* skip */
