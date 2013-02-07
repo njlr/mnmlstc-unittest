@@ -6,7 +6,6 @@
 #include <system_error>
 #include <functional>
 #include <utility>
-#include <ostream>
 #include <future>
 #include <string>
 
@@ -17,8 +16,7 @@ namespace unittest {
 inline namespace v1 {
 
 using std::initializer_list;
-using std::error_condition;
-using std::ostream;
+using std::error_code;
 using std::future;
 using std::string;
 using std::pair;

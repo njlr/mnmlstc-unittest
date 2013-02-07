@@ -142,6 +142,7 @@ add_library(unittest STATIC
   ${PROJECT_SOURCE_DIR}/lib/test.cpp
   ${PROJECT_SOURCE_DIR}/lib/task.cpp
   ${PROJECT_SOURCE_DIR}/lib/skip.cpp
+  ${PROJECT_SOURCE_DIR}/lib/safe.cpp
 )
 
 add_compiler_export_flags()

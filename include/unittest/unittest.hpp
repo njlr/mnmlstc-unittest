@@ -8,5 +8,6 @@
 #include <unittest/test.hpp>
 #include <unittest/task.hpp>
 #include <unittest/skip.hpp>
+#include <unittest/safe.hpp>
 
 #endif /* UNITTEST_AMALGATION_HPP */
