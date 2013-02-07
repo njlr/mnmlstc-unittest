@@ -10,4 +10,4 @@ unittest module in how tests are declared and defined.
 
    Getting Started <tutorial>
    Using Unittest <usage>
-   API <api/index>
+   API <api>
