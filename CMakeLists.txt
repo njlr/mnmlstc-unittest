@@ -101,7 +101,7 @@ endif ()
 #------------------------------------------------------------------------------
 write_basic_package_version_file(
   ${PROJECT_BINARY_DIR}/unittest-config-version.cmake
-  VERSION 0.1.0
+  VERSION 0.9.0
   COMPATIBILITY SameMajorVersion
 )
 
