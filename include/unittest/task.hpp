@@ -11,6 +11,7 @@ inline namespace v1 {
 class UNITTEST_EXPORT_API task final {
   const char* label;
 
+public:
   auto operator = (task const&) noexcept -> task& = delete;
   auto operator = (task&&) noexcept -> task& = delete;
 
@@ -18,7 +19,6 @@ class UNITTEST_EXPORT_API task final {
   task (task&&) noexcept = delete;
   task () noexcept = delete;
 
-public:
   explicit task (const char*) noexcept;
   ~task () noexcept;
 
