@@ -22,7 +22,8 @@ skip_if::skip_if (bool condition, const char* reason) noexcept :
 { }
 skip_if::~skip_if () noexcept { this->condition = false; }
 auto skip_if::operator = (function&& call) const noexcept -> function {
-  auto reason, condition = this->reason, this->condition;
+  auto condition = this->condition;
+  auto reason = this->reason;
   return [condition, reason, call]{
     if (condition) { throw skip_error(reason); }
     call();
