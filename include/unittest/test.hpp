@@ -11,6 +11,7 @@ inline namespace v1 {
 class UNITTEST_EXPORT_API test final {
   const char* label;
 
+public:
   auto operator = (test const&) noexcept -> test& = delete;
   auto operator = (test&&) noexcept -> test& = delete;
 
@@ -18,7 +19,6 @@ class UNITTEST_EXPORT_API test final {
   test (test&&) noexcept = delete;
   test () noexcept = delete;
 
-public:
   explicit test (const char*) noexcept;
   ~test () noexcept;
 
