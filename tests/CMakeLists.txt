@@ -6,14 +6,30 @@ add_executable(test-task-name ${TEST_SOURCE_DIR}/task/name.cpp)
 add_executable(test-task-call ${TEST_SOURCE_DIR}/task/call.cpp)
 add_executable(test-task-type ${TEST_SOURCE_DIR}/task/type.cpp)
 
+add_executable(test-skip-default ${TEST_SOURCE_DIR}/skip/default.cpp)
+add_executable(test-skip-unless ${TEST_SOURCE_DIR}/skip/unless.cpp)
+add_executable(test-skip-if ${TEST_SOURCE_DIR}/skip/if.cpp)
+
 target_link_libraries(test-task-name unittest)
 target_link_libraries(test-task-call unittest)
 target_link_libraries(test-task-type unittest)
+
+target_link_libraries(test-skip-default unittest)
+target_link_libraries(test-skip-unless unittest)
+target_link_libraries(test-skip-if unittest)
 
 add_test(task-name test-task-name)
 add_test(task-call test-task-call)
 add_test(task-type test-task-type)
 
+add_test(skip-default test-skip-default)
+add_test(skip-unless test-skip-unless)
+add_test(skip-if test-skip-if)
+
 add_dependencies(check test-task-name)
 add_dependencies(check test-task-call)
 add_dependencies(check test-task-type)
+
+add_dependencies(check test-skip-default)
+add_dependencies(check test-skip-unless)
+add_dependencies(check test-skip-if)
