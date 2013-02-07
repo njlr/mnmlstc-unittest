@@ -12,7 +12,7 @@ auto v1 () -> void {
     std::exit(EXIT_FAILURE);
   } catch (unittest::v1::skip_error const& e) {
     if (e.what() != std::string { "success" }) {
-      std::clog << "skip did not throw proper skip_error" << std::endl;
+      std::clog << "skip did not throw proper error" << std::endl;
       std::exit(EXIT_FAILURE);
     }
   } catch (...) {
