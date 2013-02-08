@@ -138,6 +138,7 @@ if (CAN_USE_WALL)
 endif ()
 
 add_library(unittest STATIC
+  ${PROJECT_SOURCE_DIR}/lib/identity.cpp
   ${PROJECT_SOURCE_DIR}/lib/error.cpp
   ${PROJECT_SOURCE_DIR}/lib/test.cpp
   ${PROJECT_SOURCE_DIR}/lib/task.cpp
