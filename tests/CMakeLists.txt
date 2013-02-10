@@ -2,6 +2,10 @@ add_custom_target(check COMMAND ${CMAKE_TEST_COMMAND})
 
 # TODO: Do a check if RTTI is disabled and remove the equivalent tests (type)
 #       if it is.
+
+#------------------------------------------------------------------------------
+# Executable Section
+#------------------------------------------------------------------------------
 add_executable(test-task-name ${TEST_SOURCE_DIR}/task/name.cpp)
 add_executable(test-task-call ${TEST_SOURCE_DIR}/task/call.cpp)
 add_executable(test-task-type ${TEST_SOURCE_DIR}/task/type.cpp)
@@ -13,6 +17,12 @@ add_executable(test-skip-if ${TEST_SOURCE_DIR}/skip/if.cpp)
 add_executable(test-safe-iter ${TEST_SOURCE_DIR}/safe/iter.cpp)
 add_executable(test-safe-size ${TEST_SOURCE_DIR}/safe/size.cpp)
 
+add_executable(test-utility-any-of ${TEST_SOURCE_DIR}/utility/any-of.cpp)
+add_executable(test-utility-all-of ${TEST_SOURCE_DIR}/utility/all-of.cpp)
+
+#------------------------------------------------------------------------------
+# Link Section
+#------------------------------------------------------------------------------
 target_link_libraries(test-task-name unittest)
 target_link_libraries(test-task-call unittest)
 target_link_libraries(test-task-type unittest)
@@ -24,6 +34,12 @@ target_link_libraries(test-skip-if unittest)
 target_link_libraries(test-safe-size unittest)
 target_link_libraries(test-safe-iter unittest)
 
+target_link_libraries(test-utility-any-of unittest)
+target_link_libraries(test-utility-all-of unittest)
+
+#------------------------------------------------------------------------------
+# Test Section
+#------------------------------------------------------------------------------
 add_test(task-name test-task-name)
 add_test(task-call test-task-call)
 add_test(task-type test-task-type)
@@ -35,6 +51,12 @@ add_test(skip-if test-skip-if)
 add_test(safe-size test-safe-size)
 add_test(safe-iter test-safe-iter)
 
+add_test(util-any-of test-utility-any-of)
+add_test(util-all-of test-utility-all-of)
+
+#------------------------------------------------------------------------------
+# Dependency Section
+#------------------------------------------------------------------------------
 add_dependencies(check test-task-name)
 add_dependencies(check test-task-call)
 add_dependencies(check test-task-type)
@@ -45,3 +67,6 @@ add_dependencies(check test-skip-if)
 
 add_dependencies(check test-safe-size)
 add_dependencies(check test-safe-iter)
+
+add_dependencies(check test-utility-any-of)
+add_dependencies(check test-utility-all-of)
