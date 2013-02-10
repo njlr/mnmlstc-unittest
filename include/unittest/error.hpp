@@ -2,7 +2,6 @@
 #define UNITTEST_ERROR_HPP
 #pragma once
 
-#include <unittest/configure.hpp>
 #include <unittest/export.hpp>
 
 #include <stdexcept>
@@ -12,6 +11,10 @@ inline namespace v1 {
 
 struct UNITTEST_EXPORT_API skip_error final : public std::runtime_error {
   explicit skip_error(const char*);
+};
+
+struct UNITTEST_EXPORT_API identity_crisis final : public std::runtime_error {
+  explicit identity_crisis(const char*);
 };
 
 }} /* namespace unittest::v1 */
