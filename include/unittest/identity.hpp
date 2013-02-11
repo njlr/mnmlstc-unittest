@@ -25,20 +25,20 @@ public:
   ~identity () noexcept;
 
   static auto instance () noexcept -> identity&;
-  auto assert_false (bool, const char*) noexcept(false) -> void;
-  auto assert_true (bool, const char*) noexcept(false) -> void;
+  auto assert_false (bool, const char*) -> void;
+  auto assert_true (bool, const char*) -> void;
 
-  auto assert_false (bool) noexcept(false) -> void;
-  auto assert_true (bool) noexcept(false) -> void;
+  auto assert_false (bool) -> void;
+  auto assert_true (bool) -> void;
 
-  auto assert_is_not (intptr_t, intptr_t, const char*) noexcept(false) -> void;
-  auto assert_is (intptr_t, intptr_t, const char*) noexcept(false) -> void;
+  auto assert_is_not (intptr_t, intptr_t, const char*) -> void;
+  auto assert_is (intptr_t, intptr_t, const char*) -> void;
 
-  auto assert_is_not (intptr_t, intptr_t) noexcept(false) -> void;
-  auto assert_is (intptr_t, intptr_t) noexcept(false) -> void;
+  auto assert_is_not (intptr_t, intptr_t) -> void;
+  auto assert_is (intptr_t, intptr_t) -> void;
 
-  auto fail (const char*) noexcept(false) -> void; /* TODO: [[noreturn]] */
-  auto fail () noexcept(false) -> void; /* TODO: Mark as [[noreturn]] */
+  auto fail (const char*) -> void; /* TODO: [[noreturn]] */
+  auto fail () -> void; /* TODO: Mark as [[noreturn]] */
 };
 
 extern UNITTEST_EXPORT_API identity& self;
