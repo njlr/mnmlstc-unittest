@@ -3,12 +3,32 @@
 namespace unittest {
 inline namespace v1 {
 
-identity_crisis::identity_crisis (const char* reason) :
-  std::runtime_error { reason }
+skip_error::skip_error (const char* reason) :
+  runtime_error { reason }
 { }
 
-skip_error::skip_error (const char* reason) :
-  std::runtime_error { reason }
+identity_crisis::identity_crisis (const char* reason) :
+  runtime_error { reason }
+{ }
+
+failure::failure (const char* reason) :
+  runtime_error { reason }
+{ }
+
+assert_false_error::assert_false_error (const char* reason) :
+  runtime_error { reason }
+{ }
+
+assert_true_error::assert_true_error (const char* reason) :
+  runtime_error { reason }
+{ }
+
+assert_is_not_error::assert_is_not_error (const char* reason) :
+  runtime_error { reason }
+{ }
+
+assert_is_error::assert_is_error (const char* reason) :
+  runtime_error { reason }
 { }
 
 }} /* namespace unittest::v1 */
