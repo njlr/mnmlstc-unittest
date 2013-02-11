@@ -1,7 +1,7 @@
 #include <unittest/task.hpp>
 
 namespace unittest {
-namespace v1 {
+inline namespace v1 {
 
 task::task (const char* str) noexcept : label { str } { }
 task::~task () noexcept { }

@@ -2,7 +2,7 @@
 #include <unittest/skip.hpp>
 
 namespace unittest {
-namespace v1 {
+inline namespace v1 {
 
 /* skip_unless */
 skip_unless::skip_unless (bool condition, const char* reason) noexcept :

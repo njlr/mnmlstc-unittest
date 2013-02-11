@@ -4,7 +4,7 @@
 #include <sstream>
 
 namespace unittest {
-namespace v1 {
+inline namespace v1 {
 
 identity::identity (identity const&) noexcept : statement { 0 } { }
 identity::identity () noexcept : statement { -1 } { }

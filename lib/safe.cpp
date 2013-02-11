@@ -3,7 +3,7 @@
 using std::move;
 
 namespace unittest {
-namespace v1 {
+inline namespace v1 {
 
 safe::safe () noexcept { }
 
