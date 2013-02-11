@@ -9,12 +9,34 @@
 namespace unittest {
 inline namespace v1 {
 
-struct UNITTEST_EXPORT_API skip_error final : public std::runtime_error {
-  explicit skip_error(const char*);
+using std::runtime_error;
+
+struct UNITTEST_EXPORT_API skip_error final : public runtime_error {
+  explicit skip_error (const char*);
 };
 
-struct UNITTEST_EXPORT_API identity_crisis final : public std::runtime_error {
-  explicit identity_crisis(const char*);
+struct UNITTEST_EXPORT_API identity_crisis final : public runtime_error {
+  explicit identity_crisis (const char*);
+};
+
+struct UNITTEST_EXPORT_API failure final : public runtime_error {
+  explicit failure (const char*);
+};
+
+struct UNITTEST_EXPORT_API assert_false_error final : public runtime_error {
+  explicit assert_false_error (const char*);
+};
+
+struct UNITTEST_EXPORT_API assert_true_error final : public runtime_error {
+  explicit assert_true_error (const char*);
+};
+
+struct UNITTEST_EXPORT_API assert_is_not_error final : public runtime_error {
+  explicit assert_is_not_error (const char*);
+};
+
+struct UNITTEST_EXPORT_API assert_is_error final : public runtime_error {
+  explicit assert_is_error (const char*);
 };
 
 }} /* namespace unittest::v1 */
