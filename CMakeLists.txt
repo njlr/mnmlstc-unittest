@@ -133,8 +133,12 @@ if (CAN_USE_LIBCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif ()
 
-if (CAN_USE_WALL)
+if (CAN_WARN_ALL)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+endif ()
+
+if (CAN_WARN_NOEXCEPT)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wnoexcept")
 endif ()
 
 add_library(unittest STATIC
