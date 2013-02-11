@@ -3,10 +3,8 @@
 #pragma once
 
 #include <initializer_list>
-#include <system_error>
 #include <functional>
 #include <utility>
-#include <future>
 #include <string>
 
 #include <cstdlib>
@@ -15,9 +13,10 @@
 namespace unittest {
 inline namespace v1 {
 
-using std::initializer_list;
-using std::error_code;
-using std::future;
+struct build final {
+  static constexpr bool rtti = false; /* replace with CMake determined macro */
+};
+
 using std::string;
 using std::pair;
 

@@ -3,6 +3,7 @@
 #include <typeinfo>
 #include <iostream>
 #include <csignal>
+#include <cstdlib>
 
 /* Tests the v1 interface for task's type handling */
 auto v1 () -> void {

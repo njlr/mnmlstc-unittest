@@ -8,21 +8,19 @@
 #include <system_error>
 #include <utility>
 #include <string>
-#include <future>
 #include <tuple>
 
 namespace unittest {
 inline namespace v1 {
 
-using std::forward_list;
-using std::string;
-using std::tuple;
-
-using result = std::future<std::error_condition>;
-
 class UNITTEST_EXPORT_API safe final {
-  /* test-name, task-name, deferred function */
-  forward_list<tuple<string, string, result>> tests;
+  using result = std::function<void()>;
+  using string = std::string;
+
+  using item = std::tuple<string, string, result>;
+  /* test-name, task-name, function */
+
+  std::forward_list<item> tests;
   safe () noexcept;
 
 public:

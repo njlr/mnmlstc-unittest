@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <csignal>
+#include <cstdlib>
 
 /* Tests the v1 interface for a task's name */
 auto v1 () -> void {

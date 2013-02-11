@@ -10,11 +10,7 @@ auto v1 () -> void {
     std::exit(EXIT_FAILURE);
   }
 
-  unittest::v1::vault.add("one", "two",
-    std::async(std::launch::deferred, [] {
-      return std::error_condition { 0, std::generic_category() };
-    })
-  );
+  unittest::v1::vault.add("one", "two", []{});
 
   if (unittest::v1::vault.size() != 1) {
     std::clog << "vault is unable to hold onto new items" << std::endl;

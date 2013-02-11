@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <csignal>
+#include <cstdlib>
 
 /* Tests the v1 interface for task's handling of a function */
 auto v1 () -> void {

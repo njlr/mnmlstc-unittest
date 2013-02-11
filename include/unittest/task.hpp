@@ -2,13 +2,17 @@
 #define UNITTEST_TASK_HPP
 #pragma once
 
-#include <unittest/configure.hpp>
 #include <unittest/export.hpp>
+
+#include <functional>
+#include <string>
 
 namespace unittest {
 inline namespace v1 {
 
 class UNITTEST_EXPORT_API task final {
+  using step = std::pair<std::string, std::function<void()>>;
+  using function = std::function<void()>;
   const char* label;
 
 public:
@@ -22,7 +26,7 @@ public:
   explicit task (const char*) noexcept;
   ~task () noexcept;
 
-  auto operator = (function&&) const noexcept -> pair<string, function>;
+  auto operator = (function&&) const noexcept -> step;
 };
 
 }} /* namespace unittest::v1 */

@@ -2,13 +2,17 @@
 #define UNITTEST_TEST_HPP
 #pragma once
 
-#include <unittest/configure.hpp>
 #include <unittest/export.hpp>
+
+#include <initializer_list>
+#include <functional>
+#include <utility>
 
 namespace unittest {
 inline namespace v1 {
 
 class UNITTEST_EXPORT_API test final {
+  using task_pair = std::pair<std::string, std::function<void()>>;
   const char* label;
 
 public:
@@ -22,7 +26,7 @@ public:
   explicit test (const char*) noexcept;
   ~test () noexcept;
 
-  auto operator = (initializer_list<pair<string, function>>) noexcept -> void;
+  auto operator = (std::initializer_list<task_pair>) noexcept -> void;
 };
 
 }} /* namespace unittest::v1 */

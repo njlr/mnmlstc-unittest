@@ -14,15 +14,13 @@ auto v1 () -> void {
   }
 
   for (auto x : { 1, 2, 3, 4 }) {
-    auto future = std::async(std::launch::deferred, [x]{
-      return std::error_condition { x, std::generic_category() };
-    });
+    auto function = [x]{ throw x; };
     std::stringstream str1;
     std::stringstream str2;
     str1 << x;
     str2 << x + 1;
 
-    unittest::v1::vault.add(str1.str(), str2.str(), std::move(future));
+    unittest::v1::vault.add(str1.str(), str2.str(), std::move(function));
   }
 
   auto value = 4;
@@ -42,8 +40,14 @@ auto v1 () -> void {
       std::exit(EXIT_FAILURE);
     }
 
-    if (std::get<2>(entry).get().value() != value) {
-      std::clog << "vault ran incorrect future" << std::endl;
+    try { std::get<2>(entry)(); }
+    catch (int e) {
+      if (e != value) {
+        std::clog << "entry<2> threw unexpected integer: " << e << std::endl;
+        std::exit(EXIT_FAILURE);
+      }
+    } catch (...) {
+      std::clog << "entry<2> threw unexpected exception" << std::endl;
       std::exit(EXIT_FAILURE);
     }
     value -= 1;
