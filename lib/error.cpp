@@ -13,6 +13,7 @@ exception::exception (const char* type, string&& msg, int64_t val) noexcept :
 
 exception::exception (exception const& that) noexcept :
   message { that.message },
+  name { that.name },
   value { that.value }
 { }
 
