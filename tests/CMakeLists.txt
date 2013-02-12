@@ -17,6 +17,9 @@ add_executable(test-skip-if ${TEST_SOURCE_DIR}/skip/if.cpp)
 add_executable(test-safe-iter ${TEST_SOURCE_DIR}/safe/iter.cpp)
 add_executable(test-safe-size ${TEST_SOURCE_DIR}/safe/size.cpp)
 
+add_executable(test-test-name ${TEST_SOURCE_DIR}/test/name.cpp)
+add_executable(test-test-run ${TEST_SOURCE_DIR}/test/run.cpp)
+
 add_executable(test-utility-any-of ${TEST_SOURCE_DIR}/utility/any-of.cpp)
 add_executable(test-utility-all-of ${TEST_SOURCE_DIR}/utility/all-of.cpp)
 
@@ -34,6 +37,9 @@ target_link_libraries(test-skip-if unittest)
 target_link_libraries(test-safe-size unittest)
 target_link_libraries(test-safe-iter unittest)
 
+target_link_libraries(test-test-name unittest)
+target_link_libraries(test-test-run unittest)
+
 target_link_libraries(test-utility-any-of unittest)
 target_link_libraries(test-utility-all-of unittest)
 
@@ -50,6 +56,9 @@ add_test(skip-if test-skip-if)
 
 add_test(safe-size test-safe-size)
 add_test(safe-iter test-safe-iter)
+
+add_test(test-name test-test-name)
+add_test(test-run test-test-run)
 
 add_test(util-any-of test-utility-any-of)
 add_test(util-all-of test-utility-all-of)

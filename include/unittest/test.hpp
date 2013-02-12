@@ -7,6 +7,7 @@
 #include <initializer_list>
 #include <functional>
 #include <utility>
+#include <string>
 
 namespace unittest {
 inline namespace v1 {

@@ -26,9 +26,11 @@ set(CMAKE_INSTALL_DIR "share/cmake/unittest" CACHE INTERNAL "CMake Files")
 if (NOT MSVC)
   check_cxx_compiler_flag("-stdlib=libc++" CAN_USE_LIBCXX)
   check_cxx_compiler_flag("-std=c++11" CAN_USE_CXX11)
+  check_cxx_compiler_flag("-pedantic" CAN_USE_PEDANTIC)
 
   check_cxx_compiler_flag("-fno-omit-frame-pointer" CAN_USE_NO_OMIT_FRAME_PTR)
   check_cxx_compiler_flag("-fexceptions" CAN_USE_EXCEPTIONS)
+  check_cxx_compiler_flag("-frtti" CAN_USE_RTTI)
   check_cxx_compiler_flag("-flto" CAN_USE_LTO)
 
   check_cxx_compiler_flag("-Wnoexcept" CAN_WARN_NOEXCEPT)
@@ -58,7 +60,6 @@ endif ()
 
 # These headers are currently *required*
 check_include_file_cxx(initializer_list HAVE_INITIALIZER_LIST)
-check_include_file_cxx(system_error HAVE_SYSTEM_ERROR)
 check_include_file_cxx(type_traits HAVE_TYPE_TRAITS)
 check_include_file_cxx(functional HAVE_FUNCTIONAL)
 check_include_file_cxx(tuple HAVE_TUPLE)
@@ -66,14 +67,9 @@ check_include_file_cxx(tuple HAVE_TUPLE)
 check_include_file_cxx(cstdint HAVE_CSTDINT)
 check_include_file_cxx(cstddef HAVE_CSTDDEF)
 
-
 # Handle insane environments
 if (NOT HAVE_INITIALIZER_LIST)
   message(FATAL_ERROR "Could not locate required header <initializer_list>")
-endif ()
-
-if (NOT HAVE_SYSTEM_ERROR)
-  message(FATAL_ERROR "Could not locate required header <system_error>")
 endif ()
 
 if (NOT HAVE_TYPE_TRAITS)
@@ -124,21 +120,39 @@ include_directories(
   ${PROJECT_BINARY_DIR}/include
 )
 
-if (CAN_USE_CXX11)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-endif ()
+if (NOT MSVC)
+  # TODO: See the note concerning this in the environment check section.
+  if (CAN_USE_LIBCXX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+  endif ()
 
-# TODO: See the note concerning this in the environment check section.
-if (CAN_USE_LIBCXX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-endif ()
+  if (CAN_USE_CXX11)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  endif ()
 
-if (CAN_WARN_ALL)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-endif ()
+  if (CAN_USE_PEDANTIC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
+  endif ()
 
-if (CAN_WARN_NOEXCEPT)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wnoexcept")
+  if (CAN_WARN_ALL)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+  endif ()
+  
+  if (CAN_WARN_NOEXCEPT)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wnoexcept")
+  endif ()
+else ()
+  if (CAN_USE_SECURITY)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /sdl")
+  endif ()
+
+  if (CAN_WARN_ALL)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+  endif ()
+
+  if (CAN_WARN_ONE_LINE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /WL")
+  endif ()
 endif ()
 
 add_library(unittest STATIC
