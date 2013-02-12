@@ -16,7 +16,7 @@ struct UNITTEST_EXPORT_API skip_error final : public runtime_error {
 };
 
 struct UNITTEST_EXPORT_API identity_crisis final : public runtime_error {
-  explicit identity_crisis (const char*);
+  explicit identity_crisis ();
 };
 
 struct UNITTEST_EXPORT_API failure final : public runtime_error {

@@ -23,6 +23,10 @@ add_executable(test-test-run ${TEST_SOURCE_DIR}/test/run.cpp)
 add_executable(test-utility-any-of ${TEST_SOURCE_DIR}/utility/any-of.cpp)
 add_executable(test-utility-all-of ${TEST_SOURCE_DIR}/utility/all-of.cpp)
 
+add_executable(test-identity-crisis ${TEST_SOURCE_DIR}/identity/crisis.cpp)
+add_executable(test-identity-is-not ${TEST_SOURCE_DIR}/identity/is-not.cpp)
+add_executable(test-identity-fail ${TEST_SOURCE_DIR}/identity/fail.cpp)
+
 #------------------------------------------------------------------------------
 # Link Section
 #------------------------------------------------------------------------------
@@ -42,6 +46,10 @@ target_link_libraries(test-test-run unittest)
 
 target_link_libraries(test-utility-any-of unittest)
 target_link_libraries(test-utility-all-of unittest)
+
+target_link_libraries(test-identity-crisis unittest)
+target_link_libraries(test-identity-is-not unittest)
+target_link_libraries(test-identity-fail unittest)
 
 #------------------------------------------------------------------------------
 # Test Section
@@ -63,6 +71,10 @@ add_test(test-run test-test-run)
 add_test(util-any-of test-utility-any-of)
 add_test(util-all-of test-utility-all-of)
 
+add_test(self-crisis test-identity-crisis)
+add_test(self-is-not test-identity-is-not)
+add_test(self-fail test-identity-fail)
+
 #------------------------------------------------------------------------------
 # Dependency Section
 #------------------------------------------------------------------------------
@@ -82,3 +94,7 @@ add_dependencies(check test-test-run)
 
 add_dependencies(check test-utility-any-of)
 add_dependencies(check test-utility-all-of)
+
+add_dependencies(check test-identity-crisis)
+add_dependencies(check test-identity-is-not)
+add_dependencies(check test-identity-fail)

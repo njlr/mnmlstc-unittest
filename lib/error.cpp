@@ -7,8 +7,8 @@ skip_error::skip_error (const char* reason) :
   runtime_error { reason }
 { }
 
-identity_crisis::identity_crisis (const char* reason) :
-  runtime_error { reason }
+identity_crisis::identity_crisis () :
+  runtime_error { "self was not captured by value or copied" }
 { }
 
 failure::failure (const char* reason) :
