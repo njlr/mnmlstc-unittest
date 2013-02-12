@@ -77,5 +77,8 @@ add_dependencies(check test-skip-if)
 add_dependencies(check test-safe-size)
 add_dependencies(check test-safe-iter)
 
+add_dependencies(check test-test-name)
+add_dependencies(check test-test-run)
+
 add_dependencies(check test-utility-any-of)
 add_dependencies(check test-utility-all-of)
