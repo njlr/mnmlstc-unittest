@@ -36,6 +36,20 @@ public:
 
   /* assert_is_not */
   template <typename T>
+  auto assert_is_not (T const& lhs, T const& rhs, const char* msg) -> void {
+    auto one = std::addressof(lhs);
+    auto two = std::addressof(rhs);
+    this->assert_is_not(one, two, msg);
+  }
+
+  template <typename T>
+  auto assert_is_not (T* one, T* two, const char* msg) -> void {
+    auto lhs = reinterpret_cast<intptr_t>(one);
+    auto rhs = reinterpret_cast<intptr_t>(two);
+    this->assert_is_not(lhs, rhs, msg);
+  }
+
+  template <typename T>
   auto assert_is_not (T const& lhs, T const& rhs) -> void {
     this->assert_is_not(std::addressof(lhs), std::addressof(rhs));
   }

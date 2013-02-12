@@ -3,6 +3,17 @@
 
 #include <sstream>
 
+/* Used to solve ambiguity between identity member functions and
+ * assertion exceptions
+ */
+namespace {
+  using unittest::v1::assert_false;
+  using unittest::v1::assert_true;
+
+  using unittest::v1::assert_is_not;
+  using unittest::v1::assert_is;
+}
+
 namespace unittest {
 inline namespace v1 {
 
@@ -15,56 +26,55 @@ auto identity::instance () noexcept -> identity& {
   return self;
 }
 
+/* TODO: Implement */
 auto identity::assert_false (bool cond, const char* msg) -> void { }
 auto identity::assert_true (bool cond, const char* msg) -> void { }
 
 auto identity::assert_is_not (intptr_t, intptr_t, const char*) -> void { }
 auto identity::assert_is (intptr_t, intptr_t, const char*) -> void { }
 
-/* FIXME: does not mention current 'statement' count */
 auto identity::assert_false (bool cond) -> void {
-  if (this->statement < 0) { throw identity_crisis { }; }
+  if (this->statement < 0) { throw identity_crisis { "assert_false" }; }
   this->statement += 1;
   if (not cond) { return; }
-  throw assert_false_error { "" };
+  throw ::assert_false { "condition evaluated true", this->statement };
 }
 
-//FIXME: does not mention current 'statement' count
 auto identity::assert_true (bool cond) -> void {
-  if (this->statement < 0) { throw identity_crisis { }; }
+  if (this->statement < 0) { throw identity_crisis { "assert_true" }; }
   this->statement += 1;
   if (cond) { return; }
-  throw assert_true_error { "" };
+  throw ::assert_true { "condition evaluted false", this->statement };
 }
 
-//FIXME: does not mention current 'statement' count
 auto identity::assert_is_not (intptr_t lhs, intptr_t rhs) -> void {
-  if (this->statement < 0) { throw identity_crisis { }; }
+  if (this->statement < 0) { throw identity_crisis { "assert_is_not" }; }
   this->statement += 1;
   if (lhs != rhs) { return; }
-  throw assert_is_not_error { "" };
+  std::ostringstream stream;
+  stream << lhs <<  " is the same as " << rhs;
+  throw ::assert_is_not { stream.str(), this->statement };
 }
 
-//FIXME: does not mention current statement count
 auto identity::assert_is (intptr_t lhs, intptr_t rhs) -> void {
-  if (this->statement < 0) { throw identity_crisis {}; }
+  if (this->statement < 0) { throw identity_crisis { "assert_is" }; }
   this->statement += 1;
   if (lhs == rhs) { return; }
-  throw assert_is_error { "" };
+  std::ostringstream stream;
+  stream << lhs << " is not the same as " << rhs;
+  throw ::assert_is { stream.str(), this->statement };
 }
 
-//FIXME: does not mention current 'statement' count
 auto identity::fail (const char* msg) -> void {
-  if (this->statement < 0) { throw identity_crisis { }; }
+  if (this->statement < 0) { throw identity_crisis { "fail" }; }
   this->statement += 1;
-  throw failure { msg };
+  throw failure { msg, this->statement };
 }
 
-//FIXME: does not mention current 'statement' count
 auto identity::fail () -> void {
-  if (this->statement < 0) { throw identity_crisis { }; }
+  if (this->statement < 0) { throw identity_crisis { "fail" }; }
   this->statement += 1;
-  throw failure { "immediate failure requested" };
+  throw failure { "immediate failure requested", this->statement };
 }
 
 UNITTEST_EXPORT_API identity& self = identity::instance();

@@ -5,11 +5,11 @@
 #include <cstdlib>
 
 auto v1 () -> void {
-  using unittest::v1::assert_true_error;
+  using unittest::v1::assert_true;
   auto self = unittest::v1::self;
 
   try { self.assert_true(true); }
-  catch (assert_true_error const&) {
+  catch (assert_true const&) {
     std::clog << "unexpected assert_true thrown" << std::endl;
     std::exit(EXIT_FAILURE);
   } catch (...) {
@@ -18,7 +18,7 @@ auto v1 () -> void {
   }
 
   try { self.assert_true(false); }
-  catch (assert_true_error const&) { return; }
+  catch (assert_true const&) { return; }
   catch (...) {
     std::clog << "unexpected exception thrown" << std::endl;
     std::exit(EXIT_FAILURE);

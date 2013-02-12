@@ -13,7 +13,7 @@ auto v1 () -> void {
     always();
     std::clog << "'always' did not throw" << std::endl;
     std::exit(EXIT_FAILURE);
-  } catch (unittest::v1::skip_error const& e) {
+  } catch (unittest::v1::skipping const& e) {
     if (e.what() != std::string { "always-skip" }) {
       std::clog << "'always' did not throw proper error" << std::endl;
       std::exit(EXIT_FAILURE);
