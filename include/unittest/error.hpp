@@ -3,7 +3,6 @@
 #pragma once
 
 #include <unittest/export.hpp>
-
 #include <string>
 
 #include <cstdint>
@@ -13,10 +12,13 @@ inline namespace v1 {
 
 class UNITTEST_EXPORT_API exception {
   std::string message;
+  std::string name;
   int64_t value;
 
+protected:
+  explicit exception (const char*, std::string&&, int64_t) noexcept;
+
 public:
-  explicit exception (std::string&&, int64_t) noexcept;
   exception (const exception&) noexcept;
   virtual ~exception () noexcept;
 
@@ -24,14 +26,21 @@ public:
 
   auto count () const noexcept -> int64_t;
   auto what () const noexcept -> const char*;
+  auto type () const noexcept -> const char*;
 };
 
-struct UNITTEST_EXPORT_API skipping final : public exception {
-  explicit skipping (std::string&&);
-};
-
-struct UNITTEST_EXPORT_API identity_crisis final : private exception {
+class UNITTEST_EXPORT_API identity_crisis final {
+  std::string message;
+public:
   explicit identity_crisis (std::string&&);
+  auto what () const noexcept -> const char*;
+};
+
+class UNITTEST_EXPORT_API skipping final {
+  std::string message;
+public:
+  explicit skipping (std::string&&);
+  auto what () const noexcept -> const char*;
 };
 
 struct UNITTEST_EXPORT_API failure final : private exception {
