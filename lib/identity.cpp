@@ -15,14 +15,27 @@ auto identity::instance () noexcept -> identity& {
   return self;
 }
 
-auto identity::assert_false (bool c, const char* m) -> void { }
-auto identity::assert_true (bool c, const char* m) -> void { }
-
-auto identity::assert_false (bool c) -> void { }
-auto identity::assert_true (bool c) -> void { }
+auto identity::assert_false (bool cond, const char* msg) -> void { }
+auto identity::assert_true (bool cond, const char* msg) -> void { }
 
 auto identity::assert_is_not (intptr_t, intptr_t, const char*) -> void { }
 auto identity::assert_is (intptr_t, intptr_t, const char*) -> void { }
+
+/* FIXME: does not mention current 'statement' count */
+auto identity::assert_false (bool cond) -> void {
+  if (this->statement < 0) { throw identity_crisis { }; }
+  this->statement += 1;
+  if (not cond) { return; }
+  throw assert_false_error { "" };
+}
+
+//FIXME: does not mention current 'statement' count
+auto identity::assert_true (bool cond) -> void {
+  if (this->statement < 0) { throw identity_crisis { }; }
+  this->statement += 1;
+  if (cond) { return; }
+  throw assert_true_error { "" };
+}
 
 //FIXME: does not mention current 'statement' count
 auto identity::assert_is_not (intptr_t lhs, intptr_t rhs) -> void {
@@ -32,7 +45,13 @@ auto identity::assert_is_not (intptr_t lhs, intptr_t rhs) -> void {
   throw assert_is_not_error { "" };
 }
 
-auto identity::assert_is (intptr_t, intptr_t) -> void { }
+//FIXME: does not mention current statement count
+auto identity::assert_is (intptr_t lhs, intptr_t rhs) -> void {
+  if (this->statement < 0) { throw identity_crisis {}; }
+  this->statement += 1;
+  if (lhs == rhs) { return; }
+  throw assert_is_error { "" };
+}
 
 //FIXME: does not mention current 'statement' count
 auto identity::fail (const char* msg) -> void {
