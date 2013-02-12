@@ -5,7 +5,7 @@
 #include <unittest/export.hpp>
 
 #include <forward_list>
-#include <system_error>
+#include <functional>
 #include <utility>
 #include <string>
 #include <tuple>
