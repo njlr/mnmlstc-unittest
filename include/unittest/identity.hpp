@@ -6,6 +6,8 @@
 
 #include <typeinfo>
 #include <utility>
+#include <memory>
+
 #include <cstdint>
 
 namespace unittest {
@@ -15,7 +17,11 @@ class UNITTEST_EXPORT_API identity final {
   std::int64_t statement;
   identity () noexcept;
 
+  auto assert_is_not (intptr_t, intptr_t, const char*) -> void;
+  auto assert_is (intptr_t, intptr_t, const char*) -> void;
+
   auto assert_is_not (intptr_t, intptr_t) -> void;
+  auto assert_is (intptr_t, intptr_t) -> void;
 
 public:
 
@@ -28,6 +34,7 @@ public:
 
   static auto instance () noexcept -> identity&;
 
+  /* assert_is_not */
   template <typename T>
   auto assert_is_not (T const& lhs, T const& rhs) -> void {
     this->assert_is_not(std::addressof(lhs), std::addressof(rhs));
@@ -40,16 +47,25 @@ public:
     this->assert_is_not(lhs, rhs);
   }
 
+  /* assert_is */
+  template <typename T>
+  auto assert_is (T const& lhs, T const& rhs) -> void {
+    this->assert_is(std::addressof(lhs), std::addressof(rhs));
+  }
+
+  template <typename T>
+  auto assert_is (T* one, T* two) -> void {
+    auto lhs = reinterpret_cast<intptr_t>(one);
+    auto rhs = reinterpret_cast<intptr_t>(two);
+    this->assert_is(lhs, rhs);
+  }
+
   auto assert_false (bool, const char*) -> void;
   auto assert_true (bool, const char*) -> void;
 
   auto assert_false (bool) -> void;
   auto assert_true (bool) -> void;
 
-  auto assert_is_not (intptr_t, intptr_t, const char*) -> void;
-  auto assert_is (intptr_t, intptr_t, const char*) -> void;
-
-  auto assert_is (intptr_t, intptr_t) -> void;
 
   auto fail (const char*) -> void; /* TODO: [[noreturn]] */
   auto fail () -> void; /* TODO: Mark as [[noreturn]] */
