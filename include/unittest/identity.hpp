@@ -43,35 +43,48 @@ public:
   }
 
   template <typename T>
-  auto assert_is_not (T* one, T* two, const char* msg) -> void {
-    auto lhs = reinterpret_cast<intptr_t>(one);
-    auto rhs = reinterpret_cast<intptr_t>(two);
-    this->assert_is_not(lhs, rhs, msg);
-  }
-
-  template <typename T>
   auto assert_is_not (T const& lhs, T const& rhs) -> void {
     this->assert_is_not(std::addressof(lhs), std::addressof(rhs));
   }
 
   template <typename T>
-  auto assert_is_not (T* one, T* two) -> void {
-    auto lhs = reinterpret_cast<intptr_t>(one);
-    auto rhs = reinterpret_cast<intptr_t>(two);
-    this->assert_is_not(lhs, rhs);
+  auto assert_is_not (T* lhs, T* rhs, const char* msg) -> void {
+    auto lhs_ = reinterpret_cast<intptr_t>(lhs);
+    auto rhs_ = reinterpret_cast<intptr_t>(rhs);
+    this->assert_is_not(lhs_, rhs_, msg);
+  }
+
+
+  template <typename T>
+  auto assert_is_not (T* lhs, T* rhs) -> void {
+    auto lhs_ = reinterpret_cast<intptr_t>(lhs);
+    auto rhs_ = reinterpret_cast<intptr_t>(rhs);
+    this->assert_is_not(lhs_, rhs_);
   }
 
   /* assert_is */
+  template <typename T>
+  auto assert_is (T const& lhs, T const& rhs, const char* msg) -> void {
+    this->assert_is(std::addressof(lhs), std::addressof(rhs), msg);
+  }
+
   template <typename T>
   auto assert_is (T const& lhs, T const& rhs) -> void {
     this->assert_is(std::addressof(lhs), std::addressof(rhs));
   }
 
   template <typename T>
-  auto assert_is (T* one, T* two) -> void {
-    auto lhs = reinterpret_cast<intptr_t>(one);
-    auto rhs = reinterpret_cast<intptr_t>(two);
-    this->assert_is(lhs, rhs);
+  auto assert_is (T* lhs, T* rhs, const char* msg) -> void {
+    auto lhs_ = reinterpret_cast<intptr_t>(lhs);
+    auto rhs_ = reinterpret_cast<intptr_t>(rhs);
+    this->assert_is(lhs_, rhs_, msg);
+  }
+
+  template <typename T>
+  auto assert_is (T* rhs, T* lhs) -> void {
+    auto lhs_ = reinterpret_cast<intptr_t>(lhs);
+    auto rhs_ = reinterpret_cast<intptr_t>(rhs);
+    this->assert_is(lhs_, rhs_);
   }
 
   auto assert_false (bool, const char*) -> void;
