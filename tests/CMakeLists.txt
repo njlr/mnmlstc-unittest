@@ -4,31 +4,43 @@ add_custom_target(check COMMAND ${CMAKE_TEST_COMMAND})
 #       if it is.
 
 #------------------------------------------------------------------------------
+# Set Variables
+#------------------------------------------------------------------------------
+set(TASK_SOURCE_DIR "${TEST_SOURCE_DIR}/task")
+set(SKIP_SOURCE_DIR "${TEST_SOURCE_DIR}/skip")
+set(SAFE_SOURCE_DIR "${TEST_SOURCE_DIR}/safe")
+set(CASE_SOURCE_DIR "${TEST_SOURCE_DIR}/case")
+set(UTIL_SOURCE_DIR "${TEST_SOURCE_DIR}/util")
+set(SELF_SOURCE_DIR "${TEST_SOURCE_DIR}/self")
+
+#------------------------------------------------------------------------------
 # Executable Section
 #------------------------------------------------------------------------------
-add_executable(test-task-name ${TEST_SOURCE_DIR}/task/name.cpp)
-add_executable(test-task-call ${TEST_SOURCE_DIR}/task/call.cpp)
-add_executable(test-task-type ${TEST_SOURCE_DIR}/task/type.cpp)
+add_executable(test-task-name ${TASK_SOURCE_DIR}/name.cpp)
+add_executable(test-task-call ${TASK_SOURCE_DIR}/call.cpp)
+add_executable(test-task-type ${TASK_SOURCE_DIR}/type.cpp)
 
-add_executable(test-skip-default ${TEST_SOURCE_DIR}/skip/default.cpp)
-add_executable(test-skip-unless ${TEST_SOURCE_DIR}/skip/unless.cpp)
-add_executable(test-skip-if ${TEST_SOURCE_DIR}/skip/if.cpp)
+add_executable(test-skip-default ${SKIP_SOURCE_DIR}/default.cpp)
+add_executable(test-skip-unless ${SKIP_SOURCE_DIR}/unless.cpp)
+add_executable(test-skip-if ${SKIP_SOURCE_DIR}/if.cpp)
 
-add_executable(test-safe-iter ${TEST_SOURCE_DIR}/safe/iter.cpp)
-add_executable(test-safe-size ${TEST_SOURCE_DIR}/safe/size.cpp)
+add_executable(test-safe-iter ${SAFE_SOURCE_DIR}/iter.cpp)
+add_executable(test-safe-size ${SAFE_SOURCE_DIR}/size.cpp)
 
-add_executable(test-test-name ${TEST_SOURCE_DIR}/test/name.cpp)
-add_executable(test-test-run ${TEST_SOURCE_DIR}/test/run.cpp)
+add_executable(test-case-name ${CASE_SOURCE_DIR}/name.cpp)
+add_executable(test-case-run ${CASE_SOURCE_DIR}/run.cpp)
 
-add_executable(test-utility-any-of ${TEST_SOURCE_DIR}/utility/any-of.cpp)
-add_executable(test-utility-all-of ${TEST_SOURCE_DIR}/utility/all-of.cpp)
+add_executable(test-util-any-of ${UTIL_SOURCE_DIR}/util/any-of.cpp)
+add_executable(test-util-all-of ${UTIL_SOURCE_DIR}/util/all-of.cpp)
 
-add_executable(test-identity-crisis ${TEST_SOURCE_DIR}/identity/crisis.cpp)
-add_executable(test-identity-is-not ${TEST_SOURCE_DIR}/identity/is-not.cpp)
-add_executable(test-identity-false ${TEST_SOURCE_DIR}/identity/false.cpp)
-add_executable(test-identity-true ${TEST_SOURCE_DIR}/identity/true.cpp)
-add_executable(test-identity-fail ${TEST_SOURCE_DIR}/identity/fail.cpp)
-add_executable(test-identity-is ${TEST_SOURCE_DIR}/identity/is.cpp)
+add_executable(test-self-is-not-null ${SELF_SOURCE_DIR}/is-not-null.cpp)
+add_executable(test-self-is-null ${SELF_SOURCE_DIR}/is-null.cpp)
+add_executable(test-self-crisis ${SELF_SOURCE_DIR}/crisis.cpp)
+add_executable(test-self-is-not ${SELF_SOURCE_DIR}/is-not.cpp)
+add_executable(test-self-false ${SELF_SOURCE_DIR}/false.cpp)
+add_executable(test-self-true ${SELF_SOURCE_DIR}/true.cpp)
+add_executable(test-self-fail ${SELF_SOURCE_DIR}/fail.cpp)
+add_executable(test-self-is ${SELF_SOURCE_DIR}/is.cpp)
 
 #------------------------------------------------------------------------------
 # Link Section
@@ -44,18 +56,20 @@ target_link_libraries(test-skip-if unittest)
 target_link_libraries(test-safe-size unittest)
 target_link_libraries(test-safe-iter unittest)
 
-target_link_libraries(test-test-name unittest)
-target_link_libraries(test-test-run unittest)
+target_link_libraries(test-case-name unittest)
+target_link_libraries(test-case-run unittest)
 
 target_link_libraries(test-utility-any-of unittest)
 target_link_libraries(test-utility-all-of unittest)
 
-target_link_libraries(test-identity-crisis unittest)
-target_link_libraries(test-identity-is-not unittest)
-target_link_libraries(test-identity-false unittest)
-target_link_libraries(test-identity-true unittest)
-target_link_libraries(test-identity-fail unittest)
-target_link_libraries(test-identity-is unittest)
+target_link_libraries(test-self-is-not-null unittest)
+target_link_libraries(test-self-is-null unittest)
+target_link_libraries(test-self-crisis unittest)
+target_link_libraries(test-self-is-not unittest)
+target_link_libraries(test-self-false unittest)
+target_link_libraries(test-self-true unittest)
+target_link_libraries(test-self-fail unittest)
+target_link_libraries(test-self-is unittest)
 
 #------------------------------------------------------------------------------
 # Test Section
@@ -71,18 +85,20 @@ add_test(skip-if test-skip-if)
 add_test(safe-size test-safe-size)
 add_test(safe-iter test-safe-iter)
 
-add_test(test-name test-test-name)
-add_test(test-run test-test-run)
+add_test(test-name test-case-name)
+add_test(test-run test-case-run)
 
-add_test(util-any-of test-utility-any-of)
-add_test(util-all-of test-utility-all-of)
+add_test(util-any-of test-util-any-of)
+add_test(util-all-of test-util-all-of)
 
-add_test(self-crisis test-identity-crisis)
-add_test(self-is-not test-identity-is-not)
-add_test(self-false test-identity-false)
-add_test(self-true test-identity-true)
-add_test(self-fail test-identity-fail)
-add_test(self-is test-identity-is)
+add_test(self-is-not-null test-self-is-not-null)
+add_test(self-is-null test-self-is-null)
+add_test(self-crisis test-self-crisis)
+add_test(self-is-not test-self-is-not)
+add_test(self-false test-self-false)
+add_test(self-true test-self-true)
+add_test(self-fail test-self-fail)
+add_test(self-is test-self-is)
 
 #------------------------------------------------------------------------------
 # Dependency Section
@@ -98,15 +114,17 @@ add_dependencies(check test-skip-if)
 add_dependencies(check test-safe-size)
 add_dependencies(check test-safe-iter)
 
-add_dependencies(check test-test-name)
-add_dependencies(check test-test-run)
+add_dependencies(check test-case-name)
+add_dependencies(check test-case-run)
 
-add_dependencies(check test-utility-any-of)
-add_dependencies(check test-utility-all-of)
+add_dependencies(check test-util-any-of)
+add_dependencies(check test-util-all-of)
 
-add_dependencies(check test-identity-crisis)
-add_dependencies(check test-identity-is-not)
-add_dependencies(check test-identity-false)
-add_dependencies(check test-identity-true)
-add_dependencies(check test-identity-fail)
-add_dependencies(check test-identity-is)
+add_dependencies(check test-self-is-not-null)
+add_dependencies(check test-self-is-null)
+add_dependencies(check test-self-crisis)
+add_dependencies(check test-self-is-not)
+add_dependencies(check test-self-false)
+add_dependencies(check test-self-true)
+add_dependencies(check test-self-fail)
+add_dependencies(check test-self-is)
