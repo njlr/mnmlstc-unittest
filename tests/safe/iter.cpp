@@ -23,7 +23,7 @@ auto v1 () -> void {
     unittest::v1::vault.add(str1.str(), str2.str(), std::move(function));
   }
 
-  auto value = 4;
+  auto value = 1;
   for (auto&& entry : unittest::v1::vault) {
     std::stringstream str1;
     std::stringstream str2;
@@ -50,7 +50,7 @@ auto v1 () -> void {
       std::clog << "entry<2> threw unexpected exception" << std::endl;
       std::exit(EXIT_FAILURE);
     }
-    value -= 1;
+    value += 1;
   }
 }
 

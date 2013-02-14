@@ -13,8 +13,7 @@ auto safe::instance () noexcept -> safe& {
 }
 
 auto safe::add (string&& test, string&& task, result&& res) noexcept -> void {
-  auto start = this->tests.before_begin();
-  this->tests.emplace_after(start, move(test), move(task), move(res));
+  this->tests.emplace_back(move(test), move(task), move(res));
 }
 
 auto safe::begin () noexcept -> iterator { return this->tests.begin(); }

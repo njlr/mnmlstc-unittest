@@ -4,11 +4,11 @@
 
 #include <unittest/export.hpp>
 
-#include <forward_list>
 #include <functional>
 #include <utility>
 #include <string>
 #include <tuple>
+#include <list>
 
 namespace unittest {
 inline namespace v1 {
@@ -20,7 +20,7 @@ class UNITTEST_EXPORT_API safe final {
   using item = std::tuple<string, string, result>;
   /* test-name, task-name, function */
 
-  std::forward_list<item> tests;
+  std::list<item> tests;
   safe () noexcept;
 
 public:
