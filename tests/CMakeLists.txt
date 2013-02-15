@@ -30,8 +30,8 @@ add_executable(test-safe-size ${SAFE_SOURCE_DIR}/size.cpp)
 add_executable(test-case-name ${CASE_SOURCE_DIR}/name.cpp)
 add_executable(test-case-run ${CASE_SOURCE_DIR}/run.cpp)
 
-add_executable(test-util-any-of ${UTIL_SOURCE_DIR}/util/any-of.cpp)
-add_executable(test-util-all-of ${UTIL_SOURCE_DIR}/util/all-of.cpp)
+add_executable(test-util-any-of ${UTIL_SOURCE_DIR}/any-of.cpp)
+add_executable(test-util-all-of ${UTIL_SOURCE_DIR}/all-of.cpp)
 
 add_executable(test-self-is-not-null ${SELF_SOURCE_DIR}/is-not-null.cpp)
 add_executable(test-self-is-null ${SELF_SOURCE_DIR}/is-null.cpp)
@@ -59,8 +59,8 @@ target_link_libraries(test-safe-iter unittest)
 target_link_libraries(test-case-name unittest)
 target_link_libraries(test-case-run unittest)
 
-target_link_libraries(test-utility-any-of unittest)
-target_link_libraries(test-utility-all-of unittest)
+target_link_libraries(test-util-any-of unittest)
+target_link_libraries(test-util-all-of unittest)
 
 target_link_libraries(test-self-is-not-null unittest)
 target_link_libraries(test-self-is-null unittest)
