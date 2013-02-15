@@ -2,7 +2,6 @@
 #define UNITTEST_IDENTITY_HPP
 #pragma once
 
-#include <unittest/configure.hpp>
 #include <unittest/export.hpp>
 
 #include <typeinfo>
@@ -120,8 +119,8 @@ public:
   auto assert_true (bool) -> void;
 
   /* fail */
-  UNITTEST_NORETURN auto fail (const char*) -> void;
-  UNITTEST_NORETURN auto fail () -> void;
+  auto fail (const char*) -> void;
+  auto fail () -> void;
 };
 
 extern UNITTEST_EXPORT_API identity& self;

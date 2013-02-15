@@ -94,13 +94,13 @@ auto identity::assert_is_null (void* ptr) -> void {
   throw ::assert_is_null { stream.str(), this->statement };
 }
 
-UNITTEST_NORETURN auto identity::fail (const char* msg) -> void {
+auto identity::fail (const char* msg) -> void {
   if (this->statement < 0) { throw identity_crisis { "fail" }; }
   this->statement += 1;
   throw failure { msg, this->statement };
 }
 
-UNITTEST_NORETURN auto identity::fail () -> void {
+auto identity::fail () -> void {
   if (this->statement < 0) { throw identity_crisis { "fail" }; }
   this->statement += 1;
   throw failure { "immediate failure requested", this->statement };

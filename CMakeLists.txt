@@ -110,11 +110,6 @@ configure_package_config_file(
   LIBRARY_INSTALL_DIR
 )
 
-configure_file(
-  ${PROJECT_SOURCE_DIR}/configure/configure.hpp.in
-  ${PROJECT_BINARY_DIR}/include/unittest/configure.hpp
-)
-
 include_directories(
   ${PROJECT_SOURCE_DIR}/include
   ${PROJECT_BINARY_DIR}/include
@@ -188,7 +183,6 @@ install(FILES
 )
 
 install(FILES
-  ${PROJECT_BINARY_DIR}/include/unittest/configure.hpp
   ${PROJECT_BINARY_DIR}/include/unittest/export.hpp
   DESTINATION ${INCLUDE_INSTALL_DIR}/unittest
 )
