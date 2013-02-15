@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <csignal>
+#include <cstdlib>
 
 /* Test the skip_unless interface */
 auto v1 () -> void {

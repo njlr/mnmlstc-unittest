@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <csignal>
+#include <cstdlib>
 
 auto v1 () -> void {
   auto skip = unittest::v1::skip("success") = []{};

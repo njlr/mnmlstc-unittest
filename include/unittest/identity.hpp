@@ -2,6 +2,7 @@
 #define UNITTEST_IDENTITY_HPP
 #pragma once
 
+#include <unittest/configure.hpp>
 #include <unittest/export.hpp>
 
 #include <typeinfo>
@@ -18,10 +19,16 @@ class UNITTEST_EXPORT_API identity final {
   identity () noexcept;
 
   auto assert_is_not (intptr_t, intptr_t, const char*) -> void;
-  auto assert_is (intptr_t, intptr_t, const char*) -> void;
-
   auto assert_is_not (intptr_t, intptr_t) -> void;
+
+  auto assert_is (intptr_t, intptr_t, const char*) -> void;
   auto assert_is (intptr_t, intptr_t) -> void;
+
+  auto assert_is_not_null(void*, const char*) -> void;
+  auto assert_is_not_null(void*) -> void;
+
+  auto assert_is_null (void*, const char*) -> void;
+  auto assert_is_null (void*) -> void;
 
 public:
 
@@ -87,15 +94,34 @@ public:
     this->assert_is(lhs_, rhs_);
   }
 
-  auto assert_false (bool, const char*) -> void;
-  auto assert_true (bool, const char*) -> void;
+  /* assert_is_not_null */
+  template <typename T>
+  auto assert_is_not_null (T* ptr, const char* msg) -> void {
+    this->assert_is_not_null(static_cast<void*>(ptr), msg);
+  }
 
+  /* assert_is_null */
+  template <typename T>
+  auto assert_is_null (T* ptr, const char* msg) -> void {
+    this->assert_is_null(static_cast<void*>(ptr), msg);
+  }
+
+  template <typename T>
+  auto assert_is_null (T* ptr) -> void {
+    this->assert_is_null(static_cast<void*>(ptr));
+  }
+
+  /* assert_false */
+  auto assert_false (bool, const char*) -> void;
   auto assert_false (bool) -> void;
+
+  /* assert_true */
+  auto assert_true (bool, const char*) -> void;
   auto assert_true (bool) -> void;
 
-
-  auto fail (const char*) -> void; /* TODO: [[noreturn]] */
-  auto fail () -> void; /* TODO: Mark as [[noreturn]] */
+  /* fail */
+  UNITTEST_NORETURN auto fail (const char*) -> void;
+  UNITTEST_NORETURN auto fail () -> void;
 };
 
 extern UNITTEST_EXPORT_API identity& self;

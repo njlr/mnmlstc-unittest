@@ -2,13 +2,16 @@
 #define UNITTEST_CONFIGURE_HPP
 #pragma once
 
-#include <initializer_list>
-#include <functional>
-#include <utility>
-#include <string>
+#cmakedefine01 UNITTEST_HAS_CXX11_ATTRIBUTES
+#cmakedefine01 UNITTEST_COMPILER_MSVC
 
-#include <cstdlib>
-#include <cstddef>
+#if UNITTEST_HAS_CXX11_ATTRIBUTES
+  #define UNITTEST_NORETURN [[noreturn]]
+#elif UNITTEST_MSVC
+  #define UNITTEST_NORETURN __declspec(noreturn)
+#else
+  #define UNITTEST_NORETURN __attribute__((noreturn))
+#endif /* UNITTEST_HAS_CXX11_ATTRIBUTES */
 
 namespace unittest {
 inline namespace v1 {
@@ -16,11 +19,6 @@ inline namespace v1 {
 struct build final {
   static constexpr bool rtti = false; /* replace with CMake determined macro */
 };
-
-using std::string;
-using std::pair;
-
-using function = std::function<void()>;
 
 }} /* namespace unittest::v1 */
 

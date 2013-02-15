@@ -61,4 +61,12 @@ assert_is::assert_is (string&& msg, int64_t val) :
   exception { "assert_is", std::move(msg), val }
 { }
 
+assert_is_not_null::assert_is_not_null (string&& msg, int64_t val) :
+  exception { "assert_is_not_null", std::move(msg), val }
+{ }
+
+assert_is_null::assert_is_null (string&& msg, int64_t val) :
+  exception { "assert_is_null", std::move(msg), val }
+{ }
+
 }} /* namespace unittest::v1 */

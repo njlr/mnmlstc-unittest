@@ -27,6 +27,8 @@ Below is a basic example of how unittest can be used::
         task("fails") = [self] { self.fail(); },
         task("skip") = skip("always-skip") = [self] { self.fail(); }
       };
+
+      run();
     }
 
 Requirements

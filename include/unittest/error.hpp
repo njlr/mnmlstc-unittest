@@ -63,6 +63,14 @@ struct UNITTEST_EXPORT_API assert_is final : public exception {
   explicit assert_is (std::string&&, int64_t);
 };
 
+struct UNITTEST_EXPORT_API assert_is_not_null final : public exception {
+  explicit assert_is_not_null (std::string&&, int64_t);
+};
+
+struct UNITTEST_EXPORT_API assert_is_null final : public exception {
+  explicit assert_is_null (std::string&&, int64_t);
+};
+
 }} /* namespace unittest::v1 */
 
 #endif /* UNITTEST_ERROR_HPP */

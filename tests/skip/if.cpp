@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <csignal>
+#include <cstdlib>
 
 /* Tests the skip_if interface */
 auto v1 () -> void {

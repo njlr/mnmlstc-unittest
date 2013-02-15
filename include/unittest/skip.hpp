@@ -2,13 +2,15 @@
 #define UNITTEST_SKIP_HPP
 #pragma once
 
-#include <unittest/configure.hpp>
 #include <unittest/export.hpp>
+
+#include <functional>
 
 namespace unittest {
 inline namespace v1 {
 
 class UNITTEST_EXPORT_API skip {
+  using function = std::function<void()>;
 protected:
   const char* reason;
 public:
@@ -26,6 +28,7 @@ public:
 };
 
 class UNITTEST_EXPORT_API skip_if final : skip {
+  using function = std::function<void()>;
   bool condition;
 public:
   auto operator = (skip_if const&) noexcept -> skip_if& = delete;
@@ -42,6 +45,7 @@ public:
 };
 
 class UNITTEST_EXPORT_API skip_unless final : skip {
+  using function = std::function<void()>;
   bool condition;
 public:
   auto operator = (skip_unless const&) noexcept -> skip_unless& = delete;
