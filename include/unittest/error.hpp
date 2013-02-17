@@ -24,16 +24,9 @@ public:
 
   auto operator = (exception const&) noexcept -> exception&;
 
-  auto count () const noexcept -> int64_t;
-  auto what () const noexcept -> const char*;
-  auto type () const noexcept -> const char*;
-};
-
-class UNITTEST_EXPORT_API identity_crisis final {
-  std::string message;
-public:
-  explicit identity_crisis (std::string&&);
-  auto what () const noexcept -> const char*;
+  virtual auto count () const noexcept -> int64_t;
+  virtual auto what () const noexcept -> const char*;
+  virtual auto type () const noexcept -> const char*;
 };
 
 class UNITTEST_EXPORT_API skipping final {
@@ -43,7 +36,7 @@ public:
   auto what () const noexcept -> const char*;
 };
 
-struct UNITTEST_EXPORT_API failure final : private exception {
+struct UNITTEST_EXPORT_API failure final : public exception {
   explicit failure (std::string&&, int64_t);
 };
 

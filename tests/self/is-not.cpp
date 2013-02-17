@@ -6,7 +6,7 @@
 
 auto v1 () -> void {
   using unittest::v1::assert_is_not;
-  auto self = unittest::v1::self;
+  using unittest::v1::self;
 
   auto x = 1;
   auto y = x;

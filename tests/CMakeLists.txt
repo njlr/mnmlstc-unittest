@@ -12,6 +12,7 @@ set(SAFE_SOURCE_DIR "${TEST_SOURCE_DIR}/safe")
 set(CASE_SOURCE_DIR "${TEST_SOURCE_DIR}/case")
 set(UTIL_SOURCE_DIR "${TEST_SOURCE_DIR}/util")
 set(SELF_SOURCE_DIR "${TEST_SOURCE_DIR}/self")
+set(RUN_SOURCE_DIR "${TEST_SOURCE_DIR}/run")
 
 #------------------------------------------------------------------------------
 # Executable Section
@@ -35,12 +36,13 @@ add_executable(test-util-all-of ${UTIL_SOURCE_DIR}/all-of.cpp)
 
 add_executable(test-self-is-not-null ${SELF_SOURCE_DIR}/is-not-null.cpp)
 add_executable(test-self-is-null ${SELF_SOURCE_DIR}/is-null.cpp)
-add_executable(test-self-crisis ${SELF_SOURCE_DIR}/crisis.cpp)
 add_executable(test-self-is-not ${SELF_SOURCE_DIR}/is-not.cpp)
 add_executable(test-self-false ${SELF_SOURCE_DIR}/false.cpp)
 add_executable(test-self-true ${SELF_SOURCE_DIR}/true.cpp)
 add_executable(test-self-fail ${SELF_SOURCE_DIR}/fail.cpp)
 add_executable(test-self-is ${SELF_SOURCE_DIR}/is.cpp)
+
+add_executable(test-run-all ${RUN_SOURCE_DIR}/all.cpp)
 
 #------------------------------------------------------------------------------
 # Link Section
@@ -64,12 +66,13 @@ target_link_libraries(test-util-all-of unittest)
 
 target_link_libraries(test-self-is-not-null unittest)
 target_link_libraries(test-self-is-null unittest)
-target_link_libraries(test-self-crisis unittest)
 target_link_libraries(test-self-is-not unittest)
 target_link_libraries(test-self-false unittest)
 target_link_libraries(test-self-true unittest)
 target_link_libraries(test-self-fail unittest)
 target_link_libraries(test-self-is unittest)
+
+target_link_libraries(test-run-all unittest)
 
 #------------------------------------------------------------------------------
 # Test Section
@@ -93,13 +96,13 @@ add_test(util-all-of test-util-all-of)
 
 add_test(self-is-not-null test-self-is-not-null)
 add_test(self-is-null test-self-is-null)
-add_test(self-crisis test-self-crisis)
 add_test(self-is-not test-self-is-not)
 add_test(self-false test-self-false)
 add_test(self-true test-self-true)
 add_test(self-fail test-self-fail)
 add_test(self-is test-self-is)
 
+add_test(run-all test-run-all)
 #------------------------------------------------------------------------------
 # Dependency Section
 #------------------------------------------------------------------------------
@@ -122,9 +125,10 @@ add_dependencies(check test-util-all-of)
 
 add_dependencies(check test-self-is-not-null)
 add_dependencies(check test-self-is-null)
-add_dependencies(check test-self-crisis)
 add_dependencies(check test-self-is-not)
 add_dependencies(check test-self-false)
 add_dependencies(check test-self-true)
 add_dependencies(check test-self-fail)
 add_dependencies(check test-self-is)
+
+add_dependencies(check test-run-all)

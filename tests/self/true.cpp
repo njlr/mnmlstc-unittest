@@ -6,7 +6,7 @@
 
 auto v1 () -> void {
   using unittest::v1::assert_true;
-  auto self = unittest::v1::self;
+  using unittest::v1::self;
 
   try { self.assert_true(true); }
   catch (assert_true const&) {

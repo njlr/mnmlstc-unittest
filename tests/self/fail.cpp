@@ -5,7 +5,7 @@
 #include <cstdlib>
 
 auto v1 () -> void {
-  auto self = unittest::v1::self;
+  using unittest::v1::self;
 
   try { self.fail(); }
   catch (unittest::v1::failure const&) { return; }

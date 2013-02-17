@@ -6,9 +6,9 @@ namespace unittest {
 inline namespace v1 {
 
 exception::exception (const char* type, string&& msg, int64_t val) noexcept :
-  message { std::move(message) },
+  message { std::move(msg) },
   name { type },
-  value { value }
+  value { val }
 { }
 
 exception::exception (exception const& that) noexcept :
@@ -26,14 +26,6 @@ auto exception::what () const noexcept -> const char* {
 
 auto exception::type () const noexcept -> const char* {
   return this->name.c_str();
-}
-
-identity_crisis::identity_crisis (string&& message) :
-  message { "self not copied by value before: " + message }
-{ }
-
-auto identity_crisis::what () const noexcept -> const char* {
-  return this->message.c_str();
 }
 
 skipping::skipping (string&& msg) : message { std::move(msg) } { }

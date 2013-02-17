@@ -15,6 +15,7 @@ inline namespace v1 {
 
 class UNITTEST_EXPORT_API identity final {
   std::int64_t statement;
+
   identity () noexcept;
 
   auto assert_is_not (intptr_t, intptr_t, const char*) -> void;
@@ -35,10 +36,10 @@ public:
   auto operator = (identity&&) noexcept -> identity& = delete;
   identity (identity&&) noexcept = delete;
 
-  identity (identity const&) noexcept;
   ~identity () noexcept;
 
   static auto instance () noexcept -> identity&;
+  auto reset () noexcept -> void;
 
   /* assert_is_not */
   template <typename T>
@@ -97,6 +98,11 @@ public:
   template <typename T>
   auto assert_is_not_null (T* ptr, const char* msg) -> void {
     this->assert_is_not_null(static_cast<void*>(ptr), msg);
+  }
+
+  template <typename T>
+  auto assert_is_not_null (T* ptr) -> void {
+    this->assert_is_null(static_cast<void*>(ptr));
   }
 
   /* assert_is_null */

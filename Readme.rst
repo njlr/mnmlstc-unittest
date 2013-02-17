@@ -16,16 +16,18 @@ Basic Example
 
 Below is a basic example of how unittest can be used::
 
+    #include <unittest/unittest.hpp>
+
     auto main () -> int {
       using namespace unittest;
 
       test("my-test") = {
-        task("assert-equal") = [self] {
+        task("assert-equal") = [] {
           self.assert_equal(1, 2, "optional message");
           self.assert_raises<my_exception_type>([]{throw my_exception_type;});
         },
-        task("fails") = [self] { self.fail(); },
-        task("skip") = skip("always-skip") = [self] { self.fail(); }
+        task("fails") = [] { self.fail(); },
+        task("skip") = skip("always-skip") = [] { self.fail(); }
       };
 
       run();

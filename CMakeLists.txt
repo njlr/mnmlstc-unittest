@@ -32,8 +32,10 @@ if (NOT MSVC)
   check_cxx_compiler_flag("-fexceptions" CAN_USE_EXCEPTIONS)
   check_cxx_compiler_flag("-frtti" CAN_USE_RTTI)
   check_cxx_compiler_flag("-flto" CAN_USE_LTO)
-
+  check_cxx_compiler_flag("-Woverloaded-virtual" CAN_WARN_OVERLOADED_VIRTUAL)
+  check_cxx_compiler_flag("-Wuseless-cast" CAN_WARN_USELESS_CAST)
   check_cxx_compiler_flag("-Wnoexcept" CAN_WARN_NOEXCEPT)
+  check_cxx_compiler_flag("-Wextra" CAN_WARN_EXTRA)
   check_cxx_compiler_flag("-Wall" CAN_WARN_ALL)
 else ()
   check_cxx_compiler_flag("/Ehsc" CAN_USE_EXCEPTIONS)
@@ -129,12 +131,20 @@ if (NOT MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
   endif ()
 
+  if (CAN_WARN_EXTRA)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
+  endif ()
+
   if (CAN_WARN_ALL)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
   endif ()
   
   if (CAN_WARN_NOEXCEPT)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wnoexcept")
+  endif ()
+
+  if (CAN_WARN_USELESS_CAST)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wuseless-cast")
   endif ()
 else ()
   if (CAN_USE_SECURITY)
@@ -157,6 +167,7 @@ add_library(unittest STATIC
   ${PROJECT_SOURCE_DIR}/lib/task.cpp
   ${PROJECT_SOURCE_DIR}/lib/skip.cpp
   ${PROJECT_SOURCE_DIR}/lib/safe.cpp
+  ${PROJECT_SOURCE_DIR}/lib/run.cpp
 )
 
 add_compiler_export_flags()
