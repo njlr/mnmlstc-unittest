@@ -3,8 +3,6 @@
 
 #include <unittest/export.hpp>
 
-#include <iostream>
-
 namespace unittest {
 inline namespace v1 {
 
