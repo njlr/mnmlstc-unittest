@@ -2,9 +2,13 @@
 #define UNITTEST_IDENTITY_HPP
 #pragma once
 
+#include <unittest/utility.hpp>
 #include <unittest/export.hpp>
+#include <unittest/traits.hpp>
+#include <unittest/error.hpp>
 
 #include <typeinfo>
+#include <sstream>
 #include <utility>
 #include <memory>
 
@@ -14,6 +18,8 @@ namespace unittest {
 inline namespace v1 {
 
 class UNITTEST_EXPORT_API identity final {
+  using type = std::type_info;
+
   std::int64_t statement;
 
   identity () noexcept;
@@ -40,6 +46,28 @@ public:
 
   static auto instance () noexcept -> identity&;
   auto reset () noexcept -> void;
+
+  /* assert_equal */
+  template <typename T, typename U>
+  auto assert_equal (T const& lhs, U const& rhs, const char* msg) ->
+  typename enable_if<trait::eq<T, U>>::type {
+    this->statement += 1;
+    if (lhs == rhs) { return; }
+    throw exception { "assert_equal", msg, this->statement };
+  }
+
+  template <typename T, typename U>
+  auto assert_equal (T const& lhs, U const& rhs) -> typename enable_if<
+    trait::eq<T, U>,
+    trait::is_printable<T>,
+    trait::is_printable<U>
+  >::type {
+    this->statement += 1;
+    if (lhs == rhs) { return; }
+    std::ostringstream stream;
+    stream << lhs << " is not equal to " << rhs;
+    throw exception { "assert_equal", stream.str(), this->statement };
+  }
 
   /* assert_is_not */
   template <typename T>
@@ -92,6 +120,23 @@ public:
     auto lhs_ = reinterpret_cast<intptr_t>(lhs);
     auto rhs_ = reinterpret_cast<intptr_t>(rhs);
     this->assert_is(lhs_, rhs_);
+  }
+
+  /* assert_is_instance */
+  // TODO: Handle the various qualifiers (const, volatile, etc).
+  template <typename T, typename U>
+  auto assert_is_instance (T const& lhs) -> void {
+    this->assert_is_instance<U>(std::addressof(lhs));
+  }
+
+  template <typename T, typename U>
+  auto assert_is_instance (T* lhs) -> void {
+    this->statement += 1;
+    auto ptr = dynamic_cast<U*>(lhs);
+    if (ptr) { return; }
+    std::ostringstream stream;
+    stream << std::hex << lhs << " is not an instance of the requested type";
+    throw exception { "assert_is_instance", stream.str(), this->statement };
   }
 
   /* assert_is_not_null */

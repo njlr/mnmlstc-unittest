@@ -43,7 +43,7 @@ auto run () noexcept -> void {
       results.emplace_back(stream.str());
     } catch (exception const& e) {
       stream << "[FAIL] " << test_name << "." << task_name << ": "
-             << "Assertion " << e.type() << " in statement " << e.count()
+             << "Assertion " << e.type() << " in statement " << e.statement()
              << " " << e.what();
       results.emplace_back(stream.str());
       failures += 1;

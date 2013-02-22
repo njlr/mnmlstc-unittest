@@ -5,14 +5,14 @@
 #include <cstdlib>
 
 auto v1 () -> void {
-  using unittest::v1::assert_is_not;
   using unittest::v1::self;
+  using unittest::v1::exception;
 
   auto x = 1;
   auto y = x;
 
   try { self.assert_is_not(x, y); }
-  catch (assert_is_not const&) {
+  catch (exception const&) {
     std::clog << "unexpected assert_is_not thrown" << std::endl;
     std::exit(EXIT_FAILURE);
   } catch (...) {
@@ -24,7 +24,7 @@ auto v1 () -> void {
   auto const& b = a;
 
   try { self.assert_is_not(a, b); }
-  catch (assert_is_not const&) { return; }
+  catch (exception const&) { return; }
   catch (...) {
     std::clog << "unexpected exception thrown" << std::endl;
     std::exit(EXIT_FAILURE);

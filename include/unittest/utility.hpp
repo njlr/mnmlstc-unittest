@@ -20,6 +20,9 @@ struct all_of<T, Args...> : std::integral_constant<bool,
 > { };
 template <> struct all_of<> : std::true_type { };
 
+template <typename... T>
+using enable_if = std::enable_if<all_of<T...>::value>;
+
 } /* namespace unittest */
 
 #endif /* UNITTEST_UTILITY_HPP */
