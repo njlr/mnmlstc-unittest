@@ -2,6 +2,8 @@
 #include <unittest/error.hpp>
 
 #include <iostream>
+#include <string>
+
 #include <cstdlib>
 
 auto v1 () -> void {
@@ -12,8 +14,8 @@ auto v1 () -> void {
   auto const& y = x;
 
   try { self.assert_is(x, y); }
-  catch (exception const&) {
-    std::clog << "unexpected assert_is_error thrown" << std::endl;
+  catch (exception const& e) {
+    std::clog << "unexpected exception thrown: " << e.type() << std::endl;
     std::exit(EXIT_FAILURE);
   } catch (...) {
     std::clog << "unexpected exception thrown" << std::endl;
@@ -24,13 +26,17 @@ auto v1 () -> void {
   auto b = a;
 
   try { self.assert_is(a, b); }
-  catch (exception const&) { return; }
+  catch (exception const& e) {
+    if (std::string { "assert_is" } == e.type()) { return; }
+    std::clog << "Unexpected exception type thrown: " << e.type() << std::endl;
+    std::exit(EXIT_FAILURE);
+  }
   catch (...) {
     std::clog << "unexpected exception thrown" << std::endl;
     std::exit(EXIT_FAILURE);
   }
 
-  std::clog << "assert_is_error was not thrown" << std::endl;
+  std::clog << "assert_is was not thrown" << std::endl;
   std::exit(EXIT_FAILURE);
 }
 

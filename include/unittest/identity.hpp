@@ -122,23 +122,6 @@ public:
     this->assert_is(lhs_, rhs_);
   }
 
-  /* assert_is_instance */
-  // TODO: Handle the various qualifiers (const, volatile, etc).
-  template <typename T, typename U>
-  auto assert_is_instance (T const& lhs) -> void {
-    this->assert_is_instance<U>(std::addressof(lhs));
-  }
-
-  template <typename T, typename U>
-  auto assert_is_instance (T* lhs) -> void {
-    this->statement += 1;
-    auto ptr = dynamic_cast<U*>(lhs);
-    if (ptr) { return; }
-    std::ostringstream stream;
-    stream << std::hex << lhs << " is not an instance of the requested type";
-    throw exception { "assert_is_instance", stream.str(), this->statement };
-  }
-
   /* assert_is_not_null */
   template <typename T>
   auto assert_is_not_null (T* ptr, const char* msg) -> void {
