@@ -28,7 +28,7 @@ inline namespace v1 {
 
 auto run () noexcept -> void {
   std::vector<std::string> results;
-  std::uint64_t failures;
+  std::uint64_t failures = 0;
   ::install_handlers();
 
   for (auto const& item : vault) {
