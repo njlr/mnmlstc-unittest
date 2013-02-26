@@ -17,8 +17,8 @@ class UNITTEST_EXPORT_API test final {
   const char* label;
 
 public:
-  auto operator = (test const&) noexcept -> test& = delete;
-  auto operator = (test&&) noexcept -> test& = delete;
+  test& operator = (test const&) noexcept = delete;
+  test& operator = (test&&) noexcept = delete;
 
   test (test const&) noexcept = delete;
   test (test&&) noexcept = delete;
@@ -27,7 +27,7 @@ public:
   explicit test (const char*) noexcept;
   ~test () noexcept;
 
-  auto operator = (std::initializer_list<task_pair>) noexcept -> void;
+  void operator = (std::initializer_list<task_pair>) noexcept;
 };
 
 }} /* namespace unittest::v1 */
