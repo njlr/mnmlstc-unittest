@@ -20,17 +20,17 @@ public:
   exception (const exception&) noexcept;
   virtual ~exception () noexcept;
 
-  auto operator = (exception const&) noexcept -> exception&;
+  exception& operator = (exception const&) noexcept;
 
-  auto statement () const noexcept -> int64_t;
-  auto type () const noexcept -> const char*;
+  int64_t statement () const noexcept;
+  const char* type () const noexcept;
 };
 
 class UNITTEST_EXPORT_API skipping final {
   std::string message;
 public:
   explicit skipping (std::string&&);
-  auto what () const noexcept -> const char*;
+  const char* what () const noexcept;
 };
 
 }} /* namespace unittest::v1 */
