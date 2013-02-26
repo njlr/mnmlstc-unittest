@@ -1,5 +1,5 @@
-#ifndef UNITTEST_AMALGATION_HPP
-#define UNITTEST_AMALGATION_HPP
+#ifndef UNITTEST_AMALGAMATION_HPP
+#define UNITTEST_AMALGAMATION_HPP
 #pragma once
 
 #include <unittest/identity.hpp>
@@ -11,4 +11,4 @@
 #include <unittest/safe.hpp>
 #include <unittest/run.hpp>
 
-#endif /* UNITTEST_AMALGATION_HPP */
+#endif /* UNITTEST_AMALGAMATION_HPP */

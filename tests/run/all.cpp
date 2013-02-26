@@ -6,7 +6,6 @@ auto main () -> int {
   using namespace unittest;
 
   test("first-test") = {
-    task("step-one") = []{ self.fail(); },
     task("step-two") = [] { self.assert_is_null((int*)nullptr); },
     task("step-three") = [] {
       self.assert_false(false);

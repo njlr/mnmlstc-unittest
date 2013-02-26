@@ -39,8 +39,6 @@ struct gt : boolean<decltype(declval<T>() > declval<U>())> { };
 template <typename T, typename U>
 struct lt : boolean<decltype(declval<T>() < declval<U>())> { };
 
-template <typename... T> struct is_printable : std::true_type { };
-
 }} /* namespace unittest::trait */
 
 #endif /* UNITTEST_TRAITS_HPP */
