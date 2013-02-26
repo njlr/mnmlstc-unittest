@@ -41,11 +41,32 @@ public:
   void reset () noexcept;
 
   /* assert_not_equal */
+  template <typename T, typename U>
+  auto assert_not_equal (T const& lhs, U const& rhs, cstring msg=nullptr)
+  -> typename enable_if<trait::ne<T, U>>::type {
+    this->statement += 1;
+    if (lhs != rhs) { return; }
+    std::ostringstream stream;
+    if (msg) { stream << msg; }
+    else { stream << repr(lhs) << "is equal to " << repr(rhs); }
+    throw exception { "assert_not_equal", stream.str(), this->statement };
+  }
+
+  template <typename T, typename U>
+  auto assert_not_equal (T const&, U const&, cstring=nullptr)
+  -> typename disable_if<trait::ne<T, U>>::type {
+    this->statement += 1;
+    throw exception {
+      "assert_not_equal",
+      "Given types do not implement operator !=",
+      this->statement
+    };
+  }
 
   /* assert_equal */
   template <typename T, typename U>
   auto assert_equal (T const& lhs, U const& rhs, cstring msg=nullptr)
-  -> decltype(lhs == rhs, void()) {
+  -> typename enable_if<trait::eq<T, U>>::type {
     this->statement += 1;
     if (lhs == rhs) { return; }
     std::ostringstream stream;
