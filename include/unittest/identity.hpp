@@ -18,8 +18,6 @@ namespace unittest {
 inline namespace v1 {
 
 class UNITTEST_EXPORT_API identity final {
-  using type = std::type_info;
-
   std::int64_t statement;
 
   identity () noexcept;
