@@ -16,8 +16,8 @@ class UNITTEST_EXPORT_API task final {
   const char* label;
 
 public:
-  auto operator = (task const&) noexcept -> task& = delete;
-  auto operator = (task&&) noexcept -> task& = delete;
+  task& operator = (task const&) noexcept = delete;
+  task& operator = (task&&) noexcept = delete;
 
   task (task const&) noexcept = delete;
   task (task&&) noexcept = delete;
@@ -26,7 +26,7 @@ public:
   explicit task (const char*) noexcept;
   ~task () noexcept;
 
-  auto operator = (function&&) const noexcept -> step;
+  step operator = (function&&) const noexcept;
 };
 
 }} /* namespace unittest::v1 */
