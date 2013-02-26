@@ -14,8 +14,8 @@ class UNITTEST_EXPORT_API skip {
 protected:
   const char* reason;
 public:
-  auto operator = (skip const&) noexcept -> skip& = delete;
-  auto operator = (skip&&) noexcept -> skip& = delete;
+  skip& operator = (skip const&) noexcept = delete;
+  skip& operator = (skip&&) noexcept = delete;
 
   skip (skip const&) noexcept = delete;
   skip (skip&&) noexcept = delete;
@@ -24,15 +24,15 @@ public:
   explicit skip (const char*) noexcept;
   ~skip () noexcept;
 
-  auto operator = (function&&) const noexcept -> function;
+  function operator = (function&&) const noexcept;
 };
 
 class UNITTEST_EXPORT_API skip_if final : skip {
   using function = std::function<void()>;
   bool condition;
 public:
-  auto operator = (skip_if const&) noexcept -> skip_if& = delete;
-  auto operator = (skip_if&&) noexcept -> skip_if& = delete;
+  skip_if& operator = (skip_if const&) noexcept = delete;
+  skip_if& operator = (skip_if&&) noexcept = delete;
 
   skip_if (skip const&) noexcept = delete;
   skip_if (skip&&) noexcept = delete;
@@ -41,15 +41,15 @@ public:
   explicit skip_if (bool, const char*) noexcept;
   ~skip_if () noexcept;
 
-  auto operator = (function&&) const noexcept -> function;
+  function operator = (function&&) const noexcept;
 };
 
 class UNITTEST_EXPORT_API skip_unless final : skip {
   using function = std::function<void()>;
   bool condition;
 public:
-  auto operator = (skip_unless const&) noexcept -> skip_unless& = delete;
-  auto operator = (skip_unless&&) noexcept -> skip_unless& = delete;
+  skip_unless& operator = (skip_unless const&) noexcept = delete;
+  skip_unless& operator = (skip_unless&&) noexcept = delete;
 
   skip_unless (skip_unless const&) noexcept = delete;
   skip_unless (skip_unless&&) noexcept = delete;
@@ -58,7 +58,7 @@ public:
   explicit skip_unless (bool, const char*) noexcept;
   ~skip_unless () noexcept;
 
-  auto operator = (function&&) const noexcept -> function;
+  function operator = (function&&) const noexcept;
 };
 
 }} /* namespace unittest::v1 */
