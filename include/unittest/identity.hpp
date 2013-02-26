@@ -40,6 +40,29 @@ public:
   static identity& instance () noexcept;
   void reset () noexcept;
 
+  /* assert_greater_equal */
+  template <typename T, typename U>
+  auto assert_greater_equal (T const& lhs, U const& rhs, cstring msg=nullptr)
+  -> typename enable_if<trait::ge<T, U>>::type {
+    this->statement += 1;
+    if (lhs >= rhs) { return; }
+    std::ostringstream stream;
+    if (msg) { stream << msg; }
+    else { stream << repr(lhs) << " is less than " << repr(rhs); }
+    throw exception { "assert_greater_equal", stream.str(), this->statement };
+  }
+
+  template <typename T, typename U>
+  auto assert_greater_equal (T const&, U const&, cstring=nullptr)
+  -> typename disable_if<trait::ge<T, U>>::type {
+    this->statement += 1;
+    throw exception {
+      "assert_greater_equal",
+      "Given types do not implement operator >=",
+      this->statement
+    };
+  }
+
   /* assert_not_equal */
   template <typename T, typename U>
   auto assert_not_equal (T const& lhs, U const& rhs, cstring msg=nullptr)
