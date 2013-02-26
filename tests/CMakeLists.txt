@@ -33,6 +33,7 @@ add_executable(test-case-run ${CASE_SOURCE_DIR}/run.cpp)
 
 add_executable(test-util-any-of ${UTIL_SOURCE_DIR}/any-of.cpp)
 add_executable(test-util-all-of ${UTIL_SOURCE_DIR}/all-of.cpp)
+add_executable(test-util-repr ${UTIL_SOURCE_DIR}/repr.cpp)
 
 add_executable(test-self-is-not-null ${SELF_SOURCE_DIR}/is-not-null.cpp)
 add_executable(test-self-not-equal ${SELF_SOURCE_DIR}/not-equal.cpp)
@@ -66,6 +67,7 @@ target_link_libraries(test-case-run unittest)
 
 target_link_libraries(test-util-any-of unittest)
 target_link_libraries(test-util-all-of unittest)
+target_link_libraries(test-util-repr unittest)
 
 target_link_libraries(test-self-is-not-null unittest)
 target_link_libraries(test-self-not-equal unittest)
@@ -100,6 +102,7 @@ add_test(test-run test-case-run)
 
 add_test(util-any-of test-util-any-of)
 add_test(util-all-of test-util-all-of)
+add_test(util-repr test-util-repr)
 
 add_test(self-is-not-null test-self-is-not-null)
 add_test(self-not-equal test-self-not-equal)
@@ -132,6 +135,7 @@ add_dependencies(check test-case-run)
 
 add_dependencies(check test-util-any-of)
 add_dependencies(check test-util-all-of)
+add_dependencies(check test-util-repr)
 
 add_dependencies(check test-self-is-not-null)
 add_dependencies(check test-self-not-equal)

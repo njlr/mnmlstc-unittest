@@ -4,7 +4,6 @@
 
 #include <unittest/utility.hpp>
 #include <unittest/export.hpp>
-#include <unittest/traits.hpp>
 #include <unittest/error.hpp>
 
 #include <sstream>
@@ -41,6 +40,8 @@ public:
   static identity& instance () noexcept;
   void reset () noexcept;
 
+  /* assert_not_equal */
+
   /* assert_equal */
   template <typename T, typename U>
   auto assert_equal (T const& lhs, U const& rhs, cstring msg=nullptr)
@@ -49,9 +50,7 @@ public:
     if (lhs == rhs) { return; }
     std::ostringstream stream;
     if (msg) { stream << msg; }
-    else {
-      stream << lhs << " is not equal to " << rhs;
-    }
+    else { stream << repr(lhs) << " is not equal to " << repr(rhs); }
     throw exception { "assert_equal", stream.str(), this->statement };
   }
 
