@@ -26,20 +26,20 @@ class UNITTEST_EXPORT_API safe final {
 public:
   using iterator = decltype(safe::tests)::iterator;
 
-  auto operator = (safe const&) noexcept -> safe& = delete;
-  auto operator = (safe&&) noexcept -> safe& = delete;
+  safe& operator = (safe const&) noexcept = delete;
+  safe& operator = (safe&&) noexcept  = delete;
 
   safe (safe const&) noexcept = delete;
   safe (safe&&) noexcept = delete;
 
-  static auto instance () noexcept -> safe&;
+  static safe& instance () noexcept;
 
-  auto add (string&&, string&&, result&&) noexcept -> void;
+  void add (string&&, string&&, result&&) noexcept;
 
-  auto begin () noexcept -> iterator;
-  auto end () noexcept -> iterator;
+  iterator begin () noexcept;
+  iterator end () noexcept;
 
-  auto size () const noexcept -> size_t;
+  size_t size () const noexcept;
 
   ~safe () noexcept = default;
 };
