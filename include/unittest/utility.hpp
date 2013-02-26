@@ -88,6 +88,9 @@ template <> struct all_of<> : std::true_type { };
 template <typename... T>
 using disable_if = std::enable_if<not all_of<T...>::value>;
 
+template <typename... T>
+using enable_if = std::enable_if<all_of<T...>::value>;
+
 } /* namespace unittest */
 
 #endif /* UNITTEST_UTILITY_HPP */
