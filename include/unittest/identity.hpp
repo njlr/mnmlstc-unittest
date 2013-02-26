@@ -47,8 +47,11 @@ public:
     this->statement += 1;
     if (lhs >= rhs) { return; }
     std::ostringstream stream;
-    if (msg) { stream << msg; }
-    else { stream << repr(lhs) << " is less than " << repr(rhs); }
+    if (msg) {
+      stream << msg;
+    } else {
+      stream << repr(lhs) << " not greater than or equal to " << repr(rhs);
+    }
     throw exception { "assert_greater_equal", stream.str(), this->statement };
   }
 
@@ -71,7 +74,7 @@ public:
     if (lhs != rhs) { return; }
     std::ostringstream stream;
     if (msg) { stream << msg; }
-    else { stream << repr(lhs) << "is equal to " << repr(rhs); }
+    else { stream << repr(lhs) << " is equal to " << repr(rhs); }
     throw exception { "assert_not_equal", stream.str(), this->statement };
   }
 
