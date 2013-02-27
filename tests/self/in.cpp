@@ -29,7 +29,17 @@ void v1 () {
     std::exit(EXIT_FAILURE);
   }
 
-  
+  try { self.assert_in(1, 2); }
+  catch (exception const& e) {
+    if (std::string { "assert_in" } != e.type()) {
+        std::clog << "unexpected exception '" << e.type() << "' was thrown"
+                  << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+  } catch (...) {
+    std::clog << "unexpected exception thrown" << std::endl;
+    std::exit(EXIT_FAILURE);
+  }
 }
 
 int main () {
