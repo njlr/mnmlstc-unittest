@@ -40,57 +40,25 @@ public:
   static identity& instance () noexcept;
   void reset () noexcept;
 
-  void assert_almost_equal (float, double, int=4, cstring=nullptr) = delete;
-  void assert_almost_equal (double, float, int=4, cstring=nullptr) = delete;
-
-  void assert_almost_equal (double, double, int=4, cstring=nullptr);
-  void assert_almost_equal (float, float, int=4, cstring=nullptr);
-
-  /* assert_greater_equal */
+  /* assert_equal */
   template <typename T, typename U>
-  auto assert_greater_equal (T const& lhs, U const& rhs, cstring msg=nullptr)
-  -> typename enable_if<trait::ge<T, U>>::type {
+  auto assert_equal (T const& lhs, U const& rhs, cstring msg=nullptr)
+  -> typename enable_if<trait::eq<T, U>>::type {
     this->statement += 1;
-    if (lhs >= rhs) { return; }
+    if (lhs == rhs) { return; }
     std::ostringstream stream;
-    if (msg) {
-      stream << msg;
-    } else {
-      stream << repr(lhs) << " not greater than or equal to " << repr(rhs);
-    }
-    throw exception { "assert_greater_equal", stream.str(), this->statement };
+    if (msg) { stream << msg; }
+    else { stream << repr(lhs) << " is not equal to " << repr(rhs); }
+    throw exception { "assert_equal", stream.str(), this->statement };
   }
 
   template <typename T, typename U>
-  auto assert_greater_equal (T const&, U const&, cstring=nullptr)
-  -> typename disable_if<trait::ge<T, U>>::type {
+  auto assert_equal (T const&, U const&, cstring=nullptr)
+  -> typename disable_if<trait::eq<T, U>>::type {
     this->statement += 1;
     throw exception {
-      "assert_greater_equal",
-      "Given types do not implement operator >=",
-      this->statement
-    };
-  }
-
-  /* assert_less_equal */
-  template <typename T, typename U>
-  auto assert_less_equal (T const&, U const&, cstring=nullptr)
-  -> typename enable_if<trait::le<T, U>>::type {
-    this->statement += 1;
-    throw exception {
-      "assert_less_equal",
-      "Not yet implemented",
-      this->statement
-    };
-  }
-
-  template <typename T, typename U>
-  auto assert_less_equal (T const&, U const&, cstring=nullptr)
-  -> typename disable_if<trait::le<T, U>>::type {
-    this->statement += 1;
-    throw exception {
-      "assert_less_equal",
-      "Given types do not implement operator <=",
+      "assert_equal",
+      "Given types do not implement operator ==", 
       this->statement
     };
   }
@@ -118,28 +86,66 @@ public:
     };
   }
 
-  /* assert_equal */
-  template <typename T, typename U>
-  auto assert_equal (T const& lhs, U const& rhs, cstring msg=nullptr)
-  -> typename enable_if<trait::eq<T, U>>::type {
-    this->statement += 1;
-    if (lhs == rhs) { return; }
-    std::ostringstream stream;
-    if (msg) { stream << msg; }
-    else { stream << repr(lhs) << " is not equal to " << repr(rhs); }
-    throw exception { "assert_equal", stream.str(), this->statement };
+  void assert_true (bool, cstring=nullptr);
+  void assert_false (bool, cstring=nullptr);
+
+  /* assert_is */
+  template <typename T>
+  void assert_is (T const& lhs, T const& rhs, cstring msg=nullptr) {
+    this->assert_is(std::addressof(lhs), std::addressof(rhs), msg);
   }
 
-  template <typename T, typename U>
-  auto assert_equal (T const&, U const&, cstring=nullptr)
-  -> typename disable_if<trait::eq<T, U>>::type {
-    this->statement += 1;
-    throw exception {
-      "assert_equal",
-      "Given types do not implement operator ==", 
-      this->statement
-    };
+  template <typename T>
+  void assert_is (T* lhs, T* rhs, cstring msg=nullptr) {
+    auto lhs_ = reinterpret_cast<intptr_t>(lhs);
+    auto rhs_ = reinterpret_cast<intptr_t>(rhs);
+    this->assert_is(lhs_, rhs_, msg);
   }
+
+  /* assert_is_not */
+  template <typename T>
+  void assert_is_not (T const& lhs, T const& rhs, cstring msg=nullptr) {
+    auto one = std::addressof(lhs);
+    auto two = std::addressof(rhs);
+    this->assert_is_not(one, two, msg);
+  }
+
+  template <typename T>
+  void assert_is_not (T* lhs, T* rhs, cstring msg=nullptr) {
+    auto lhs_ = reinterpret_cast<intptr_t>(lhs);
+    auto rhs_ = reinterpret_cast<intptr_t>(rhs);
+    this->assert_is_not(lhs_, rhs_, msg);
+  }
+
+  /* assert_is_null */
+  template <typename T>
+  void assert_is_null (T* ptr, cstring msg=nullptr) {
+    this->assert_is_null(reinterpret_cast<intptr_t>(ptr), msg);
+  }
+
+  /* assert_is_not_null */
+  template <typename T>
+  void assert_is_not_null (T* ptr, cstring msg=nullptr) {
+    this->assert_is_not_null(reinterpret_cast<intptr_t>(ptr), msg);
+  }
+
+  /* assert_in */
+  /* assert_not_in */
+  /* assert_throws */
+
+  /* assert_almost_equal */
+  void assert_almost_equal (float, double, int=4, cstring=nullptr) = delete;
+  void assert_almost_equal (double, float, int=4, cstring=nullptr) = delete;
+
+  void assert_almost_equal (double, double, int=4, cstring=nullptr);
+  void assert_almost_equal (float, float, int=4, cstring=nullptr);
+
+  /* assert_not_almost_equal */
+  void assert_not_almost_equal (float, double, int=4, cstring=nullptr) = delete;
+  void assert_not_almost_equal (double, float, int=4, cstring=nullptr) = delete;
+
+  void assert_not_almost_equal (double, double, int=4, cstring=nullptr);
+  void assert_not_almost_equal (float, float, int=4, cstring=nullptr);
 
   /* assert_greater */
   template <typename T, typename U>
@@ -164,7 +170,33 @@ public:
     };
   }
 
-  /* assert_less_equal */
+  /* assert_greater_equal */
+  template <typename T, typename U>
+  auto assert_greater_equal (T const& lhs, U const& rhs, cstring msg=nullptr)
+  -> typename enable_if<trait::ge<T, U>>::type {
+    this->statement += 1;
+    if (lhs >= rhs) { return; }
+    std::ostringstream stream;
+    if (msg) {
+      stream << msg;
+    } else {
+      stream << repr(lhs) << " not greater than or equal to " << repr(rhs);
+    }
+    throw exception { "assert_greater_equal", stream.str(), this->statement };
+  }
+
+  template <typename T, typename U>
+  auto assert_greater_equal (T const&, U const&, cstring=nullptr)
+  -> typename disable_if<trait::ge<T, U>>::type {
+    this->statement += 1;
+    throw exception {
+      "assert_greater_equal",
+      "Given types do not implement operator >=",
+      this->statement
+    };
+  }
+
+  /* assert_less */
   template <typename T, typename U>
   auto assert_less (T const&, U const&, cstring=nullptr)
   -> typename enable_if<trait::lt<T, U>>::type {
@@ -187,46 +219,33 @@ public:
     };
   }
 
-  /* assert_is_not */
-  template <typename T>
-  void assert_is_not (T const& lhs, T const& rhs, cstring msg=nullptr) {
-    auto one = std::addressof(lhs);
-    auto two = std::addressof(rhs);
-    this->assert_is_not(one, two, msg);
+  /* assert_less_equal */
+  template <typename T, typename U>
+  auto assert_less_equal (T const&, U const&, cstring=nullptr)
+  -> typename enable_if<trait::le<T, U>>::type {
+    this->statement += 1;
+    throw exception {
+      "assert_less_equal",
+      "Not yet implemented",
+      this->statement
+    };
   }
 
-  template <typename T>
-  void assert_is_not (T* lhs, T* rhs, cstring msg=nullptr) {
-    auto lhs_ = reinterpret_cast<intptr_t>(lhs);
-    auto rhs_ = reinterpret_cast<intptr_t>(rhs);
-    this->assert_is_not(lhs_, rhs_, msg);
+  template <typename T, typename U>
+  auto assert_less_equal (T const&, U const&, cstring=nullptr)
+  -> typename disable_if<trait::le<T, U>>::type {
+    this->statement += 1;
+    throw exception {
+      "assert_less_equal",
+      "Given types do not implement operator <=",
+      this->statement
+    };
   }
 
-  /* assert_is */
-  template <typename T>
-  void assert_is (T const& lhs, T const& rhs, cstring msg=nullptr) {
-    this->assert_is(std::addressof(lhs), std::addressof(rhs), msg);
-  }
+  /* assert_regex */
+  /* assert_not_regex */
+  /* assert_count_equal */
 
-  template <typename T>
-  void assert_is (T* lhs, T* rhs, cstring msg=nullptr) {
-    auto lhs_ = reinterpret_cast<intptr_t>(lhs);
-    auto rhs_ = reinterpret_cast<intptr_t>(rhs);
-    this->assert_is(lhs_, rhs_, msg);
-  }
-
-  template <typename T>
-  void assert_is_not_null (T* ptr, cstring msg=nullptr) {
-    this->assert_is_not_null(reinterpret_cast<intptr_t>(ptr), msg);
-  }
-
-  template <typename T>
-  void assert_is_null (T* ptr, cstring msg=nullptr) {
-    this->assert_is_null(reinterpret_cast<intptr_t>(ptr), msg);
-  }
-
-  void assert_false (bool, cstring=nullptr);
-  void assert_true (bool, cstring=nullptr);
   void fail (cstring=nullptr);
 };
 

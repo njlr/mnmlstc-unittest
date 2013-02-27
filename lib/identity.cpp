@@ -50,6 +50,32 @@ void identity::assert_almost_equal (float x, float y, int p, cstring msg) {
   throw exception { "assert_almost_equal", stream.str(), this->statement };
 }
 
+void identity::assert_not_almost_equal (double x, double y, int p, cstring m) {
+  this->statement += 1;
+  auto lhs = std::abs(x - y);
+  auto rhs = std::numeric_limits<double>::epsilon()
+           * std::max(std::abs(x), std::abs(y))
+           * p;
+  if (lhs > rhs) { return; }
+  std::ostringstream stream;
+  if (m) { stream << m; }
+  else { stream << repr(x) << " is almost equal or is equal to " << repr(y); }
+  throw exception { "assert_not_almost_equal", stream.str(), this->statement };
+}
+
+void identity::assert_not_almost_equal (float x, float y, int p, cstring m) {
+  this->statement += 1;
+  auto lhs = std::abs(x - y);
+  auto rhs = std::numeric_limits<float>::epsilon()
+           * std::max(std::abs(x), std::abs(y))
+           * p;
+  if (lhs > rhs) { return; }
+  std::ostringstream stream;
+  if (m) { stream << m; }
+  else { stream << repr(x) << " is almost equal or is equal to " << repr(y); }
+  throw exception { "assert_not_almost_equal", stream.str(), this->statement };
+}
+
 auto identity::assert_false (bool cond, cstring msg) -> void {
   this->statement += 1;
   if (not cond) { return; }
