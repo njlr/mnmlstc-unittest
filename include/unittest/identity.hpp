@@ -149,12 +149,12 @@ public:
 
   template <typename T, typename U>
   auto assert_less (T const&, U const&, cstring=nullptr)
-  -> typename disable_if<trait::eq<T, U>>:type {
+  -> typename disable_if<trait::lt<T, U>>::type {
     this->statement += 1;
     throw exception {
       "assert_less",
       "Given types do not implement operator <",
-      this->statement;
+      this->statement
     };
   }
 
