@@ -6,8 +6,7 @@
 namespace unittest {
 inline namespace v1 {
 
-//auto run (class environment const&) noexcept -> void;
-auto run () noexcept -> void;
+void run () noexcept;
 
 }} /* namespace unittest::v1 */
 
