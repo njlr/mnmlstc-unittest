@@ -135,6 +135,29 @@ public:
     };
   }
 
+  /* assert_less_equal */
+  template <typename T, typename U>
+  auto assert_less (T const&, U const&, cstring=nullptr)
+  -> typename enable_if<trait::lt<T, U>>::type {
+    this->statement += 1;
+    throw exception {
+      "assert_less",
+      "Not yet implemented",
+      this->statement
+    };
+  }
+
+  template <typename T, typename U>
+  auto assert_less (T const&, U const&, cstring=nullptr)
+  -> typename disable_if<trait::eq<T, U>>:type {
+    this->statement += 1;
+    throw exception {
+      "assert_less",
+      "Given types do not implement operator <",
+      this->statement;
+    };
+  }
+
   /* assert_is_not */
   template <typename T>
   void assert_is_not (T const& lhs, T const& rhs, cstring msg=nullptr) {
