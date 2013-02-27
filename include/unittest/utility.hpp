@@ -78,26 +78,23 @@ public:
   static constexpr bool value = noexcept(check<T>(0));
 };
 
-template <typename T>
-struct streamable : integral_constant<bool,
-  is_same<decltype(declval<ostream>() << declval<T>()), ostream&>::value
-> { };
+template <typename T> constexpr auto print (std::nullptr_t)
+-> decltype(declval<ostream&>() << declval<T>(), bool()) { return true; }
+template <typename> constexpr auto print (...) -> bool { return false; }
 
 } /* namespace trait */
 
 template <typename T>
-auto repr (T const& value) noexcept -> typename std::enable_if<
-  trait::streamable<T>::value,
-std::string>::type {
+auto repr (T const& value) noexcept ->
+typename std::enable_if<trait::print<T>(nullptr), std::string>::type {
   std::ostringstream stream;
   stream << value;
   return stream.str();
 }
 
 template <typename T>
-auto repr (T const& value) noexcept -> typename std::enable_if<
-  not trait::streamable<T>::value,
-std::string>::type {
+auto repr (T const& value) noexcept ->
+typename std::enable_if<not trait::print<T>(nullptr), std::string>::type {
   std::ostringstream stream;
   stream << "<object at " << std::hex << std::addressof(value) << ">";
   return stream.str();
