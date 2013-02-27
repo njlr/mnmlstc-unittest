@@ -155,7 +155,41 @@ public:
   }
 
   /* assert_not_in */
+  template <typename T, typename U>
+  auto assert_not_in (T const& lhs, U const& rhs, cstring msg=nullptr)
+  -> typename enable_if<trait::begin<U>, trait::end<U>>::type {
+    this->statement += 1;
+    auto begin = std::begin(rhs);
+    auto end = std::end(rhs);
+    auto result = std::find(begin, end, lhs);
+    if (result == end) { return; }
+    std::ostringstream stream;
+    if (msg) { stream << msg; }
+    else { stream << repr(lhs) << " is in " << repr(rhs); }
+    throw exception { "assert_not_int", stream.str(), this->statement };
+  }
+
+  template <typename T, typename U>
+  auto assert_not_in (T const&, U const& rhs, cstring=nullptr)
+  -> typename disable_if<trait::begin<U>, trait::end<U>>::type {
+    this->statement += 1;
+    std::ostringstream stream;
+    stream << repr(rhs) << " is not an iterable type" << std::endl;
+    throw exception { "assert_not_in", stream.str(), this->statement };
+  }
+
   /* assert_throws */
+  template <typename T>
+  void assert_throws (std::function<void()>&& call, cstring msg=nullptr) {
+    this->statement += 1;
+    try { call(); }
+    catch (T const&) { return; }
+    throw exception {
+      "assert_throws",
+      msg ? msg : "Expected exception was not thrown",
+      this->statement
+    };
+  }
 
   /* assert_almost_equal */
   void assert_almost_equal (float, double, int=4, cstring=nullptr) = delete;
