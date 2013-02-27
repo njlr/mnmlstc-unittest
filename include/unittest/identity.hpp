@@ -40,6 +40,12 @@ public:
   static identity& instance () noexcept;
   void reset () noexcept;
 
+  void assert_almost_equal (float, double, int=4, cstring=nullptr) = delete;
+  void assert_almost_equal (double, float, int=4, cstring=nullptr) = delete;
+
+  void assert_almost_equal (double, double, int=4, cstring=nullptr);
+  void assert_almost_equal (float, float, int=4, cstring=nullptr);
+
   /* assert_greater_equal */
   template <typename T, typename U>
   auto assert_greater_equal (T const& lhs, U const& rhs, cstring msg=nullptr)
@@ -68,7 +74,7 @@ public:
 
   /* assert_less_equal */
   template <typename T, typename U>
-  auto assert_less_equal (T const& lhs, U const& rhs, cstring msg=nullptr)
+  auto assert_less_equal (T const&, U const&, cstring=nullptr)
   -> typename enable_if<trait::le<T, U>>::type {
     this->statement += 1;
     throw exception {

@@ -3,6 +3,9 @@
 
 #include <sstream>
 #include <string>
+#include <limits>
+
+#include <cmath>
 
 /* Used to solve ambiguity between identity member functions and
  * assertion exceptions
@@ -20,6 +23,32 @@ identity& identity::instance () noexcept {
 }
 
 void identity::reset () noexcept { this->statement = 0; }
+
+void identity::assert_almost_equal (double x, double y, int p, cstring msg) {
+  this->statement += 1;
+  auto lhs = std::abs(x - y);
+  auto rhs = std::numeric_limits<double>::epsilon()
+             * std::max(std::abs(x), std::abs(y))
+             * p;
+  if (lhs <= rhs) { return; }
+  std::ostringstream stream;
+  if (msg) { stream << msg; }
+  else { stream << repr(x) << " is not almost equal to " << repr(y); }
+  throw exception { "assert_almost_equal", stream.str(), this->statement };
+}
+
+void identity::assert_almost_equal (float x, float y, int p, cstring msg) {
+  this->statement += 1;
+  auto lhs = std::abs(x - y);
+  auto rhs = std::numeric_limits<float>::epsilon()
+           * std::max(std::abs(x), std::abs(y))
+           * p;
+  if (lhs <= rhs) { return; }
+  std::ostringstream stream;
+  if (msg) { stream << msg; }
+  else { stream << repr(x) << " is not almost equal to " << repr(y); }
+  throw exception { "assert_almost_equal", stream.str(), this->statement };
+}
 
 auto identity::assert_false (bool cond, cstring msg) -> void {
   this->statement += 1;
