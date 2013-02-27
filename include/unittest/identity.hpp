@@ -6,6 +6,7 @@
 #include <unittest/export.hpp>
 #include <unittest/error.hpp>
 
+#include <algorithm>
 #include <sstream>
 #include <utility>
 #include <memory>
@@ -130,6 +131,29 @@ public:
   }
 
   /* assert_in */
+  template <typename T, typename U>
+  auto assert_in (T const& lhs, U const& rhs, cstring msg=nullptr)
+  -> typename enable_if<trait::begin<U>, trait::end<U>>::type {
+    this->statement += 1;
+    auto begin = std::begin(rhs);
+    auto end = std::end(rhs);
+    auto result = std::find(begin, end, lhs);
+    if (result != end) { return; }
+    std::ostringstream stream;
+    if (msg) { stream << msg; }
+    else { stream << repr(lhs) << " is not in " << repr(rhs); }
+    throw exception { "assert_in", stream.str(), this->statement };
+  }
+
+  template <typename T, typename U>
+  auto assert_in (T const&, U const& rhs, cstring=nullptr)
+  -> typename disable_if<trait::begin<U>, trait::end<U>>::type {
+    this->statement += 1;
+    std::ostringstream stream;
+    stream << repr(rhs) << " is not an iterable type" << std::endl;
+    throw exception { "assert_in", stream.str(), this->statement };
+  }
+
   /* assert_not_in */
   /* assert_throws */
 

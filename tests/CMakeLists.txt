@@ -50,6 +50,7 @@ add_executable(test-self-true ${SELF_SOURCE_DIR}/true.cpp)
 add_executable(test-self-fail ${SELF_SOURCE_DIR}/fail.cpp)
 add_executable(test-self-less ${SELF_SOURCE_DIR}/less.cpp)
 add_executable(test-self-is ${SELF_SOURCE_DIR}/is.cpp)
+add_executable(test-self-in ${SELF_SOURCE_DIR}/in.cpp)
 
 add_executable(test-run-all ${RUN_SOURCE_DIR}/all.cpp)
 
@@ -89,6 +90,7 @@ target_link_libraries(test-self-true unittest)
 target_link_libraries(test-self-fail unittest)
 target_link_libraries(test-self-less unittest)
 target_link_libraries(test-self-is unittest)
+target_link_libraries(test-self-in unittest)
 
 target_link_libraries(test-run-all unittest)
 
@@ -128,6 +130,7 @@ add_test(self-true test-self-true)
 add_test(self-fail test-self-fail)
 add_test(self-less test-self-less)
 add_test(self-is test-self-is)
+add_test(self-in test-self-in)
 
 add_test(run-all test-run-all)
 #------------------------------------------------------------------------------
@@ -166,5 +169,6 @@ add_dependencies(check test-self-true)
 add_dependencies(check test-self-fail)
 add_dependencies(check test-self-less)
 add_dependencies(check test-self-is)
+add_dependencies(check test-self-in)
 
 add_dependencies(check test-run-all)

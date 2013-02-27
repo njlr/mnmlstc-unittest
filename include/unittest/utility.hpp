@@ -14,6 +14,20 @@ using std::is_same;
 using std::declval;
 using std::ostream;
 
+template <typename...> struct any_of;
+template <typename T, typename... Args>
+struct any_of<T, Args...> : integral_constant<bool,
+  T::value or any_of<Args...>::value
+> { };
+template <> struct any_of<> : std::false_type { };
+
+template <typename...> struct all_of;
+template <typename T, typename... Args>
+struct all_of<T, Args...> : integral_constant<bool,
+  T::value and all_of<Args...>::value
+> { };
+template <> struct all_of<> : std::true_type { };
+
 namespace trait {
 
 template <typename T>
@@ -47,6 +61,24 @@ template <typename T, typename U>
 struct lt : boolean<decltype(declval<T>() < declval<U>())> { };
 
 template <typename T>
+class begin {
+  template <typename U>
+  static decltype(std::begin(declval<U>()), void()) check (int) noexcept;
+  template <typename> static void check (...) noexcept(false);
+public:
+  static constexpr bool value = noexcept(check<T>(0));
+};
+
+template <typename T>
+class end {
+  template <typename U>
+  static decltype(std::begin(declval<U>()), void()) check (int) noexcept;
+  template <typename> static void check (...) noexcept(false);
+public:
+  static constexpr bool value = noexcept(check<T>(0));
+};
+
+template <typename T>
 struct streamable : integral_constant<bool,
   is_same<decltype(declval<ostream>() << declval<T>()), ostream&>::value
 > { };
@@ -70,20 +102,6 @@ std::string>::type {
   stream << "<object at " << std::hex << std::addressof(value) << ">";
   return stream.str();
 }
-
-template <typename...> struct any_of;
-template <typename T, typename... Args>
-struct any_of<T, Args...> : integral_constant<bool,
-  T::value or any_of<Args...>::value
-> { };
-template <> struct any_of<> : std::false_type { };
-
-template <typename...> struct all_of;
-template <typename T, typename... Args>
-struct all_of<T, Args...> : integral_constant<bool,
-  T::value and all_of<Args...>::value
-> { };
-template <> struct all_of<> : std::true_type { };
 
 template <typename... T>
 using disable_if = std::enable_if<not all_of<T...>::value>;
