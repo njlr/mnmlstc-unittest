@@ -33,7 +33,7 @@ void identity::assert_almost_equal (double x, double y, int p, cstring msg) {
   if (lhs <= rhs) { return; }
   std::ostringstream stream;
   if (msg) { stream << msg; }
-  else { stream << repr(x) << " is not almost equal to " << repr(y); }
+  else { stream << x << " is not almost equal to " << y; }
   throw exception { "assert_almost_equal", stream.str(), this->statement };
 }
 
@@ -46,7 +46,7 @@ void identity::assert_almost_equal (float x, float y, int p, cstring msg) {
   if (lhs <= rhs) { return; }
   std::ostringstream stream;
   if (msg) { stream << msg; }
-  else { stream << repr(x) << " is not almost equal to " << repr(y); }
+  else { stream << x << " is not almost equal to " << y; }
   throw exception { "assert_almost_equal", stream.str(), this->statement };
 }
 
@@ -59,7 +59,7 @@ void identity::assert_not_almost_equal (double x, double y, int p, cstring m) {
   if (lhs > rhs) { return; }
   std::ostringstream stream;
   if (m) { stream << m; }
-  else { stream << repr(x) << " is almost equal or is equal to " << repr(y); }
+  else { stream << x << " is almost equal or is equal to " << y; }
   throw exception { "assert_not_almost_equal", stream.str(), this->statement };
 }
 
@@ -72,7 +72,7 @@ void identity::assert_not_almost_equal (float x, float y, int p, cstring m) {
   if (lhs > rhs) { return; }
   std::ostringstream stream;
   if (m) { stream << m; }
-  else { stream << repr(x) << " is almost equal or is equal to " << repr(y); }
+  else { stream << x << " is almost equal or is equal to " << y; }
   throw exception { "assert_not_almost_equal", stream.str(), this->statement };
 }
 

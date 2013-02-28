@@ -49,7 +49,7 @@ public:
     if (lhs == rhs) { return; }
     std::ostringstream stream;
     if (msg) { stream << msg; }
-    else { stream << repr(lhs) << " is not equal to " << repr(rhs); }
+    else { stream << lhs << " is not equal to " << rhs; }
     throw exception { "assert_equal", stream.str(), this->statement };
   }
 
@@ -72,7 +72,7 @@ public:
     if (lhs != rhs) { return; }
     std::ostringstream stream;
     if (msg) { stream << msg; }
-    else { stream << repr(lhs) << " is equal to " << repr(rhs); }
+    else { stream << lhs << " is equal to " << rhs; }
     throw exception { "assert_not_equal", stream.str(), this->statement };
   }
 
@@ -141,7 +141,7 @@ public:
     if (result != end) { return; }
     std::ostringstream stream;
     if (msg) { stream << msg; }
-    else { stream << repr(lhs) << " is not in " << repr(rhs); }
+    else { stream << lhs << " is not in " << rhs; }
     throw exception { "assert_in", stream.str(), this->statement };
   }
 
@@ -150,7 +150,7 @@ public:
   -> typename disable_if<trait::begin<U>, trait::end<U>>::type {
     this->statement += 1;
     std::ostringstream stream;
-    stream << repr(rhs) << " is not an iterable type" << std::endl;
+    stream << rhs << " is not an iterable type" << std::endl;
     throw exception { "assert_in", stream.str(), this->statement };
   }
 
@@ -165,7 +165,7 @@ public:
     if (result == end) { return; }
     std::ostringstream stream;
     if (msg) { stream << msg; }
-    else { stream << repr(lhs) << " is in " << repr(rhs); }
+    else { stream << lhs << " is in " << rhs; }
     throw exception { "assert_not_int", stream.str(), this->statement };
   }
 
@@ -174,7 +174,7 @@ public:
   -> typename disable_if<trait::begin<U>, trait::end<U>>::type {
     this->statement += 1;
     std::ostringstream stream;
-    stream << repr(rhs) << " is not an iterable type" << std::endl;
+    stream << rhs << " is not an iterable type" << std::endl;
     throw exception { "assert_not_in", stream.str(), this->statement };
   }
 
@@ -238,7 +238,7 @@ public:
     if (msg) {
       stream << msg;
     } else {
-      stream << repr(lhs) << " not greater than or equal to " << repr(rhs);
+      stream << lhs << " not greater than or equal to " << rhs;
     }
     throw exception { "assert_greater_equal", stream.str(), this->statement };
   }
