@@ -84,6 +84,9 @@ public:
 };
 
 } /* namespace trait */
+
+inline namespace v1 {
+
 class unknown_type {
   intptr_t address;
 public:
@@ -96,6 +99,6 @@ public:
 
 ostream& operator << (ostream& os, unknown_type const& value);
 
-} /* namespace unittest */
+}} /* namespace unittest::v1 */
 
 #endif /* UNITTEST_UTILITY_HPP */
