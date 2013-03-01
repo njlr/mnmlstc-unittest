@@ -23,7 +23,7 @@ int main () {
 
   std::ostringstream stream;
   std::ostringstream stream2;
-  stream << "<object at " << std::addressof(x) << ">";
+  stream << "<unknown-type at " << std::addressof(x) << ">";
   stream2 << x;
   if (stream2.str() != stream.str()) {
     std::clog << "stream::operator << returned unexpected value: "

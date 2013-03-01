@@ -29,6 +29,12 @@ struct all_of<T, Args...> : integral_constant<bool,
 > { };
 template <> struct all_of<> : std::true_type { };
 
+template <typename... T>
+using disable_if = std::enable_if<not all_of<T...>::value>;
+
+template <typename... T>
+using enable_if = std::enable_if<all_of<T...>::value>;
+
 namespace trait {
 
 template <typename T>
@@ -78,7 +84,6 @@ public:
 };
 
 } /* namespace trait */
-
 class unknown_type {
   intptr_t address;
 public:
@@ -89,15 +94,7 @@ public:
   friend ostream& operator << (ostream&, unknown_type const& value);
 };
 
-inline ostream& operator << (ostream& os, unknown_type const& value) {
-  return os << "<object at " << reinterpret_cast<void*>(value.address) << ">";
-}
-
-template <typename... T>
-using disable_if = std::enable_if<not all_of<T...>::value>;
-
-template <typename... T>
-using enable_if = std::enable_if<all_of<T...>::value>;
+ostream& operator << (ostream& os, unknown_type const& value);
 
 } /* namespace unittest */
 
