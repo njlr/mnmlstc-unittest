@@ -77,7 +77,7 @@ public:
 template <typename T>
 class end {
   template <typename U>
-  static decltype(std::begin(declval<U>()), void()) check (int) noexcept;
+  static decltype(std::end(declval<U>()), void()) check (int) noexcept;
   template <typename> static void check (...) noexcept(false);
 public:
   static constexpr bool value = noexcept(check<T>(0));
@@ -90,10 +90,21 @@ inline namespace v1 {
 class unknown_type {
   intptr_t address;
 public:
+
+  unknown_type (unknown_type const&) = delete;
+  unknown_type (unknown_type&&) = delete;
+  unknown_type () = delete;
+
+  unknown_type& operator = (unknown_type const&) = delete;
+  unknown_type& operator = (unknown_type&&) = delete;
+
+  ~unknown_type () = default;
+
   template <typename T>
   unknown_type (T const& value) :
     address { reinterpret_cast<intptr_t>(std::addressof(value)) }
   { }
+
   friend ostream& operator << (ostream&, unknown_type const& value);
 };
 
