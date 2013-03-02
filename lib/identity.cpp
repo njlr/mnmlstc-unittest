@@ -26,54 +26,38 @@ void identity::reset () noexcept { this->statement = 0; }
 
 void identity::assert_almost_equal (double x, double y, int p, cstring msg) {
   this->statement += 1;
-  auto lhs = std::abs(x - y);
-  auto rhs = std::numeric_limits<double>::epsilon()
-             * std::max(std::abs(x), std::abs(y))
-             * p;
-  if (lhs <= rhs) { return; }
-  std::ostringstream stream;
-  if (msg) { stream << msg; }
-  else { stream << x << " is not almost equal to " << y; }
-  throw exception { "assert_almost_equal", stream.str(), this->statement };
+  throw exception {
+    "assert_almost_equal",
+    "Not Yet Implemented",
+    this->statement
+  };
 }
 
 void identity::assert_almost_equal (float x, float y, int p, cstring msg) {
   this->statement += 1;
-  auto lhs = std::abs(x - y);
-  auto rhs = std::numeric_limits<float>::epsilon()
-           * std::max(std::abs(x), std::abs(y))
-           * p;
-  if (lhs <= rhs) { return; }
-  std::ostringstream stream;
-  if (msg) { stream << msg; }
-  else { stream << x << " is not almost equal to " << y; }
-  throw exception { "assert_almost_equal", stream.str(), this->statement };
+  throw exception {
+    "assert_almost_equal",
+    "Not Yet Implemented",
+    this->statement
+  };
 }
 
 void identity::assert_not_almost_equal (double x, double y, int p, cstring m) {
   this->statement += 1;
-  auto lhs = std::abs(x - y);
-  auto rhs = std::numeric_limits<double>::epsilon()
-           * std::max(std::abs(x), std::abs(y))
-           * p;
-  if (lhs > rhs) { return; }
-  std::ostringstream stream;
-  if (m) { stream << m; }
-  else { stream << x << " is almost equal or is equal to " << y; }
-  throw exception { "assert_not_almost_equal", stream.str(), this->statement };
+  throw exception {
+    "assert_not_almost_equal",
+    "Not Yet Implemented",
+    this->statement
+  };
 }
 
 void identity::assert_not_almost_equal (float x, float y, int p, cstring m) {
   this->statement += 1;
-  auto lhs = std::abs(x - y);
-  auto rhs = std::numeric_limits<float>::epsilon()
-           * std::max(std::abs(x), std::abs(y))
-           * p;
-  if (lhs > rhs) { return; }
-  std::ostringstream stream;
-  if (m) { stream << m; }
-  else { stream << x << " is almost equal or is equal to " << y; }
-  throw exception { "assert_not_almost_equal", stream.str(), this->statement };
+  throw exception {
+    "assert_not_almost_equal",
+    "Not Yet Implemented",
+    this->statement
+  };
 }
 
 auto identity::assert_false (bool cond, cstring msg) -> void {
