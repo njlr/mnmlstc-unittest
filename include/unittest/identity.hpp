@@ -166,7 +166,7 @@ public:
     std::ostringstream stream;
     if (msg) { stream << msg; }
     else { stream << lhs << " is in " << rhs; }
-    throw exception { "assert_not_int", stream.str(), this->statement };
+    throw exception { "assert_not_in", stream.str(), this->statement };
   }
 
   template <typename T, typename U>
@@ -207,14 +207,14 @@ public:
 
   /* assert_greater */
   template <typename T, typename U>
-  auto assert_greater (T const&, U const&, cstring=nullptr)
+  auto assert_greater (T const& lhs, U const& rhs, cstring msg=nullptr)
   -> typename enable_if<trait::gt<T, U>>::type {
     this->statement += 1;
-    throw exception {
-      "assert_greater",
-      "Not yet implemented",
-      this->statement
-    };
+    if (lhs > rhs) { return; }
+    std::ostringstream stream;
+    if (msg) { stream << msg; }
+    else { stream << lhs << " is not greater than " << rhs; }
+    throw exception { "assert_greater", stream.str(), this->statement };
   }
 
   template <typename T, typename U>
@@ -256,14 +256,14 @@ public:
 
   /* assert_less */
   template <typename T, typename U>
-  auto assert_less (T const&, U const&, cstring=nullptr)
+  auto assert_less (T const& lhs, U const& rhs, cstring msg=nullptr)
   -> typename enable_if<trait::lt<T, U>>::type {
     this->statement += 1;
-    throw exception {
-      "assert_less",
-      "Not yet implemented",
-      this->statement
-    };
+    if (lhs < rhs) { return; }
+    std::ostringstream stream;
+    if (msg) { stream << msg; }
+    else { stream << lhs << " is not less than " << rhs; }
+    throw exception { "assert_less", stream.str(), this->statement };
   }
 
   template <typename T, typename U>
@@ -279,14 +279,14 @@ public:
 
   /* assert_less_equal */
   template <typename T, typename U>
-  auto assert_less_equal (T const&, U const&, cstring=nullptr)
+  auto assert_less_equal (T const& lhs, U const& rhs, cstring msg=nullptr)
   -> typename enable_if<trait::le<T, U>>::type {
     this->statement += 1;
-    throw exception {
-      "assert_less_equal",
-      "Not yet implemented",
-      this->statement
-    };
+    if (lhs <= rhs) { return; }
+    std::ostringstream stream;
+    if (msg) { stream << msg; }
+    else { stream << lhs << " is not less than or equal to " << rhs; }
+    throw exception { "assert_less_equal", stream.str(), this->statement };
   }
 
   template <typename T, typename U>
