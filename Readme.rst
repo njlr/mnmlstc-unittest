@@ -24,7 +24,7 @@ Below is a basic example of how unittest can be used::
       test("my-test") = {
         task("assert-equal") = [] {
           self.assert_equal(1, 2, "optional message");
-          self.assert_raises<my_exception_type>([]{throw my_exception_type;});
+          self.assert_throws<my_exception_type>([]{throw my_exception_type;});
         },
         task("fails") = [] { self.fail(); },
         task("skip") = skip("always-skip") = [] { self.fail(); }
