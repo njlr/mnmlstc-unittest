@@ -53,4 +53,67 @@ values inside of the tested variables, rather than what their names are/what
 line it all happens on?). Python's unittest does this well (and it comes as a
 result of its ability to perform runtime reflection on variables, as well as
 know the current line), but C++ is not python, no matter how hard one wished
-it was. As such, MNMLSTC makes due with what it can.
+it was. As such, MNMLSTC Unittest makes due with what it can.
+
+Your First Unittest Unit Test
+-----------------------------
+
+Well, enough about the concepts of Unittest. It's time to write our first
+test!
+
+.. todo:: Discuss how unittest is intended to be installed (e.g.,
+          an install(EXPORT ...) target might be used in the CMakeLists.txt
+          file
+
+.. highlight:: cpp
+
+Because of how MNMLSTC Unittest works, we can declare any test anywhere within
+the program, as long as it is within the scope of *some* function. For the
+purposes of this tutorial, we'll simply place everything within main::
+
+    #include <unittest/unittest.hpp>
+
+    int main () {
+      using namespace unittest;
+
+      test("my-first-test") = {
+        task("first-task") = []{ self.fail("Not Yet Implemented"); },
+        task("second-task") = []{ self.fail("Not Yet Implemented"); }
+      };
+
+      run();
+    }
+
+And now, a brief explanation of just what in tarnation we think we're doing
+here. First, we include the unittest amalgamation header. This header is
+provided to insure that the proper namespaces and declarations are available
+for the user.
+
+Next, we do a ``using namespace unittest``. This is *absolutely* vital, as it
+allows unittest to use its automatic value printing fallback without issue.
+
+Now to get to the meat of the program. We declare a test with the name
+"my-first-test". All tests (and tasks!) *should* use a string literal. However,
+as of right now, their interface is to take a ``const char*``. Just don't make
+it a ``nullptr``.
+
+On the same line, we begin to assign an initialization_list of tasks. Just know
+that the only way to submit tasks to a test case is to place them within
+this initialization_list.
+
+Tasks work almost like tests in that we assign a value to them after their
+declaration. In the case of a task, it *always* takes a
+``std::function<void()>`` by rvalue reference. This means anything you pass
+into will not be used elsewhere. At that point, MNMLSTC Unittest now *owns*
+that object and will do with it as it pleases. While it is possible to
+construct a ``std::function<void()>`` with a variety of ways, it is easiest
+to simply use a lambda. The lambda will allow for capturing fixtures (declared
+with RAII) by value or by reference. Finally, because we really have nothing
+to do, *yet*, we call ``self.fail`` which will immediately make the test
+runner stop handling the task.
+
+Finally we call ``run()``, which is located in the unittest namespace.
+
+.. note:: Make sure that this is the last function call you make. Whether 
+          all tests and tasks pass or not is irrelevant, as it will *always*
+          call ``std::exit``.
