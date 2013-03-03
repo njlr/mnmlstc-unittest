@@ -10,6 +10,7 @@
 #include <sstream>
 #include <utility>
 #include <memory>
+#include <regex>
 
 #include <cstdint>
 
@@ -29,6 +30,17 @@ class UNITTEST_EXPORT_API identity final {
   void assert_is_not (intptr_t, intptr_t, cstring=nullptr);
   void assert_is (intptr_t, intptr_t, cstring=nullptr);
 
+  template <typename T, typename U>
+  std::string message (
+    T const& first, U const& second,
+    cstring center, cstring msg=nullptr
+  ) {
+    std::ostringstream stream;
+    if (msg) { stream << msg; }
+    else { stream << first << " " << center << " " << second; }
+    return stream.str();
+  }
+
 public:
 
   identity& operator = (identity const&) noexcept = delete;
@@ -47,10 +59,11 @@ public:
   -> typename enable_if<trait::eq<T, U>>::type {
     this->statement += 1;
     if (lhs == rhs) { return; }
-    std::ostringstream stream;
-    if (msg) { stream << msg; }
-    else { stream << lhs << " is not equal to " << rhs; }
-    throw exception { "assert_equal", stream.str(), this->statement };
+    throw exception {
+      "assert_equal",
+      this->message(lhs, rhs, "is not equal to", msg),
+      this->statement
+    };
   }
 
   template <typename T, typename U>
@@ -70,10 +83,11 @@ public:
   -> typename enable_if<trait::ne<T, U>>::type {
     this->statement += 1;
     if (lhs != rhs) { return; }
-    std::ostringstream stream;
-    if (msg) { stream << msg; }
-    else { stream << lhs << " is equal to " << rhs; }
-    throw exception { "assert_not_equal", stream.str(), this->statement };
+    throw exception {
+      "assert_not_equal",
+      this->message(lhs, rhs, "is equal to", msg),
+      this->statement
+    };
   }
 
   template <typename T, typename U>
@@ -139,10 +153,11 @@ public:
     auto end = std::end(rhs);
     auto result = std::find(begin, end, lhs);
     if (result != end) { return; }
-    std::ostringstream stream;
-    if (msg) { stream << msg; }
-    else { stream << lhs << " is not in " << rhs; }
-    throw exception { "assert_in", stream.str(), this->statement };
+    throw exception {
+      "assert_in",
+      this->message(lhs, rhs, "is not in", msg),
+      this->statement
+    };
   }
 
   template <typename T, typename U>
@@ -163,10 +178,11 @@ public:
     auto end = std::end(rhs);
     auto result = std::find(begin, end, lhs);
     if (result == end) { return; }
-    std::ostringstream stream;
-    if (msg) { stream << msg; }
-    else { stream << lhs << " is in " << rhs; }
-    throw exception { "assert_not_in", stream.str(), this->statement };
+    throw exception {
+      "assert_not_in",
+      this->message(lhs, rhs, "is in", msg),
+      this->statement
+    };
   }
 
   template <typename T, typename U>
@@ -211,10 +227,11 @@ public:
   -> typename enable_if<trait::gt<T, U>>::type {
     this->statement += 1;
     if (lhs > rhs) { return; }
-    std::ostringstream stream;
-    if (msg) { stream << msg; }
-    else { stream << lhs << " is not greater than " << rhs; }
-    throw exception { "assert_greater", stream.str(), this->statement };
+    throw exception {
+      "assert_greater",
+      this->message(lhs, rhs, "is not greater than ", msg),
+      this->statement
+    };
   }
 
   template <typename T, typename U>
@@ -234,13 +251,11 @@ public:
   -> typename enable_if<trait::ge<T, U>>::type {
     this->statement += 1;
     if (lhs >= rhs) { return; }
-    std::ostringstream stream;
-    if (msg) {
-      stream << msg;
-    } else {
-      stream << lhs << " not greater than or equal to " << rhs;
-    }
-    throw exception { "assert_greater_equal", stream.str(), this->statement };
+    throw exception {
+      "assert_greater_equal",
+      this->message(lhs, rhs, "is not greater than or equal to", msg),
+      this->statement
+    };
   }
 
   template <typename T, typename U>
@@ -260,10 +275,11 @@ public:
   -> typename enable_if<trait::lt<T, U>>::type {
     this->statement += 1;
     if (lhs < rhs) { return; }
-    std::ostringstream stream;
-    if (msg) { stream << msg; }
-    else { stream << lhs << " is not less than " << rhs; }
-    throw exception { "assert_less", stream.str(), this->statement };
+    throw exception {
+      "assert_less",
+      this->message(lhs, rhs, "is not less than", msg),
+      this->statement
+    };
   }
 
   template <typename T, typename U>
@@ -283,10 +299,11 @@ public:
   -> typename enable_if<trait::le<T, U>>::type {
     this->statement += 1;
     if (lhs <= rhs) { return; }
-    std::ostringstream stream;
-    if (msg) { stream << msg; }
-    else { stream << lhs << " is not less than or equal to " << rhs; }
-    throw exception { "assert_less_equal", stream.str(), this->statement };
+    throw exception {
+      "assert_less_equal",
+      this->message(lhs, rhs, "is not less than or equal to", msg),
+      this->statement
+    };
   }
 
   template <typename T, typename U>
@@ -301,8 +318,27 @@ public:
   }
 
   /* assert_regex */
+  void assert_regex(
+    std::string const&,
+    std::string const&,
+    std::regex_constants::syntax_option_type=std::regex_constants::ECMAScript,
+    std::regex_constants::match_flag_type=std::regex_constants::match_default,
+    cstring=nullptr
+  );
+
   /* assert_not_regex */
+  void assert_not_regex(
+    std::string const&,
+    std::string const&,
+    std::regex_constants::syntax_option_type=std::regex_constants::ECMAScript,
+    std::regex_constants::match_flag_type=std::regex_constants::match_default,
+    cstring=nullptr
+  );
+
   /* assert_count_equal */
+
+  /* assert_associative_equal */
+  /* assert_sequence_equal */
 
   void fail (cstring=nullptr);
 };

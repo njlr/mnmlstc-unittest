@@ -64,6 +64,7 @@ endif ()
 check_include_file_cxx(initializer_list HAVE_INITIALIZER_LIST)
 check_include_file_cxx(type_traits HAVE_TYPE_TRAITS)
 check_include_file_cxx(functional HAVE_FUNCTIONAL)
+check_include_file_cxx(regex HAVE_REGEX)
 check_include_file_cxx(tuple HAVE_TUPLE)
 
 check_include_file_cxx(cstdint HAVE_CSTDINT)
@@ -80,6 +81,10 @@ endif ()
 
 if (NOT HAVE_FUNCTIONAL)
   message(FATAL_ERROR "Could not locate required header <functional>")
+endif ()
+
+if (NOT HAVE_REGEX)
+  message(FATAL_ERROR "Could not located required header <regex>")
 endif ()
 
 if (NOT HAVE_TUPLE)
