@@ -38,7 +38,7 @@ Requirements
 
 There are several requirements to fully use unittest:
 
- * CMake 2.8.10
+ * `CMake 2.8.10 <http://cmake.org>`_
  * A C++11 compliant compiler and standard library implementation
- * Sphinx (documentation generation)
-   * `Cloud Sphinx Theme <https://pypi.python.org/pypi/cloud_sptheme>`_
+ * `Sphinx <http://sphinx-doc.org>`_
+ * `Cloud Sphinx Theme <https://pypi.python.org/pypi/cloud_sptheme>`_
