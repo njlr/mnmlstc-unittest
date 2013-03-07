@@ -142,6 +142,7 @@ add_test(self-is test-self-is)
 add_test(self-in test-self-in)
 
 add_test(run-all test-run-all)
+
 #------------------------------------------------------------------------------
 # Dependency Section
 #------------------------------------------------------------------------------
@@ -184,3 +185,17 @@ add_dependencies(check test-self-is)
 add_dependencies(check test-self-in)
 
 add_dependencies(check test-run-all)
+
+#------------------------------------------------------------------------------
+# Test Specific Properties
+#------------------------------------------------------------------------------
+# XXX: This will be changed at some point to also perform a g++ version check
+#      whenever g++ finally has a release where the regex environment is
+#      actually 'sane'.
+set_tests_properties(self-not-regex PROPERTIES
+  WILL_FAIL ${CMAKE_COMPILER_IS_GNUCXX}
+)
+
+set_tests_properties(self-regex PROPERTIES
+  WILL_FAIL ${CMAKE_COMPILER_IS_GNUCXX}
+)
