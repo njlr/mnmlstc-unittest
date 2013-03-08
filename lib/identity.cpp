@@ -159,11 +159,7 @@ void identity::assert_not_regex(
   this->statement += 1;
   std::regex re;
   try { re = std::regex { regex, syntax }; }
-  catch (std::regex_error const& e) {
-    std::ostringstream stream;
-    stream << "Could not construct regex object: " << e.what();
-    throw exception { "assert_not_regex", stream.str(), this->statement };
-  }
+  catch (std::regex_error const& e) { return; }
 
   if (regex_search(text, re, flag)) { return; }
   throw exception {
