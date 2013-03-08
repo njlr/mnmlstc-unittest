@@ -193,9 +193,9 @@ add_dependencies(check test-run-all)
 #      whenever g++ finally has a release where the regex environment is
 #      actually 'sane'.
 set_tests_properties(self-not-regex PROPERTIES
-  WILL_FAIL ${CMAKE_COMPILER_IS_GNUCXX}
+  WILL_FAIL "${CMAKE_COMPILER_IS_GNUCXX}"
 )
 
 set_tests_properties(self-regex PROPERTIES
-  WILL_FAIL ${CMAKE_COMPILER_IS_GNUCXX}
+  WILL_FAIL "${CMAKE_COMPILER_IS_GNUCXX}"
 )
