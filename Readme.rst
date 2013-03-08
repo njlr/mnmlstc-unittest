@@ -3,11 +3,12 @@ Overview
 
 MNMLSTC Unittest is a C++11 unit testing framework. It focuses on being small,
 minimal, expressive, and easy to use. Unlike most C++ unit testing frameworks
-which rely on the preprocessor macros, unittest tries to take a page from the
+which rely on preprocessor macros, unittest tries to take a page from the
 python unittest module, and as such it has *no preprocessor macros*.
 
 Information on installing and using unittest (as well as modifying its
-internals) can be found in its documentation.
+internals) can be found in its
+`documentation <https://unittest.readthedocs.org/>`_.
 
 MNMLSTC Unittest is released under the Apache 2.0 license.
 
@@ -42,3 +43,6 @@ There are several requirements to fully use unittest:
  * A C++11 compliant compiler and standard library implementation
  * `Sphinx <http://sphinx-doc.org>`_
  * `Cloud Sphinx Theme <https://pypi.python.org/pypi/cloud_sptheme>`_
+
+Sphinx and the Cloud Sphinx Theme are only necessary if generating the
+documentation manually.
