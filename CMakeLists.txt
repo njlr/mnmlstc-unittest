@@ -13,7 +13,6 @@ include(CTest)
 #TODO: Add option to disable building with RTTI
 #option(BUILD_WITH_LIBCXX "Build unittest with libc++" OFF)
 #option(BUILD_WITH_RTTI "Build unittest with RTTI" ON)
-#option(BUILD_SHARED "Build unittest as a DLL" OFF)
 
 set(INCLUDE_INSTALL_DIR "include" CACHE INTERNAL "Header Files")
 set(LIBRARY_INSTALL_DIR "lib" CACHE INTERNAL "Library Files")
