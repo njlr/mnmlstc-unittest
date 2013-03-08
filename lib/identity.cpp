@@ -161,7 +161,7 @@ void identity::assert_not_regex(
   try { re = std::regex { regex, syntax }; }
   catch (std::regex_error const& e) { return; }
 
-  if (regex_search(text, re, flag)) { return; }
+  if (not regex_search(text, re, flag)) { return; }
   throw exception {
     "assert_not_regex",
     this->message(regex, text, "found in", msg),
