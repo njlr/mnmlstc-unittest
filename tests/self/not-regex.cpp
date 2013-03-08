@@ -10,11 +10,11 @@ void v1 () {
 
   try { self.assert_not_regex("abcdefg", "[0-9]"); }
   catch (...) {
-    std::clog << "unexpected exception was thrown: " << std::endl;
+    std::clog << "unexpected exception was thrown " << std::endl;
     std::exit(EXIT_FAILURE);
   }
 
-  try { self.assert_regex("abcdefg", "[a-z]"); }
+  try { self.assert_not_regex("abcdefg", "[a-z]"); }
   catch (exception const& e) {
     if (std::string { "assert_not_regex" } == e.type()) { return; }
     std::clog << "unexpected exception '" << e.type() << "' was thrown"
