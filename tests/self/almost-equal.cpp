@@ -6,17 +6,12 @@
 
 #include <cstdlib>
 
-struct custom { };
-
 void v1 () {
   using unittest::v1::exception;
   using unittest::v1::self;
 
-  try { self.assert_almost_equal(234.12f, 234.1f); }
-  catch (exception const& e) {
-    std::clog << e.type() << " thrown: " << e.what() << std::endl;
-    std::exit(EXIT_FAILURE);
-  } catch (...) {
+  try { self.assert_almost_equal(234.01012f, 234.01010f); }
+  catch (...) {
     std::clog << "unexpected exception was thrown" << std::endl;
     std::exit(EXIT_FAILURE);
   }
