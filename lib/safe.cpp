@@ -23,6 +23,6 @@ auto safe::size () const noexcept -> size_t {
   return std::distance(this->tests.begin(), this->tests.end());
 }
 
-UNITTEST_EXPORT_API safe& vault = safe::instance();
+safe& vault = safe::instance();
 
 }} /* namespace unittest::v1 */

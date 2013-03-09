@@ -2,8 +2,6 @@
 #define UNITTEST_TEST_HPP
 #pragma once
 
-#include <unittest/export.hpp>
-
 #include <initializer_list>
 #include <functional>
 #include <utility>
@@ -12,7 +10,7 @@
 namespace unittest {
 inline namespace v1 {
 
-class UNITTEST_EXPORT_API test final {
+class test final {
   using task_pair = std::pair<std::string, std::function<void()>>;
   const char* label;
 

@@ -2,8 +2,6 @@
 #define UNITTEST_SAFE_HPP
 #pragma once
 
-#include <unittest/export.hpp>
-
 #include <functional>
 #include <utility>
 #include <string>
@@ -13,7 +11,7 @@
 namespace unittest {
 inline namespace v1 {
 
-class UNITTEST_EXPORT_API safe final {
+class safe final {
   using result = std::function<void()>;
   using string = std::string;
 
@@ -44,7 +42,7 @@ public:
   ~safe () noexcept = default;
 };
 
-extern UNITTEST_EXPORT_API safe& vault;
+extern safe& vault;
 
 }} /* namespace unittest::v1 */
 

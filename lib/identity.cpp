@@ -322,6 +322,6 @@ void identity::fail (cstring msg) {
   };
 }
 
-UNITTEST_EXPORT_API identity& self = identity::instance();
+identity& self = identity::instance();
 
 }} /* namespace unittest::v1 */

@@ -3,7 +3,6 @@
 #pragma once
 
 #include <unittest/identity.hpp>
-#include <unittest/export.hpp>
 #include <unittest/error.hpp>
 #include <unittest/test.hpp>
 #include <unittest/task.hpp>

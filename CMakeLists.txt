@@ -162,13 +162,6 @@ add_library(unittest STATIC
   ${PROJECT_SOURCE_DIR}/lib/run.cpp
 )
 
-add_compiler_export_flags()
-generate_export_header(unittest
-  EXPORT_MACRO_NAME UNITTEST_EXPORT_API
-  EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/include/unittest/export.hpp
-  DEPRECATED_MACRO_NAME UNITTEST_DEPRECATED
-)
-
 if (BUILD_TESTING)
   set(CMAKE_TEST_COMMAND ctest)
   set(TEST_SOURCE_DIR "${PROJECT_SOURCE_DIR}/tests")
@@ -183,11 +176,6 @@ install(FILES
   ${PROJECT_BINARY_DIR}/unittest-config-version.cmake
   ${PROJECT_BINARY_DIR}/unittest-config.cmake
   DESTINATION ${CMAKE_INSTALL_DIR}
-)
-
-install(FILES
-  ${PROJECT_BINARY_DIR}/include/unittest/export.hpp
-  DESTINATION ${INCLUDE_INSTALL_DIR}/unittest
 )
 
 install(TARGETS unittest

@@ -3,7 +3,6 @@
 #pragma once
 
 #include <unittest/utility.hpp>
-#include <unittest/export.hpp>
 #include <unittest/error.hpp>
 
 #include <algorithm>
@@ -17,7 +16,7 @@
 namespace unittest {
 inline namespace v1 {
 
-class UNITTEST_EXPORT_API identity final {
+class identity final {
   using cstring = const char*;
 
   std::int64_t statement;
@@ -343,7 +342,7 @@ public:
   void fail (cstring=nullptr);
 };
 
-extern UNITTEST_EXPORT_API identity& self;
+extern identity& self;
 
 }} /* namespace unittest::v1 */
 

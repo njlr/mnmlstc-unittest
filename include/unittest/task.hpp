@@ -2,15 +2,13 @@
 #define UNITTEST_TASK_HPP
 #pragma once
 
-#include <unittest/export.hpp>
-
 #include <functional>
 #include <string>
 
 namespace unittest {
 inline namespace v1 {
 
-class UNITTEST_EXPORT_API task final {
+class task final {
   using step = std::pair<std::string, std::function<void()>>;
   using function = std::function<void()>;
   const char* label;

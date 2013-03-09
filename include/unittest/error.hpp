@@ -2,7 +2,6 @@
 #define UNITTEST_ERROR_HPP
 #pragma once
 
-#include <unittest/export.hpp>
 #include <stdexcept>
 #include <string>
 
@@ -11,7 +10,7 @@
 namespace unittest {
 inline namespace v1 {
 
-class UNITTEST_EXPORT_API exception final : public std::logic_error {
+class exception final : public std::logic_error {
   const char* kind;
   int64_t count;
 
@@ -26,7 +25,7 @@ public:
   const char* type () const noexcept;
 };
 
-class UNITTEST_EXPORT_API skipping final {
+class skipping final {
   std::string message;
 public:
   explicit skipping (std::string&&);
