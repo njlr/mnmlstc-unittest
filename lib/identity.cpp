@@ -98,11 +98,47 @@ void identity::assert_almost_equal (double, double, int, cstring) {
   };
 }
 
-void identity::assert_almost_equal (float, float, int, cstring) {
+void identity::assert_almost_equal (
+  float first,
+  float second,
+  int places,
+  cstring msg
+) {
   this->statement += 1;
+
+  if (std::isnan(first) or std::isnan(second)) {
+    throw exception {
+      "assert_almost_equal",
+      "Cannot compare when given values are NaN",
+      this->statement
+    };
+  }
+
+  if (std::isinf(first) or std::isinf(second)) {
+    throw exception {
+      "assert_almost_equal",
+      "Cannot compare when given values are infinite",
+      this->statement
+    };
+  }
+
+  if (places < 0) {
+    throw exception {
+      "assert_almost_equal",
+      "Cannot compare less than 0 places",
+      this->statement
+    };
+  }
+
+  auto tens = static_cast<uint64_t>(std::pow(10, places));
+  auto subd = first - second;
+
+  auto compare = std::round(subd * tens) / tens;
+  if (compare == 0.0f) { return; }
+
   throw exception {
     "assert_almost_equal",
-    "Not Yet Implemented",
+    this->message(first, second, "is not almost equal to", msg),
     this->statement
   };
 }
@@ -116,11 +152,45 @@ void identity::assert_not_almost_equal (double, double, int, cstring) {
   };
 }
 
-void identity::assert_not_almost_equal (float, float, int, cstring) {
+void identity::assert_not_almost_equal (
+  float first, float second, 
+  int places, cstring msg
+) {
   this->statement += 1;
+
+  if (std::isnan(first) or std::isnan(second)) {
+    throw exception {
+      "assert_not_almost_equal",
+      "Cannot compare when given values are infinite",
+      this->statement
+    };
+  }
+
+  if (std::isinf(first) or std::isinf(second)) {
+    throw exception {
+      "assert_not_almost_equal",
+      "Cannot compare when given values are infinite",
+      this->statement
+    };
+  }
+
+  if (places < 0) {
+    throw exception {
+      "assert_not_almost_equal",
+      "Cannot compare less than 0 places",
+      this->statement
+    };
+  }
+
+  auto tens = static_cast<uint64_t>(std::pow(10, places));
+  auto subd = first - second;
+
+  auto compare = std::round(subd * tens) / tens;
+  if (compare != 0) { return; }
+
   throw exception {
     "assert_not_almost_equal",
-    "Not Yet Implemented",
+    this->message(first, second, "is almost equal to", msg),
     this->statement
   };
 }
