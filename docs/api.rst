@@ -21,21 +21,39 @@ Tests and Tasks
    It provides a number of member functions to check for and report failures,
    such as:
 
-   +-----------------------------------+----------------+
-   | Member Function                   | Checks That    |
-   +===================================+================+
-   | :cpp:func:`assert_equal(a, b)     | ``a == b``     |
-   | <identity::assert_equal>`         |                |
-   +-----------------------------------+----------------+
-   | :cpp:func:`assert_not_equal(a, b) | ``a != b``     |
-   | <identity::assert_not_equal>`     |                |
-   +-----------------------------------+----------------+
-   | :cpp:func:`assert_true(a)         | ``a == true``  |
-   | <identity::assert_true>`          |                |
-   +-----------------------------------+----------------+
-   | :cpp:func:`assert_false(a)        | ``a == false`` |
-   | <identity::assert_false>`         |                |
-   +-----------------------------------+----------------+
+   +-----------------------------------+------------------+
+   | Member Function                   | Checks That      |
+   +===================================+==================+
+   | :cpp:func:`assert_equal(a, b)     | ``a == b``       |
+   | <identity::assert_equal>`         |                  |
+   +-----------------------------------+------------------+
+   | :cpp:func:`assert_not_equal(a, b) | ``a != b``       |
+   | <identity::assert_not_equal>`     |                  |
+   +-----------------------------------+------------------+
+   | :cpp:func:`assert_true(a)         | ``a == true``    |
+   | <identity::assert_true>`          |                  |
+   +-----------------------------------+------------------+
+   | :cpp:func:`assert_false(a)        | ``a == false``   |
+   | <identity::assert_false>`         |                  |
+   +-----------------------------------+------------------+
+   | :cpp:func:`assert_is(a, b)        | ``&a == &b``     |
+   | <identity::assert_is>`            |                  |
+   +-----------------------------------+------------------+
+   | :cpp:func:`assert_is_not(a, b)    | ``&a != &b``     |
+   | <identity::assert_is_not>`        |                  |
+   +-----------------------------------+------------------+
+   | :cpp:func:`assert_is_null(a)      | ``a == nullptr`` |
+   | <identity::assert_is_null>`       |                  |
+   +-----------------------------------+------------------+
+   | :cpp:func:`assert_is_not_null(a)  | ``a != nullptr`` |
+   | <identity::assert_is_not_null>`   |                  |
+   +-----------------------------------+------------------+
+   | :cpp:func:`assert_in(a, b)        | ``a in b``       |
+   | <identity::assert_in>`            |                  |
+   +-----------------------------------+------------------+
+   | :cpp:func:`assert_not_in(a, b)    | ``a not in b``   |
+   | <identity::assert_not_in>`        |                  |
+   +-----------------------------------+------------------+
 
    .. function:: void assert_equal (T const& first, U const& second)
 
