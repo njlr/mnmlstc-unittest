@@ -12,6 +12,8 @@ It should be noted, MNMLSTC Unittest assumes the following:
  * You are using a C++11 compiler
  * Any code that interacts with MNMLSTC Unittest will have exceptions enabled
 
+.. _tutorial-concepts:
+
 Concepts
 --------
 
@@ -54,6 +56,12 @@ line it all happens on?). Python's unittest does this well (and it comes as a
 result of its ability to perform runtime reflection on variables, as well as
 know the current line), but C++ is not python, no matter how hard one wished
 it was. As such, MNMLSTC Unittest makes due with what it can.
+
+One might notice, however, the absence of the common setup, teardown and
+test fixture concepts. Because of RAII, it is deemed unnecessary for these to
+be provided, simply because every other test framework implements them. There
+is a way to imitate this kind of consistent setup and teardown via capturing
+an object by value within a lambda declaration.
 
 Your First Unittest Unit Test
 -----------------------------
