@@ -55,41 +55,80 @@ Tests and Tasks
    | <identity::assert_not_in>`        |                  |
    +-----------------------------------+------------------+
 
-   .. function:: void assert_equal (T const& first, U const& second)
+   .. function:: void assert_equal (first, second, msg=nullptr)
+                 void assert_not_equal (first, second, msg=nullptr)
 
-      Asserts that first and second are equal by way of ``operator ==``. If
-      no ``operator ==`` exists for the given types, the function will still
-      take them as arguments and compile without issue. It will however,
-      immediately fail upon being reached. ``first`` and ``second`` may be of
-      any type.
+      Tests that first and second are equal/not equal. If no
+      ``operator ==`` or ``operator !=`` exists for the given types, the
+      function will accept it, but fail immediately once reached. ``first``
+      and ``second`` may be of any type.
 
-      :raises: exception if first is not equal to second
+      :type first: Any valid type
+      :type second: Any valid type
+      :type msg: const char*
 
-   .. function:: void assert_not_equal (T const& first, U const& second)
+   .. function:: void assert_true(exp, msg=nullptr)
+                 void assert_false(exp, msg=nullptr)
 
-      Asserts that first and second are not equal by way of ``operator !=``.
-      If no ``operator !=`` exists for the given types, the function will
-      still take them and compile without issue. It will result in an immediate
-      failure however.
+      Tests that the given expression implicitly evaluates to true or
+      false. Any types that require explicit boolean conversion must do
+      so before being passed in as parameters.
 
-      :raises: exception if first is not equal to second
+   .. function:: void assert_is(first, second, msg=nullptr)
+                 void assert_is_not(first, second, msg=nullptr)
 
-   .. function:: void assert_true(bool)
+      Tests that first and second either occupy or do not occupy the same
+      address of memory. ``first`` and ``second`` may be either const
+      references or pointers to some object, but these cannot be interchanged.
 
-      Asserts that the given boolean value is true. Any type that is implicitly
-      convertible to bool may be passed in (such as smart pointers). Those
-      types that require explicit boolean conversion must do so themselves.
+   .. function:: void assert_is_null(expr, msg=nullptr)
+                 void assert_is_not_null(expr, msg=nullptr)
 
-      :raises: exception if the given boolean value does not evaluate to true.
+      Tests that the given expression evaluates or does not evaluate to
+      nullptr.
 
-   .. function:: void assert_false(bool)
+   .. function:: void assert_in(first, second, msg=nullptr)
+                 void assert_not_in(first, second, msg=nullptr)
 
-      Asserts that the given boolean value is false. Any type that is
-      implicitly convertible to bool may be passed in (such as smart pointers).
-      Those types that require explicit boolean conversion must do so
-      themselves.
+      Tests that the ``first`` is or is not located within ``second``. This
+      assertion relies on the ability to call ``std::begin`` and ``std::end``
+      on ``second``. If ``second`` cannot have ``std::begin`` and ``std::end``
+      called on it, it will fail immediately once reached within the program.
 
-      :raises: exception if the given boolean value does not evaluate to false.
+      :type first: ``value_type`` of ``second``
+      :type second: Any container type that can have ``std::begin`` and
+                    ``std::end`` called on it.
+
+   There are also additional member functions to perform more specific checks
+   such as:
+
+   +------------------------------------------+------------------------+
+   | Member Function                          | Checks That            |
+   +==========================================+========================+
+   | :cpp:func:`assert_almost_equal(a, b)     | ``round(a-b, 7) == 0`` |
+   | <identity::assert_almost_equal>`         |                        |
+   +------------------------------------------+------------------------+
+   | :cpp:func:`assert_not_almost_equal(a, b) | ``round(a-b, 7) != 0`` |
+   | <identity::assert_not_almost_equal>`     |                        |
+   +------------------------------------------+------------------------+
+   | :cpp:func:`assert_greater(a, b)          | ``a > b``              |
+   | <identity::assert_greater>`              |                        |
+   +------------------------------------------+------------------------+
+   | :cpp:func:`assert_greater_equal(a, b)    | ``a >= b``             |
+   | <identity::assert_greater_equal>`        |                        |
+   +------------------------------------------+------------------------+
+   | :cpp:func:`assert_less(a, b)             | ``a < b``              |
+   | <identity::assert_less>`                 |                        |
+   +------------------------------------------+------------------------+
+   | :cpp:func:`assert_less_equal(a, b)       | ``a <= b``             |
+   | <identity::assert_less_equal>`           |                        |
+   +------------------------------------------+------------------------+
+   | :cpp:func:`assert_regex(s, re)           | ``regex_search(s, re)``|
+   | <identity::assert_regex>`                |                        |
+   +------------------------------------------+------------------------+
+   | :cpp:func:`assert_not_regex(s, re)       | ``not                  |
+   | <identity::assert_not_regex>`            | regex_search(s, re)``  |
+   +------------------------------------------+------------------------+
 
 .. _api-skipping-tests:
 
