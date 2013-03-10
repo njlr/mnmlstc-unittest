@@ -130,6 +130,20 @@ Tests and Tasks
    | <identity::assert_not_regex>`            | regex_search(s, re)``  |
    +------------------------------------------+------------------------+
 
+   .. function:: void assert_regex(text, re, syntax, match, msg=nullptr)
+                 void assert_not_regex(text, re, syntax, match, msg=nullptr)
+
+      Tests that the given regex string ``re`` successfully matches or
+      unsuccessfully matches to the given string ``text``. This function only
+      takes strings, to allow for a test to make sure that the given regex
+      string creates a valid regex. The ``syntax`` and ``match`` flags
+      use the default values used within the C++ standard library.
+
+      :type text: std::string
+      :type re: std::string
+      :type syntax: std::regex_constants::syntax_option_type
+      :type match: std::regex_constants::match_flag_type
+
 .. _api-skipping-tests:
 
 Skipping Tests
