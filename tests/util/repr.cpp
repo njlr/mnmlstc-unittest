@@ -1,6 +1,7 @@
 #include <unittest/utility.hpp>
 
 #include <iostream>
+#include <sstream>
 #include <memory>
 #include <string>
 #include <vector>

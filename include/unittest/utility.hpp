@@ -4,7 +4,7 @@
 
 #include <type_traits>
 #include <utility>
-#include <sstream>
+#include <iosfwd>
 #include <string>
 #include <vector>
 

@@ -1,5 +1,7 @@
 #include <unittest/utility.hpp>
 
+#include <ostream>
+
 namespace unittest {
 inline namespace v1 {
 
