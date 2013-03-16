@@ -15,6 +15,8 @@ set(LIBRARY_INSTALL_DIR "lib" CACHE INTERNAL "Library Files")
 
 set(CMAKE_INSTALL_DIR "share/cmake/unittest" CACHE INTERNAL "CMake Files")
 
+option(BUILD_UNITTEST_TESTS "Build the unittest's personal tests" OFF)
+
 #------------------------------------------------------------------------------
 # Compiler Environment Check
 #------------------------------------------------------------------------------
@@ -162,7 +164,7 @@ add_library(unittest STATIC
   ${PROJECT_SOURCE_DIR}/lib/run.cpp
 )
 
-if (BUILD_TESTING)
+if (BUILD_TESTING AND BUILD_UNITTEST_TESTS)
   set(CMAKE_TEST_COMMAND ctest)
   set(TEST_SOURCE_DIR "${PROJECT_SOURCE_DIR}/tests")
   set(TEST_BINARY_DIR "${PROJECT_BINARY_DIR}/tests")
@@ -178,7 +180,13 @@ install(FILES
   DESTINATION ${CMAKE_INSTALL_DIR}
 )
 
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/unittest"
+  DESTINATION ${INCLUDE_INSTALL_DIR}
+  FILES_MATCHING PATTERN "*.hpp"
+)
+
 install(TARGETS unittest
   LIBRARY DESTINATION ${LIBRARY_INSTALL_DIR}
   ARCHIVE DESTINATION ${LIBRARY_INSTALL_DIR}
-)
+  PUBLIC_HEADER DESTINATION ${INCLUDE_INSTALL_DIR}
+  )
