@@ -130,13 +130,40 @@ Tests and Tasks
    | <identity::assert_not_regex>`            | regex_search(s, re)``  |
    +------------------------------------------+------------------------+
 
+   .. function:: void assert_almost_equal(first, second, places, msg=nullptr)
+                 void assert_not_almost_equal(first, second, places, msg=nullptr)
+
+      Test that *first* and *second* are approximately (or not approximately)
+      equal by computing the difference, rounding the given number of decimal
+      *places* (default 4), and comparing zero.
+
+      .. note:: These functions round the values to the given number of decimal
+                places and not *significant digits*.
+
+      .. warning:: These functions cannot compare floats and doubles. The
+                   given parameters must be the exact same type.
+
+      :type first: float or double
+      :type second: float or double
+      :type places: int
+
+   .. function:: void assert_greater(first, second, msg=nullptr)
+                 void assert_greater_equal(first, second, msg=nullptr)
+                 void assert_less(first, second, msg=nullptr)
+                 void assert_less_equal(first, second, msg=nullptr)
+
+      Test that *first* is respectively >, >=, < or <= than *second* depending
+      on the method named. If not the test will fail. If *first* and *second*
+      cannot be compared via these operators, the test will still successfully
+      compile, but will immediately fail upon the statement being reached.
+
    .. function:: void assert_regex(text, re, syntax, match, msg=nullptr)
                  void assert_not_regex(text, re, syntax, match, msg=nullptr)
 
-      Tests that the given regex string ``re`` successfully matches or
-      unsuccessfully matches to the given string ``text``. This function only
+      Tests that the given regex string *re* successfully matches or
+      unsuccessfully matches to the given string *text*. This function only
       takes strings, to allow for a test to make sure that the given regex
-      string creates a valid regex. The ``syntax`` and ``match`` flags
+      string creates a valid regex. The *syntax* and *match* flags
       use the default values used within the C++ standard library.
 
       :type text: std::string
