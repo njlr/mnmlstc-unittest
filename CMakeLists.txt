@@ -96,7 +96,7 @@ endif ()
 #------------------------------------------------------------------------------
 write_basic_package_version_file(
   ${PROJECT_BINARY_DIR}/unittest-config-version.cmake
-  VERSION 0.9.0
+  VERSION 1.0.0
   COMPATIBILITY SameMajorVersion
 )
 
@@ -188,5 +188,4 @@ install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/unittest"
 install(TARGETS unittest
   LIBRARY DESTINATION ${LIBRARY_INSTALL_DIR}
   ARCHIVE DESTINATION ${LIBRARY_INSTALL_DIR}
-  PUBLIC_HEADER DESTINATION ${INCLUDE_INSTALL_DIR}
-  )
+)
