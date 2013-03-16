@@ -14,6 +14,16 @@ overload, it will default to printing ``<unknown-type at [some hex address]>``.
 To remove this and print your own values, it is recommended to write a custom
 insertion operator for an ``std::ostream``.
 
+Running Tests
+-------------
+
+The very last call in your test executable must absolutely be
+``unittest::run``. MNMLSTC Unittest will exit after running all tests,
+and expects that a user will not require additional information once the tests
+are run. The return value of the executable will be ``EXIT_FAILURE`` or
+``EXIT_SUCCESS``, rather than how many tests passed or failed, as some testing
+frameworks do.
+
 API Deprecation
 ---------------
 
