@@ -69,10 +69,6 @@ Your First Unittest Unit Test
 Well, enough about the concepts of Unittest. It's time to write our first
 test!
 
-.. todo:: Discuss how unittest is intended to be installed (e.g.,
-          an install(EXPORT ...) target might be used in the CMakeLists.txt
-          file
-
 .. highlight:: cpp
 
 Because of how MNMLSTC Unittest works, we can declare any test anywhere within
@@ -125,3 +121,28 @@ Finally we call ``run()``, which is located in the unittest namespace.
 .. note:: Make sure that this is the last function call you make. Whether 
           all tests and tasks pass or not is irrelevant, as it will *always*
           call ``std::exit``.
+
+Of course, this only shows how to write a test, not use it with CMake or CTest.
+So let's do that!
+
+.. highlight:: cmake
+
+Our CMakeLists.txt file will look like::
+
+    cmake_minimum_required(VERSION 2.8.10)
+    project(our-first-unittest-test)
+
+    find_package(unittest)
+    include(CTest)
+
+    include_directories(${UNITTEST_INCLUDE_DIR})
+
+    add_executable(my-first-unittest-test ${PROJECT_SOURCE_DIR}/test.cpp)
+    target_link_libraries(my-first-unittest-test ${UNITTEST_LIBRARY})
+
+    add_test(my-first-unittest my-first-unittest-test)
+
+Fairly simple! Go ahead and build then run your tests. If you did everything
+right (and let's be honest here, you totally did!), you should see ctest
+giving you the 'FAILURE' output. That's fine, because we're going to start
+expanding on our test file for the rest of the tutorial.

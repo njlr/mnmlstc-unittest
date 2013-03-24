@@ -175,3 +175,41 @@ Tests and Tasks
 
 Skipping Tests
 --------------
+
+.. highlight:: cpp
+
+One can skip tests in unittest by using the various 'skip' types. These types
+are constructed in the same manner as tasks. However, they sit in front of
+tasks. For example::
+
+    bool value = some_input;
+    task("my-task") = skip_if(value, "value given was true") = []{
+      self.fail();
+    };
+
+.. class:: skip
+
+   The default skip type simply takes a message. The function it is given will
+   not be executed, or even passed along internally to the test runner.
+
+   .. note:: While skip is not marked ``final`` in the API, it is not intended
+             to be inherited from by the user.
+
+   .. type:: function
+
+      This type is simply a type alias for :cpp:type:`std::function\<void()\>`
+
+   .. function:: skip(const char* msg)
+
+      Creates the skip object with a message to print. It is recommended that
+      *msg* be a string literal, rather than stored elsewhere in memory.
+
+   .. function:: function operator = (function&&) const noexcept
+
+.. class:: skip_unless
+
+   .. function:: skip_unless(bool, const char*)
+
+.. class:: skip_if
+
+   .. function:: skip_if(bool, const char*)
