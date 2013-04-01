@@ -25,9 +25,6 @@ if (NOT MSVC)
   check_cxx_compiler_flag("-std=c++11" CAN_USE_CXX11)
   check_cxx_compiler_flag("-pedantic" CAN_USE_PEDANTIC)
 
-  check_cxx_compiler_flag("-fexceptions" CAN_USE_EXCEPTIONS)
-  check_cxx_compiler_flag("-Woverloaded-virtual" CAN_WARN_OVERLOADED_VIRTUAL)
-  check_cxx_compiler_flag("-Wuseless-cast" CAN_WARN_USELESS_CAST)
   check_cxx_compiler_flag("-Wnoexcept" CAN_WARN_NOEXCEPT)
   check_cxx_compiler_flag("-Wextra" CAN_WARN_EXTRA)
   check_cxx_compiler_flag("-Wall" CAN_WARN_ALL)
@@ -35,7 +32,6 @@ else ()
   check_cxx_compiler_flag("/Ehsc" CAN_USE_EXCEPTIONS)
 
   check_cxx_compiler_flag("/WL" CAN_WARN_ONE_LINE)
-  check_cxx_compiler_flag("/WX" CAN_WARN_ERROR)
   check_cxx_compiler_flag("/W4" CAN_WARN_ALL)
 endif ()
 
@@ -107,6 +103,7 @@ configure_package_config_file(
   PATH_VARS
   INCLUDE_INSTALL_DIR
   LIBRARY_INSTALL_DIR
+  CMAKE_INSTALL_DIR
 )
 
 include_directories(
@@ -138,10 +135,6 @@ if (NOT MSVC)
   
   if (CAN_WARN_NOEXCEPT)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wnoexcept")
-  endif ()
-
-  if (CAN_WARN_USELESS_CAST)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wuseless-cast")
   endif ()
 else ()
   if (CAN_WARN_ALL)
@@ -185,7 +178,12 @@ install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/unittest"
   FILES_MATCHING PATTERN "*.hpp"
 )
 
+install(EXPORT unittest-target
+  DESTINATION ${CMAKE_INSTALL_DIR}
+)
+
 install(TARGETS unittest
+  EXPORT unittest-target
   LIBRARY DESTINATION ${LIBRARY_INSTALL_DIR}
   ARCHIVE DESTINATION ${LIBRARY_INSTALL_DIR}
 )
