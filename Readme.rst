@@ -19,19 +19,20 @@ Below is a basic example of how unittest can be used::
 
     #include <unittest/unittest.hpp>
 
-    auto main () -> int {
+    int main () {
       using namespace unittest;
 
       test("my-test") = {
         task("assert-equal") = [] {
-          self.assert_equal(1, 2, "optional message");
-          self.assert_throws<my_exception_type>([]{throw my_exception_type;});
+          assert::not_equal(1, 2);
+          assert::in(1, { 1, 2, 3, 4 });
+          assert::throws<my_exception_type>([] { throw my_exception_type; });
         },
-        task("fails") = [] { self.fail(); },
-        task("skip") = skip("always-skip") = [] { self.fail(); }
+        task("fails") = [] { assert::fail(); },
+        task("skip") = skip("always-skip") = [] { assert::fail(); }
       };
 
-      run();
+      monitor::run();
     }
 
 Requirements
@@ -39,10 +40,11 @@ Requirements
 
 There are several requirements to fully use unittest:
 
- * `CMake 2.8.10 <http://cmake.org>`_
+ * `CMake 2.8.10 <http://cmake.org>`_ (2.8.11 if you wish to use CPack)
  * A C++11 compliant compiler and standard library implementation
  * `Sphinx <http://sphinx-doc.org>`_
  * `Cloud Sphinx Theme <https://pypi.python.org/pypi/cloud_sptheme>`_
 
 Sphinx and the Cloud Sphinx Theme are only necessary if generating the
-documentation manually.
+documentation manually, and this is not provided by the build script at this
+time.

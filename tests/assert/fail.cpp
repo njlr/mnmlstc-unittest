@@ -1,16 +1,17 @@
-#include <unittest/identity.hpp>
-#include <unittest/error.hpp>
-
 #include <iostream>
 #include <string>
 
 #include <cstdlib>
 
-auto v1 () -> void {
-  using unittest::v1::self;
+#include <unittest/assert.hpp>
+#include <unittest/error.hpp>
 
-  try { self.fail(); }
-  catch (unittest::v1::exception const& e) {
+auto v1 () -> void {
+  namespace assert = unittest::v1::assert;
+  using unittest::v1::error;
+
+  try { assert::fail(); }
+  catch (error const& e) {
     if (std::string { "fail" } == e.type()) { return; }
     std::clog << "incorrect exception: " << e.type() << " was thrown"
               << std::endl;
@@ -20,7 +21,7 @@ auto v1 () -> void {
     std::exit(EXIT_FAILURE);
   }
 
-  std::clog << "self.fail did not throw exception" << std::endl;
+  std::clog << "assert::fail did not throw exception" << std::endl;
   std::exit(EXIT_FAILURE);
 }
 

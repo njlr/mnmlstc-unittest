@@ -1,18 +1,19 @@
 #ifndef UNITTEST_TEST_HPP
 #define UNITTEST_TEST_HPP
-#pragma once
 
 #include <initializer_list>
 #include <functional>
 #include <utility>
 #include <string>
 
+#include <unittest/monitor.hpp>
+
 namespace unittest {
 inline namespace v1 {
 
 class test final {
   using task_pair = std::pair<std::string, std::function<void()>>;
-  const char* label;
+  std::string label;
 
 public:
   test& operator = (test const&) noexcept = delete;
@@ -22,10 +23,18 @@ public:
   test (test&&) noexcept = delete;
   test () noexcept = delete;
 
-  explicit test (const char*) noexcept;
-  ~test () noexcept;
+  explicit test (std::string&& label) noexcept : label { std::move(label) } { }
+  ~test () noexcept { }
 
-  void operator = (std::initializer_list<task_pair>) noexcept;
+  void operator = (std::initializer_list<task_pair> tasks) noexcept {
+    std::for_each(tasks.begin(), tasks.end(), [this](task_pair item) {
+      monitor::add(
+        std::move(this->label),
+        std::move(std::get<0>(item)),
+        std::move(std::get<1>(item))
+      );
+    });
+  }
 };
 
 }} /* namespace unittest::v1 */

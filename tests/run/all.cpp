@@ -1,18 +1,16 @@
 #include <unittest/unittest.hpp>
 
-#include <cstdlib>
-
-auto main () -> int {
+int main () {
   using namespace unittest;
 
   test("first-test") = {
-    task("step-two") = [] { self.assert_is_null((int*)nullptr); },
+    task("step-two") = [] { assert::is_null(nullptr); },
     task("step-three") = [] {
-      self.assert_false(false);
-      self.assert_true(true);
+      assert::not_equal(false, true);
+      assert::equal(false, false);
     },
     task("step-four") = skip("because we can") = []{}
   };
 
-  run();
+  monitor::run();
 }

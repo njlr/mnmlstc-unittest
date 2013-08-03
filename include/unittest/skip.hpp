@@ -1,8 +1,9 @@
 #ifndef UNITTEST_SKIP_HPP
 #define UNITTEST_SKIP_HPP
-#pragma once
 
 #include <functional>
+
+#include <unittest/error.hpp>
 
 namespace unittest {
 inline namespace v1 {
@@ -19,10 +20,13 @@ public:
   skip (skip&&) noexcept = delete;
   skip () noexcept = delete;
 
-  explicit skip (const char*) noexcept;
-  ~skip () noexcept;
+  explicit skip (char const* reason) noexcept : reason { reason } { }
+  ~skip () noexcept = default;
 
-  function operator = (function&&) const noexcept;
+  function operator = (function&&) const noexcept {
+    auto reason = this->reason;
+    return [reason] { throw skipping { reason }; };
+  }
 };
 
 class skip_if final : skip {
@@ -36,10 +40,20 @@ public:
   skip_if (skip&&) noexcept = delete;
   skip_if () noexcept = delete;
 
-  explicit skip_if (bool, const char*) noexcept;
-  ~skip_if () noexcept;
+  explicit skip_if (bool condition, char const* reason) noexcept :
+    skip { reason },
+    condition { condition }
+  { }
+  ~skip_if () noexcept = default;
 
-  function operator = (function&&) const noexcept;
+  function operator = (function&& call) const noexcept {
+    auto condition = this->condition;
+    auto reason = this->reason;
+    return [condition, reason, call] {
+      if (condition) { throw skipping { reason }; }
+      call();
+    };
+  }
 };
 
 class skip_unless final : skip {
@@ -53,10 +67,20 @@ public:
   skip_unless (skip_unless&&) noexcept = delete;
   skip_unless () noexcept = delete;
 
-  explicit skip_unless (bool, const char*) noexcept;
-  ~skip_unless () noexcept;
+  explicit skip_unless (bool condition, char const* reason) noexcept :
+    skip { reason },
+    condition { condition }
+  { }
+  ~skip_unless () noexcept = default;
 
-  function operator = (function&&) const noexcept;
+  function operator = (function&& call) const noexcept {
+    auto condition = this->condition;
+    auto reason = this->reason;
+    return [condition, reason, call] {
+      if (not condition) { throw skipping { reason }; }
+      call();
+    };
+  }
 };
 
 }} /* namespace unittest::v1 */

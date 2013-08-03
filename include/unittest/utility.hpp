@@ -3,8 +3,8 @@
 #pragma once
 
 #include <type_traits>
+#include <iostream>
 #include <utility>
-#include <iosfwd>
 #include <string>
 #include <vector>
 
@@ -108,7 +108,11 @@ public:
   friend ostream& operator << (ostream&, unknown_type const& value);
 };
 
-ostream& operator << (ostream& os, unknown_type const& value);
+inline ostream& operator << (ostream& os, unknown_type const& value) {
+  return os << "<unknown-type @ "
+            << reinterpret_cast<void*>(value.address)
+            << ">";
+}
 
 }} /* namespace unittest::v1 */
 

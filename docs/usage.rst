@@ -18,11 +18,10 @@ Running Tests
 -------------
 
 The very last call in your test executable must absolutely be
-``unittest::run``. MNMLSTC Unittest will exit after running all tests,
+``unittest::monitor::run``. MNMLSTC Unittest will exit after running all tests,
 and expects that a user will not require additional information once the tests
-are run. The return value of the executable will be ``EXIT_FAILURE`` or
-``EXIT_SUCCESS``, rather than how many tests passed or failed, as some testing
-frameworks do.
+are run. The return value of the executable will be how many tests passed or
+failed.
 
 API Deprecation
 ---------------
@@ -41,8 +40,5 @@ It should be noted that MNMLSTC Unittest follows `Semantic Versioning
 release be incremented (such as adding a new assert function to the identity
 type in the first release). Changes to the entire API and how it works, will
 be reflected in *both* a new inline namespace as the default (e.g., v2) and
-a major revision update. For instance, this would be the removal of the
-identity type (and placing all assertions into the global namespace), setting
-the exception type to be called 'error' and having it interop with 
-``std::system_error``, or adding non-failing versions of each assertion
-function.
+a major revision update. For instance adding non-failing versions of each
+assertion function (to compete with the GTest)
