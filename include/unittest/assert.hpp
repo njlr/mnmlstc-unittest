@@ -32,17 +32,55 @@ std::string message (T const& first, U const& second, char const* center) {
 
 } /* namespace impl */
 
+/* is_true */
+template <typename T>
+auto is_true (T const& value) -> typename enable_if<
+  std::is_convertible<T, bool>
+>::type {
+  monitor::increment();
+  if (value) { return; }
+  throw error { "is-true", impl::message(value, "is not true") };
+}
+
+template <typename T>
+auto is_true (T const& value) -> typename disable_if<
+  std::is_convertible<T, bool>
+>::type {
+  monitor::increment();
+  throw error { "is-true", "Given value is not convertible to bool" };
+}
+
+/* is_false */
+template <typename T>
+auto is_false (T const& value) -> typename enable_if<
+  std::is_convertible<T, bool>
+>::type {
+  monitor::increment();
+  if (not value) { return; }
+  throw error { "is-false", impl::message(value, "is not false") };
+}
+
+template <typename T>
+auto is_false (T const& value) -> typename disable_if<
+  std::is_convertible<T, bool>
+>::type {
+  monitor::increment();
+  throw error { "is-false", "Given value is not convertible to bool" };
+}
+
 /* equal */
 template <typename T, typename U>
-auto equal(T const& lhs, U const& rhs) -> typename enable_if<
+auto equal (T const& lhs, U const& rhs) -> typename enable_if<
   trait::eq<T, U>
 >::type {
+  monitor::increment();
   if (lhs == rhs) { return; }
   throw error { "equal", impl::message(lhs, rhs, "is not equal to") };
 }
 
 template <typename T, typename U>
 auto equal (T const&, U const&) -> typename disable_if<trait::eq<T, U>>::type {
+  monitor::increment();
   throw error { "equal", "Given types do not implement operator ==" };
 }
 
@@ -51,6 +89,7 @@ template <typename T, typename U>
 auto not_equal (T const& lhs, U const& rhs) -> typename enable_if<
   trait::ne<T, U>
 >::type {
+  monitor::increment();
   if (lhs != rhs) { return; }
   throw error { "not-equal", impl::message(lhs, rhs, "is equal to") };
 }
@@ -59,6 +98,7 @@ template <typename T, typename U>
 auto not_equal (T const&, U const&) -> typename disable_if<
   trait::ne<T, U>
 >::type {
+  monitor::increment();
   throw error { "not-equal", "Given types do not implement operator !=" };
 }
 
@@ -109,6 +149,7 @@ template<> void is_not<intptr_t>(intptr_t const& lhs, intptr_t const& rhs) {
 /* is-null */
 template <typename T>
 void is_null (T const* ptr) {
+  monitor::increment();
   if (ptr == nullptr) { return; }
   throw error { "is-null", "Given pointer is not null" };
 }
@@ -118,6 +159,7 @@ inline void is_null (std::nullptr_t) { monitor::increment(); }
 /* is-not-null */
 template <typename T>
 void is_not_null (T const* ptr) {
+  monitor::increment();
   if (ptr) { return; }
   throw error { "is-not-null", "Given pointer is null" };
 }
@@ -133,6 +175,7 @@ auto in (T const& lhs, U const& rhs) -> typename enable_if<
   trait::begin<U>,
   trait::end<U>
 >::type {
+  monitor::increment();
   auto begin = std::begin(rhs);
   auto end = std::end(rhs);
   auto result = std::find(begin, end, lhs);
@@ -145,6 +188,7 @@ auto in (T const&, U const&) -> typename disable_if<
   trait::begin<U>,
   trait::end<U>
 >::type {
+  monitor::increment();
   throw error { "in", "Given type is not an iterable range" };
 }
 
@@ -154,6 +198,7 @@ auto not_in (T const& lhs, U const& rhs) -> typename enable_if<
   trait::begin<U>,
   trait::end<U>
 >::type {
+  monitor::increment();
   auto begin = std::begin(rhs);
   auto end = std::end(rhs);
   auto result = std::find(begin, end, lhs);
@@ -166,12 +211,14 @@ auto not_in (T const&, U const&) -> typename disable_if<
   trait::begin<U>,
   trait::end<U>
 >::type {
+  monitor::increment();
   throw error { "not-in", "Given type is not an iterable range" };
 }
 
 /* throws */
 template <typename T>
 void throws (std::function<void()>&& call) {
+  monitor::increment();
   try { call(); }
   catch (T const&) { return; }
   catch (...) { }
@@ -180,6 +227,7 @@ void throws (std::function<void()>&& call) {
 
 /* almost_equal */
 void almost_equal (double first, double second, int places=4) {
+  monitor::increment();
   if (std::isnan(first)) {
     throw error { "almost-equal", "Cannot compare when 1st value is NaN" };
   }
@@ -212,6 +260,7 @@ void almost_equal (double first, double second, int places=4) {
 }
 
 void almost_equal (float first, float second, int places=4) {
+  monitor::increment();
   if (std::isnan(first)) {
     throw error { "almost-equal", "Cannot compare when 1st value is NaN" };
   }
@@ -246,6 +295,7 @@ void almost_equal (float first, float second, int places=4) {
 
 /* not-almost-equal */
 void not_almost_equal (double first, double second, int places=4) {
+  monitor::increment();
   if (std::isnan(first)) {
     throw error { "not-almost-equal", "Cannot compare when 1st value is NaN" };
   }
@@ -283,6 +333,7 @@ void not_almost_equal (double first, double second, int places=4) {
 }
 
 void not_almost_equal (float first, float second, int places=4) {
+  monitor::increment();
   if (std::isnan(first)) {
     throw error { "not-almost-equal", "Cannot compare when 1st value is NaN" };
   }
@@ -325,6 +376,7 @@ template <typename T, typename U>
 auto greater (T const& lhs, U const& rhs) -> typename enable_if<
   trait::gt<T, U>
 >::type {
+  monitor::increment();
   if (lhs > rhs) { return; }
   throw error { "greater", impl::message(lhs, rhs, "is not greater than") };
 }
@@ -333,6 +385,7 @@ template <typename T, typename U>
 auto greater (T const&, U const&) -> typename disable_if<
   trait::gt<T, U>
 >::type {
+  monitor::increment();
   throw error { "greater", "Given types do not implement operator >" };
 }
 
@@ -341,6 +394,7 @@ template <typename T, typename U>
 auto greater_equal (T const& lhs, U const& rhs) -> typename enable_if<
   trait::ge<T, U>
 >::type {
+  monitor::increment();
   if (lhs >= rhs) { return; }
   throw error {
     "greater-equal",
@@ -352,6 +406,7 @@ template <typename T, typename U>
 auto greater_equal (T const&, U const&) -> typename disable_if<
   trait::ge<T, U>
 >::type {
+  monitor::increment();
   throw error { "greater-equal", "Given types do not implement operator >=" };
 }
 
@@ -360,6 +415,7 @@ template <typename T, typename U>
 auto less (T const& lhs, U const& rhs) -> typename enable_if<
   trait::lt<T, U>
 >::type {
+  monitor::increment();
   if (lhs < rhs) { return; }
   throw error { "less", impl::message(lhs, rhs, "is not less than") };
 }
@@ -368,6 +424,7 @@ template <typename T, typename U>
 auto less (T const&, U const&) -> typename disable_if<
   trait::lt<T, U>
 >::type {
+  monitor::increment();
   throw error { "less", "Given types do not implement operator <" };
 }
 
@@ -376,6 +433,7 @@ template <typename T, typename U>
 auto less_equal (T const& lhs, U const& rhs) -> typename enable_if<
   trait::le<T, U>
 >::type {
+  monitor::increment();
   if (lhs <= rhs) { return; }
   throw error {
     "less-equal",
@@ -387,6 +445,7 @@ template <typename T, typename U>
 auto less_equal (T const&, U const&) -> typename disable_if<
   trait::le<T, U>
 >::type {
+  monitor::increment();
   throw error { "less-equal", "Given types do not implement operator <=" };
 }
 
@@ -395,7 +454,10 @@ auto less_equal (T const&, U const&) -> typename disable_if<
 /* sequence-equal */
 
 /* fail */
-inline void fail () { throw error { "fail", "Immediate failure requested" }; }
+inline void fail () {
+  monitor::increment();
+  throw error { "fail", "Immediate failure requested" };
+}
 
 }}} /* namespace unittest::v1::assert */
 
