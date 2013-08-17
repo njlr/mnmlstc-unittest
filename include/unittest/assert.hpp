@@ -38,7 +38,7 @@ auto is_true (T const& value) -> typename enable_if<
   std::is_convertible<T, bool>
 >::type {
   monitor::increment();
-  if (value) { return; }
+  if (bool(value)) { return; }
   throw error { "is-true", impl::message(value, "is not true") };
 }
 

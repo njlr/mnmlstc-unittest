@@ -27,6 +27,10 @@ the ``assert`` namespace.
 +-----------------------------------------------------+------------------+
 | :cpp:func:`not_equal(a, b)<assert::not_equal>`      | ``a != b``       |
 +-----------------------------------------------------+------------------+
+| :cpp:func:`is_true(a)<assert::is_true>`             | ``a == true``    |
++-----------------------------------------------------+------------------+
+| :cpp:func:`is_false(a)<assert::is_false>`           | ``a == false``   |
++-----------------------------------------------------+------------------+
 | :cpp:func:`is(a, b)<assert::is>`                    | ``&a == &b``     |
 +-----------------------------------------------------+------------------+
 | :cpp:func:`is_not(a, b)<assert::is_not>`            | ``&a != &b``     |
@@ -52,6 +56,14 @@ the ``assert`` namespace.
    :type first: Any valid type
    :type second: Any valid type
 
+.. function:: void assert::is_true (value)
+              void assert::is_false (value)
+
+   Tests that the given value is true or false. This is done explicitly by
+   calling ``bool(value)``.
+
+   :type value: Any type that can be converted to a boolean, either implicitly
+                or explicitly.
 
 .. function:: void assert::is(first, second)
               void assert::is_not(first, second)
@@ -59,7 +71,6 @@ the ``assert`` namespace.
    Tests that first and second either occupy or do not occupy the same
    address of memory. ``first`` and ``second`` may be either const
    references or pointers to some object, but these cannot be interchanged.
-
 
 .. function:: void assert::is_null(expr)
               void assert::is_not_null(expr)
@@ -149,7 +160,7 @@ tasks. For example::
 
    .. type:: function
 
-      This type is simply a type alias for :cpp:type:`std::function\<void()\>`
+      This type is simply a type alias for :cpp:type:`std::function\<void()>`
 
    .. function:: skip(const char* msg)
 
@@ -160,8 +171,17 @@ tasks. For example::
 
 .. class:: skip_unless
 
+   ``skip_unless`` takes a boolean and a message. The function it is given
+   will not be executed *unless* the given boolean is true.
+
+   ``skip_unless`` inherits from :cpp:class:`skip` privately, treating it
+   more as a mixin, than a parent.
+
    .. function:: skip_unless(bool, const char*)
 
 .. class:: skip_if
+
+   ``skip_if`` takes a boolean and a message. The function it is given will not
+   be executed *if* the given boolean is true.
 
    .. function:: skip_if(bool, const char*)
