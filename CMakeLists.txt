@@ -190,4 +190,24 @@ install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/unittest"
 #------------------------------------------------------------------------------
 # Package
 #------------------------------------------------------------------------------
-# TODO
+set(CPACK_GENERATOR "WIX")
+set(CPACK_PACKAGE_NAME "MNMLSTC Unittest")
+set(CPACK_PACKAGE_VENDOR "MNMLSTC")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
+  "MNMLSTC Unittest - A C++11 unit test framework")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/Readme.rst")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License.rst")
+
+set(CPACK_PACKAGE_VERSION_MAJOR ${UNITTEST_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${UNITTEST_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${UNITTEST_VERSION_PATCH})
+# Intended for installers only, such as NSIS or MSIs
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "mnmlstc/${PROJECT_NAME}")
+
+set(CPACK_WIX_UPGRADE_GUID "ECDABEC7-0153-42FD-A094-72923031B1EE")
+set(CPACK_WIX_PRODUCT_GUID "*")
+set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/configure/mnmlstc.ico")
+set(CPACK_WIX_LICENSE_RTF "${CMAKE_CURRENT_SOURCE_DIR}/configure/License.rtf")
+set(CPACK_WIX_UI_BANNER "${CMAKE_CURRENT_SOURCE_DIR}/configure/banner.bmp")
+
+include(CPack)
