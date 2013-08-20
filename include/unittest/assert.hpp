@@ -30,6 +30,13 @@ std::string message (T const& first, U const& second, char const* center) {
   return stream.str();
 }
 
+template <typename T>
+std::string message (T const& value, char const* message) {
+  std::ostringstream stream;
+  stream << value << " " << message;
+  return stream.str();
+}
+
 } /* namespace impl */
 
 /* is_true */
