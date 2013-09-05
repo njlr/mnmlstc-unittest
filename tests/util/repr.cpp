@@ -34,5 +34,17 @@ int main () {
     std::exit(EXIT_FAILURE);
   }
 
+  std::ostringstream null_stream;
+  std::ostringstream null_stream2;
+  stream2 << "nullptr";
+  stream << nullptr;
+
+  if (null_stream.str() != null_stream2.str()) {
+    std::clog << "nullptr_stream::operator << returned: " << null_stream.str()
+              << " instead of " << null_stream2.str()
+              << std::endl;
+  }
+
+
   return EXIT_SUCCESS;
 }

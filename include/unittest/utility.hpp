@@ -114,6 +114,10 @@ inline ostream& operator << (ostream& os, unknown_type const& value) {
             << ">";
 }
 
+inline ostream& operator << (ostream& os, std::nullptr_t) {
+  return os << "nullptr";
+}
+
 }} /* namespace unittest::v1 */
 
 #endif /* UNITTEST_UTILITY_HPP */
