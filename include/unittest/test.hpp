@@ -29,7 +29,7 @@ public:
   void operator = (std::initializer_list<task_pair> tasks) noexcept {
     std::for_each(tasks.begin(), tasks.end(), [this](task_pair item) {
       monitor::add(
-        std::move(this->label),
+        std::move(std::string { this->label }),
         std::move(std::get<0>(item)),
         std::move(std::get<1>(item))
       );
