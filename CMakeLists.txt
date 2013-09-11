@@ -5,7 +5,6 @@ project(unittest CXX)
 # Modules, Variables, and Options
 #------------------------------------------------------------------------------
 include(CMakePackageConfigHelpers)
-include(CMakeDependentOption)
 include(GenerateExportHeader)
 include(CheckCXXCompilerFlag)
 include(CheckIncludeFileCXX)
@@ -24,7 +23,11 @@ set(UNITTEST_VERSION
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/configure")
 
 option(BUILD_UNITTEST_TESTS "Build unittest's personal tests" OFF)
-option(BUILD_WITH_LIBCXX "Uses libc++ as the standard library" OFF)
+option(BUILD_WITH_LIBCXX "Uses libc++ as stdlib" OFF)
+
+if (APPLE AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+  set(BUILD_WITH_LIBCXX ON CACHE BOOL "Use libc++ as stdlib" FORCE)
+endif ()
 
 #------------------------------------------------------------------------------
 # Compiler Environment Check
