@@ -23,11 +23,8 @@ set(UNITTEST_VERSION
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/configure")
 
-cmake_dependent_option(
-  BUILD_WITH_LIBCXX "Use libc++ as the standard library" ON
-  "USE_STDLIB_LIBCXX" OFF
-)
 option(BUILD_UNITTEST_TESTS "Build unittest's personal tests" OFF)
+option(BUILD_WITH_LIBCXX "Uses libc++ as the standard library" OFF)
 
 #------------------------------------------------------------------------------
 # Compiler Environment Check
