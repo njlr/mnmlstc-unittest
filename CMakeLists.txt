@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.10)
+cmake_minimum_required(VERSION 2.8.11)
 project(unittest CXX)
 
 #------------------------------------------------------------------------------
@@ -12,18 +12,26 @@ include(CTest)
 
 set(INCLUDE_INSTALL_DIR "include" CACHE INTERNAL "Header Files")
 set(CMAKE_INSTALL_DIR "share/cmake/unittest" CACHE INTERNAL "CMake Files")
+set(DOCS_INSTALL_DIR "share/doc/mnmlstc/unittest" CACHE INTERNAL "")
 
 set(UNITTEST_VERSION_MAJOR 1)
 set(UNITTEST_VERSION_MINOR 0)
-set(UNITTEST_VERSION_PATCH 2)
+set(UNITTEST_VERSION_PATCH 3)
 set(UNITTEST_VERSION
   ${UNITTEST_VERSION_MAJOR}.${UNITTEST_VERSION_MINOR}.${UNITTEST_VERSION_PATCH}
 )
+
+set(TEST_SOURCE_DIR "${PROJECT_SOURCE_DIR}/tests")
+set(TEST_BINARY_DIR "${PROJECT_BINARY_DIR}/tests")
+
+set(DOCS_SOURCE_DIR "${PROJECT_SOURCE_DIR}/docs")
+set(DOCS_BINARY_DIR "${PROJECT_BINARY_DIR}/docs")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/configure")
 
 option(BUILD_UNITTEST_TESTS "Build unittest's personal tests" OFF)
 option(BUILD_WITH_LIBCXX "Uses libc++ as stdlib" OFF)
+option(BUILD_DOCS "Build documentation with Sphinx Documentation Generator")
 
 if (APPLE AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
   set(BUILD_WITH_LIBCXX ON CACHE BOOL "Use libc++ as stdlib" FORCE)
@@ -113,24 +121,21 @@ endif ()
 # Configuration
 #------------------------------------------------------------------------------
 write_basic_package_version_file(
-  ${PROJECT_BINARY_DIR}/unittest-config-version.cmake
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
   VERSION ${UNITTEST_VERSION}
   COMPATIBILITY SameMajorVersion
 )
 
 configure_package_config_file(
-  ${PROJECT_SOURCE_DIR}/configure/unittest-config.cmake.in
-  ${PROJECT_BINARY_DIR}/unittest-config.cmake
+  "${PROJECT_SOURCE_DIR}/configure/${PROJECT_NAME}-config.cmake.in"
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
   INSTALL_DESTINATION "${CMAKE_INSTALL_DIR}"
   PATH_VARS
   INCLUDE_INSTALL_DIR
   CMAKE_INSTALL_DIR
 )
 
-include_directories(
-  ${PROJECT_SOURCE_DIR}/include
-  ${PROJECT_BINARY_DIR}/include
-)
+include_directories("${PROJECT_SOURCE_DIR}/include")
 
 if (CAN_USE_STDLIB_LIBCXX AND BUILD_WITH_LIBCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_STDLIB_LIBCXX}")
@@ -166,17 +171,19 @@ endif ()
 
 if (BUILD_TESTING AND BUILD_UNITTEST_TESTS)
   set(CMAKE_TEST_COMMAND ctest)
-  set(TEST_SOURCE_DIR "${PROJECT_SOURCE_DIR}/tests")
-  set(TEST_BINARY_DIR "${PROJECT_BINARY_DIR}/tests")
   add_subdirectory("${TEST_SOURCE_DIR}" "${TEST_BINARY_DIR}" EXCLUDE_FROM_ALL)
+endif ()
+
+if (BUILD_DOCS)
+  add_subdirectory("${DOCS_SOURCE_DIR}" "${DOCS_BINARY_DIR}" EXCLUDE_FROM_ALL)
 endif ()
 
 #------------------------------------------------------------------------------
 # Install
 #------------------------------------------------------------------------------
 install(FILES
-  ${PROJECT_BINARY_DIR}/unittest-config-version.cmake
-  ${PROJECT_BINARY_DIR}/unittest-config.cmake
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
   DESTINATION ${CMAKE_INSTALL_DIR}
 )
 
@@ -185,18 +192,21 @@ install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/unittest"
   FILES_MATCHING PATTERN "*.hpp"
 )
 
-# TODO: Add BUILD_DOCS option
+install(DIRECTORY "${DOCS_BINARY_DIR}/"
+  DESTINATION ${DOCS_INSTALL_DIR}
+  FILES_MATCHING PATTERN "*"
+)
 
 #------------------------------------------------------------------------------
 # Package
 #------------------------------------------------------------------------------
 set(CPACK_GENERATOR "WIX")
-set(CPACK_PACKAGE_NAME "MNMLSTC Unittest")
+set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
 set(CPACK_PACKAGE_VENDOR "MNMLSTC")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
   "MNMLSTC Unittest - A C++11 unit test framework")
-set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/Readme.rst")
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License.rst")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${PROJECT_SOURCE_DIR}/Readme.rst")
+set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/License.rst")
 
 set(CPACK_PACKAGE_VERSION_MAJOR ${UNITTEST_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${UNITTEST_VERSION_MINOR})
@@ -206,8 +216,9 @@ set(CPACK_PACKAGE_INSTALL_DIRECTORY "mnmlstc/${PROJECT_NAME}")
 
 set(CPACK_WIX_UPGRADE_GUID "ECDABEC7-0153-42FD-A094-72923031B1EE")
 set(CPACK_WIX_PRODUCT_GUID "*")
-set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/configure/mnmlstc.ico")
-set(CPACK_WIX_LICENSE_RTF "${CMAKE_CURRENT_SOURCE_DIR}/configure/License.rtf")
-set(CPACK_WIX_UI_BANNER "${CMAKE_CURRENT_SOURCE_DIR}/configure/banner.bmp")
+set(CPACK_WIX_PRODUCT_ICON "${PROJECT_SOURCE_DIR}/package/mnmlstc.ico")
+set(CPACK_WIX_LICENSE_RTF "${PROJECT_SOURCE_DIR}/package/License.rtf")
+set(CPACK_WIX_UI_BANNER "${PROJECT_SOURCE_DIR}/package/banner.bmp")
+set(CPACK_WIX_UI_DIALOG "${PROJECT_SOURCE_DIR}/package/dialog.bmp")
 
 include(CPack)
