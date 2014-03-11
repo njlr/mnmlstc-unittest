@@ -5,6 +5,7 @@ project(unittest CXX)
 # Modules, Variables, and Options
 #------------------------------------------------------------------------------
 include(CMakePackageConfigHelpers)
+include(CMakeDependentOption)
 include(GenerateExportHeader)
 include(CheckCXXCompilerFlag)
 include(CheckIncludeFileCXX)
@@ -27,11 +28,26 @@ set(TEST_BINARY_DIR "${PROJECT_BINARY_DIR}/tests")
 set(DOCS_SOURCE_DIR "${PROJECT_SOURCE_DIR}/docs")
 set(DOCS_BINARY_DIR "${PROJECT_BINARY_DIR}/docs")
 
+set(PACK_SOURCE_DIR "${PROJECT_SOURCE_DIR}/package")
+set(PACK_BINARY_DIR "${PROJECT_BINARY_DIR}/package")
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/configure")
+
+# Used by cmake-dependent-option
+list(APPEND RPM_DEP "UNIX" "NOT APPLE" "BUILD_PACKAGE")
+list(APPEND DEB_DEP "UNIX" "NOT APPLE" "BUILD_PACKAGE")
+list(APPEND PKG_DEP "APPLE" "BUILD_PACKAGE")
+list(APPEND MSI_DEP "WIN32" "BUILD_PACKAGE")
 
 option(BUILD_UNITTEST_TESTS "Build unittest's personal tests" OFF)
 option(BUILD_WITH_LIBCXX "Uses libc++ as stdlib" OFF)
-option(BUILD_DOCS "Build documentation with Sphinx Documentation Generator")
+option(BUILD_PACKAGE "Build package information with CPack" OFF)
+option(BUILD_DOCS "Build documentation with Sphinx Documentation Generator" OFF)
+
+cmake_dependent_option(BUILD_PACKAGE_MSI "Create an MSI" ON "${MSI_DEP}" OFF)
+cmake_dependent_option(BUILD_PACKAGE_RPM "Create an RPM" ON "${RPM_DEP}" OFF)
+cmake_dependent_option(BUILD_PACKAGE_DEB "Create a DEB" ON "${DEB_DEP}" OFF)
+cmake_dependent_option(BUILD_PACKAGE_PKG "Create a PKG" ON "${PKG_DEP}" OFF)
 
 if (APPLE AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
   set(BUILD_WITH_LIBCXX ON CACHE BOOL "Use libc++ as stdlib" FORCE)
@@ -178,6 +194,10 @@ if (BUILD_DOCS)
   add_subdirectory("${DOCS_SOURCE_DIR}" "${DOCS_BINARY_DIR}" EXCLUDE_FROM_ALL)
 endif ()
 
+if (BUILD_PACKAGE)
+  add_subdirectory("${PACK_SOURCE_DIR}" "${PACK_BINARY_DIR}" EXCLUDE_FROM_ALL)
+endif ()
+
 #------------------------------------------------------------------------------
 # Install
 #------------------------------------------------------------------------------
@@ -192,33 +212,15 @@ install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/unittest"
   FILES_MATCHING PATTERN "*.hpp"
 )
 
-install(DIRECTORY "${DOCS_BINARY_DIR}/"
-  DESTINATION ${DOCS_INSTALL_DIR}
-  FILES_MATCHING PATTERN "*"
-)
-
-#------------------------------------------------------------------------------
-# Package
-#------------------------------------------------------------------------------
-set(CPACK_GENERATOR "WIX")
-set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
-set(CPACK_PACKAGE_VENDOR "MNMLSTC")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY
-  "MNMLSTC Unittest - A C++11 unit test framework")
-set(CPACK_PACKAGE_DESCRIPTION_FILE "${PROJECT_SOURCE_DIR}/Readme.rst")
-set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/License.rst")
-
-set(CPACK_PACKAGE_VERSION_MAJOR ${UNITTEST_VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${UNITTEST_VERSION_MINOR})
-set(CPACK_PACKAGE_VERSION_PATCH ${UNITTEST_VERSION_PATCH})
-# Intended for installers only, such as NSIS or MSIs
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "mnmlstc/${PROJECT_NAME}")
-
-set(CPACK_WIX_UPGRADE_GUID "ECDABEC7-0153-42FD-A094-72923031B1EE")
-set(CPACK_WIX_PRODUCT_GUID "*")
-set(CPACK_WIX_PRODUCT_ICON "${PROJECT_SOURCE_DIR}/package/mnmlstc.ico")
-set(CPACK_WIX_LICENSE_RTF "${PROJECT_SOURCE_DIR}/package/License.rtf")
-set(CPACK_WIX_UI_BANNER "${PROJECT_SOURCE_DIR}/package/banner.bmp")
-set(CPACK_WIX_UI_DIALOG "${PROJECT_SOURCE_DIR}/package/dialog.bmp")
-
-include(CPack)
+if (BUILD_DOCS)
+  install(DIRECTORY "${DOCS_BINARY_DIR}/"
+    DESTINATION ${DOCS_INSTALL_DIR}
+    FILES_MATCHING
+    PATTERN ".buildinfo" EXCLUDE
+    PATTERN "CMakeFiles" EXCLUDE
+    PATTERN ".doctrees" EXCLUDE
+    PATTERN "Makefile" EXCLUDE
+    PATTERN "*.cmake" EXCLUDE
+    PATTERN "*"
+  )
+endif ()

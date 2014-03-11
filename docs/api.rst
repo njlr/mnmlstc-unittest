@@ -160,7 +160,7 @@ tasks. For example::
 
    .. type:: function
 
-      This type is simply a type alias for :cpp:type:`std::function\<void()>`
+      This type is simply a type alias for ``std::function<void()>``
 
    .. function:: skip(const char* msg)
 

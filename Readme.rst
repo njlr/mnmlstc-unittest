@@ -40,7 +40,7 @@ Requirements
 
 There are several requirements to fully use unittest:
 
- * `CMake 2.8.10 <http://cmake.org>`_ (2.8.11 if you wish to use CPack)
+ * `CMake 2.8.11 <http://cmake.org>`_
  * A C++11 compliant compiler and standard library implementation
  * `Sphinx <http://sphinx-doc.org>`_
  * `Cloud Sphinx Theme <https://pypi.python.org/pypi/cloud_sptheme>`_
