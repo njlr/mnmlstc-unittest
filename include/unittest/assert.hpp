@@ -50,7 +50,7 @@ auto is_true (T const& value) -> typename enable_if<
 }
 
 template <typename T>
-auto is_true (T const& value) -> typename disable_if<
+auto is_true (T const&) -> typename disable_if<
   std::is_convertible<T, bool>
 >::type {
   monitor::increment();
@@ -68,7 +68,7 @@ auto is_false (T const& value) -> typename enable_if<
 }
 
 template <typename T>
-auto is_false (T const& value) -> typename disable_if<
+auto is_false (T const&) -> typename disable_if<
   std::is_convertible<T, bool>
 >::type {
   monitor::increment();
