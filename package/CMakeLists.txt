@@ -5,7 +5,8 @@ if (BUILD_PACKAGE_MSI)
 endif ()
 
 if (BUILD_PACKAGE_PKG)
-  list(APPEND GENERATORS "PackageMaker")
+# disabled until a replacement is found
+#  list(APPEND GENERATORS "PackageMaker")
 endif ()
 
 if (BUILD_PACKAGE_DEB)
