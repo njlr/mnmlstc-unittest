@@ -1,0 +1,324 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting Started With Unittest &mdash; MNMLSTC Unittest 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/cloud.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/cloud.js"></script>
+    <link rel="top" title="MNMLSTC Unittest 1.0 documentation" href="index.html" />
+    <link rel="next" title="Using Unittest" href="usage.html" />
+    <link rel="prev" title="Overview" href="index.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="relbar-top">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="usage.html" title="Using Unittest"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Overview"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">MNMLSTC Unittest 1.0 documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="getting-started-with-unittest">
+<h1>Getting Started With Unittest<a class="headerlink" href="#getting-started-with-unittest" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial will walk you through the basics of using MNMLSTC Unittest. It
+will introduce to you the concepts that MNMLSTC Unittest introduces, as well
+as explain <em>why</em> MNMLSTC Unittest works in the way it does, and does not take
+the same approach to unit tests as many other C++ unit testing frameworks.</p>
+<p>It should be noted, MNMLSTC Unittest assumes the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li>You are using CMake</li>
+<li>You are using CTest as the test runner</li>
+<li>You are using a C++11 compiler</li>
+<li>Any code that interacts with MNMLSTC Unittest will have exceptions enabled</li>
+</ul>
+</div></blockquote>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">set a link to the API from here.</p>
+</div>
+<p>Additionally, this tutorial will not teach you everything you need to know to
+effectively use MNMLSTC Unittest. It will show the most basic steps that need
+to be taken to begin using MNMLSTC Unittest. To get a better idea of how
+it works, see the API documentation.</p>
+<div class="section" id="concepts">
+<span id="tutorial-concepts"></span><h2>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h2>
+<p>Unittest differs from most unit testing libraries in their naming conventions.
+This section will discuss how these naming conventions result in a few
+<em>technical</em> conceptual differences. At the end of the day, however, they are
+all the same. You have cases, suites, tests, and fixtures. When explaining the
+differences, similarities to other frameworks (such as GTest, Unity, or
+python&#8217;s unittest module) will be made.</p>
+<dl class="glossary docutils">
+<dt id="term-test-suite">test suite</dt>
+<dd>For unittest, the resulting executable produced from CMake is your test
+suite. One could argue that organizing suites within suites ad infinitum is
+unnecessary. This is a position that MNMLSTC Unittest takes.</dd>
+<dt id="term-test-case">test case</dt>
+<dd>Unlike python&#8217;s unittest or GTest, the &#8216;test case&#8217; in MNMLSTC Unittest is
+just a &#8216;test&#8217;. Tests are made up of steps, or tasks. A case, technically
+speaking, is a collection of steps taken to ensure that your code is
+sane. So, while other systems refer to a collection of tasks as a test
+case, MNMLSTC Unittest calls these a test.</dd>
+<dt id="term-test-step">test step</dt>
+<dd>A step is placed within a test. They can fail, pass, or skip. They are,
+outside of a single assertion statement, the smallest unit of execution
+within MNMLSTC Unittest, and where most of your work will go.</dd>
+</dl>
+<p>As you can see from the <em>very</em> brief explanations, MNMLSTC Unittest doesn&#8217;t
+differ much from other unit testing libraries. However, in the realm of C++,
+it does differ in one major way: <em>There are absolutely no preprocessor macros</em>.
+But why would MNMLSTC Unittest have none of these?</p>
+<p>When it comes to the preprocessor macros, one has to understand what these
+macros actually do to understand any potential compiler errors. And at runtime,
+we aren&#8217;t given an idea of <em>why</em> the assertion failed (e.g., what are the
+values inside of the tested variables, rather than what their names are/what
+line it all happens on?). Python&#8217;s unittest does this well (and it comes as a
+result of its ability to perform runtime reflection on variables, as well as
+know the current line), but C++ is not python, no matter how hard one wished
+it was. As such, MNMLSTC Unittest makes due with what it can.</p>
+<p>One might notice, however, the absence of the common setup, teardown and
+test fixture concepts. Because of RAII, it is deemed unnecessary for these to
+be provided, simply because every other test framework implements them. There
+is a way to imitate this kind of consistent setup and teardown via capturing
+an object by value within a lambda declaration.</p>
+<p>Additionally, initialization of resources can be postponed by simply
+initializing them within a lambda, and this should be taken advantage of.</p>
+<p>The most important part of MNMLSTC Unittest is that it tries to make you solve
+the problem at hand: Do the components you are testing, work?</p>
+</div>
+<div class="section" id="your-first-unittest-unit-test">
+<h2>Your First Unittest Unit Test<a class="headerlink" href="#your-first-unittest-unit-test" title="Permalink to this headline">¶</a></h2>
+<p>Well, enough about the concepts of Unittest. It&#8217;s time to write our first
+test!</p>
+<p>Because of how MNMLSTC Unittest works, we can declare any test anywhere within
+the program, as long as it is within the scope of <em>some</em> function. For the
+purposes of this tutorial, we&#8217;ll simply place everything within main:</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include &lt;unittest/unittest.hpp&gt;</span>
+
+<span class="kt">int</span> <span class="n">main</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">using</span> <span class="k">namespace</span> <span class="n">unittest</span><span class="p">;</span>
+
+  <span class="n">test</span><span class="p">(</span><span class="s">&quot;my-first-test&quot;</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">task</span><span class="p">(</span><span class="s">&quot;first-task&quot;</span><span class="p">)</span> <span class="o">=</span> <span class="p">[]{</span> <span class="n">assert</span><span class="o">::</span><span class="n">fail</span><span class="p">(</span><span class="s">&quot;Not Yet Implemented&quot;</span><span class="p">);</span> <span class="p">},</span>
+    <span class="n">task</span><span class="p">(</span><span class="s">&quot;second-task&quot;</span><span class="p">)</span> <span class="o">=</span> <span class="p">[]{</span> <span class="n">assert</span><span class="o">::</span><span class="n">fail</span><span class="p">(</span><span class="s">&quot;Not Yet Implemented&quot;</span><span class="p">);</span> <span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="n">monitor</span><span class="o">::</span><span class="n">run</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>And now, a brief explanation of just what in tarnation we think we&#8217;re doing
+here. First, we include the unittest amalgamation header. This header is
+provided to insure that the proper namespaces and declarations are available
+for the user.</p>
+<p>Next, we do a <tt class="docutils literal"><span class="pre">using</span> <span class="pre">namespace</span> <span class="pre">unittest</span></tt>. This is <em>absolutely</em> vital, as it
+allows unittest to use its automatic value printing fallback without issue.</p>
+<p>Now to get to the meat of the program. We declare a test with the name
+&#8220;my-first-test&#8221;. All tests (and tasks!) <em>should</em> use a string literal. However,
+as of right now, their interface is to take a <tt class="docutils literal"><span class="pre">std::string&amp;&amp;</span></tt>.</p>
+<p>On the same line, we begin to assign an initialization_list of tasks. Just know
+that the only way to submit tasks to a test case is to place them within
+this initialization_list.</p>
+<p>Tasks work almost like tests in that we assign a value to them after their
+declaration. In the case of a task, it <em>always</em> takes a
+<tt class="docutils literal"><span class="pre">std::function&lt;void()&gt;</span></tt> by rvalue reference. This means anything you pass
+into will not be used elsewhere. At that point, MNMLSTC Unittest now <em>owns</em>
+that object and will do with it as it pleases. While it is possible to
+construct a <tt class="docutils literal"><span class="pre">std::function&lt;void()&gt;</span></tt> with a variety of ways, it is easiest
+to simply use a lambda. The lambda will allow for capturing fixtures (declared
+with RAII) by value or by reference. Finally, because we really have nothing
+to do, <em>yet</em>, we call <tt class="docutils literal"><span class="pre">assert::fail</span></tt> which will immediately make the test
+runner stop handling the task.</p>
+<p>Finally we call <tt class="docutils literal"><span class="pre">monitor::run()</span></tt>, which is located in the unittest namespace.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Make sure that this is the last function call you make. Whether
+all tests and tasks pass or not is irrelevant, as it will <em>always</em>
+call <tt class="docutils literal"><span class="pre">std::exit</span></tt>.</p>
+</div>
+<p>Of course, this only shows how to write a test, not use it with CMake or CTest.
+So let&#8217;s do that!</p>
+<p>Our CMakeLists.txt file will look like:</p>
+<div class="highlight-cmake"><div class="highlight"><pre><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">2.8.11</span><span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">our-first-unittest-test</span> <span class="s">CXX</span><span class="p">)</span>
+
+<span class="nb">find_package</span><span class="p">(</span><span class="s">unittest</span> <span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">include</span><span class="p">(</span><span class="s">CTest</span><span class="p">)</span>
+
+<span class="nb">include_directories</span><span class="p">(</span><span class="o">${</span><span class="nv">UNITTEST_INCLUDE_DIR</span><span class="o">}</span><span class="p">)</span>
+
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">my-first-unittest-test</span> <span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/test.cpp</span><span class="p">)</span>
+
+<span class="nb">add_test</span><span class="p">(</span><span class="s">my-first-unittest</span> <span class="s">my-first-unittest-test</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Fairly simple! Go ahead and build then run your tests. If you did everything
+right (and let&#8217;s be honest here, you totally did!), you should see ctest
+giving you the &#8216;FAILURE&#8217; output. That&#8217;s fine, because we&#8217;re going to start
+expanding on our test file for the rest of the tutorial.</p>
+<p>Now that we&#8217;ve got our test building, it&#8217;s time to get down and dirty with the
+assertions. Go ahead and open up your test file. Within the first-task, we&#8217;re
+going to write the test to succeed now. Everybody loves math right? So let&#8217;s do
+some. Place the following within the first-task lambda (make sure to remove the
+calls to <tt class="docutils literal"><span class="pre">assert::fail</span></tt>):</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">assert</span><span class="o">::</span><span class="n">not_equal</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+<span class="n">assert</span><span class="o">::</span><span class="n">equal</span><span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Fairly simple, but we&#8217;re just trying to show that our assert_equal works!
+Compile and run, and we&#8217;ll still get the failure output. That&#8217;s fine! We can
+modify the second-task to be a bit more complex. Let&#8217;s create a sequence and
+see if it has a value or not. Place the following in the second-task lambda:</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">sequence</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span> <span class="p">};</span>
+<span class="cm">/* Assume you wish to do some work with the sequence here */</span>
+<span class="n">assert</span><span class="o">::</span><span class="n">not_in</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">sequence</span><span class="p">);</span>
+<span class="n">assert</span><span class="o">::</span><span class="n">in</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">sequence</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If we were to build and run our test, it should now succeed! Our unittest test
+file should now look like this:</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span class="cp">#include &lt;unittest/unittest.hpp&gt;</span>
+<span class="cp">#include &lt;vector&gt;</span>
+
+<span class="kt">int</span> <span class="n">main</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">using</span> <span class="k">namespace</span> <span class="n">unittest</span><span class="p">;</span>
+
+  <span class="n">test</span><span class="p">(</span><span class="s">&quot;my-first-test&quot;</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">task</span><span class="p">(</span><span class="s">&quot;first-task&quot;</span><span class="p">)</span> <span class="o">=</span> <span class="p">[]{</span>
+      <span class="n">assert</span><span class="o">::</span><span class="n">not_equal</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+      <span class="n">assert</span><span class="o">::</span><span class="n">equal</span><span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="n">task</span><span class="p">(</span><span class="s">&quot;second-task&quot;</span><span class="p">)</span> <span class="o">=</span> <span class="p">[]{</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">sequence</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span> <span class="p">};</span>
+      <span class="n">assert</span><span class="o">::</span><span class="n">not_in</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">sequence</span><span class="p">);</span>
+      <span class="n">assert</span><span class="o">::</span><span class="n">in</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">sequence</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="n">monitor</span><span class="o">::</span><span class="n">run</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Pretty neat!</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+        <p class="logo"><a href="index.html">
+          <img class="logo" src="_static/unittest-logo.png" alt="Logo"/>
+        </a></p>
+  <div class="sphinxlocaltoc">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting Started With Unittest</a><ul>
+<li><a class="reference internal" href="#concepts">Concepts</a></li>
+<li><a class="reference internal" href="#your-first-unittest-unit-test">Your First Unittest Unit Test</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="usage.html"
+                        title="next chapter">Using Unittest</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/tutorial.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="usage.html" title="Using Unittest"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="index.html" title="Overview"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">MNMLSTC Unittest 1.0 documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, MNMSLTC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>
