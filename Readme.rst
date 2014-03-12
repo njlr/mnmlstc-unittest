@@ -8,7 +8,7 @@ python unittest module, and as such it has *no preprocessor macros*.
 
 Information on installing and using unittest (as well as modifying its
 internals) can be found in its
-`documentation <https://unittest.readthedocs.org/>`_.
+`documentation <http://mnmlstc.github.io/unittest/>`_.
 
 MNMLSTC Unittest is released under the Apache 2.0 license.
 
