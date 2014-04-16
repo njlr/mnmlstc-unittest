@@ -8,6 +8,9 @@
 
 struct custom { };
 
+struct base { bool operator >= (base const&) const { return true; } };
+struct derived : base { using base::operator >=; };
+
 void v1 () {
   using unittest::v1::error;
   namespace assert = unittest::v1::assert;
@@ -30,7 +33,13 @@ void v1 () {
     std::exit(EXIT_FAILURE);
   }
 
-  try { assert::greater_equal(custom(), custom()); }
+  try { assert::greater_equal(derived { }, derived { }); }
+  catch (...) {
+    std::clog << "unexpected error thrown" << std::endl;
+    std::exit(EXIT_FAILURE);
+  }
+
+  try { assert::greater_equal(custom { }, custom { }); }
   catch (error const& e) {
     if (std::string { "greater-equal" } != e.type()) {
       std::clog << "unexpected error '" << e.type() << "' was thrown"

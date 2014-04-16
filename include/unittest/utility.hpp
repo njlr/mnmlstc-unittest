@@ -37,33 +37,60 @@ using enable_if = std::enable_if<all_of<T...>::value>;
 
 namespace trait {
 
-template <typename T>
-struct boolean : integral_constant<bool, is_same<T, bool>::value> { };
+template <class T, class U>
+class eq {
+  template <class X, class Y>
+  static decltype(declval<X>() == declval<Y>(), void()) check (int) noexcept;
+  template <class, class> static void check (...) noexcept(false);
+public:
+  static constexpr auto value = noexcept(check<T, U>(0));
+};
 
-template <typename T, typename U> void operator == (T const&, U const&);
-template <typename T, typename U> void operator != (T const&, U const&);
-template <typename T, typename U> void operator >= (T const&, U const&);
-template <typename T, typename U> void operator <= (T const&, U const&);
-template <typename T, typename U> void operator > (T const&, U const&);
-template <typename T, typename U> void operator < (T const&, U const&);
+template <class T, class U>
+class ne {
+  template <class X, class Y>
+  static decltype(declval<X>() != declval<Y>(), void()) check (int) noexcept;
+  template <class, class> static void check (...) noexcept(false);
+public:
+  static constexpr auto value = noexcept(check<T, U>(0));
+};
 
-template <typename T, typename U>
-struct eq : boolean<decltype(declval<T>() == declval<U>())> { };
+template <class T, class U>
+class ge {
+  template <class X, class Y>
+  static decltype(declval<X>() >= declval<Y>(), void()) check (int) noexcept;
+  template <class, class> static void check (...) noexcept(false);
+public:
+  static constexpr auto value = noexcept(check<T, U>(0));
+};
 
-template <typename T, typename U>
-struct ne : boolean<decltype(declval<T>() != declval<U>())> { };
+template <class T, class U>
+class le {
+  template <class X, class Y>
+  static decltype(declval<X>() <= declval<Y>(), void()) check (int) noexcept;
+  template <class, class> static void check (...) noexcept(false);
+public:
+  static constexpr auto value = noexcept(check<T, U>(0));
+};
 
-template <typename T, typename U>
-struct ge : boolean<decltype(declval<T>() >= declval<U>())> { };
+template <class T, class U>
+class gt {
+  template <class X, class Y>
+  static decltype(declval<X>() > declval<Y>(), void()) check (int) noexcept;
+  template <class, class> static void check (...) noexcept(false);
+public:
+  static constexpr auto value = noexcept(check<T, U>(0));
+};
 
-template <typename T, typename U>
-struct le : boolean<decltype(declval<T>() <= declval<U>())> { };
+template <class T, class U>
+class lt {
+  template <class X, class Y>
+  static decltype(declval<X>() < declval<Y>(), void()) check (int) noexcept;
+  template <class, class> static void check (...) noexcept(false);
+public:
+  static constexpr auto value = noexcept(check<T, U>(0));
+};
 
-template <typename T, typename U>
-struct gt : boolean<decltype(declval<T>() > declval<U>())> { };
-
-template <typename T, typename U>
-struct lt : boolean<decltype(declval<T>() < declval<U>())> { };
 
 template <typename T>
 class begin {

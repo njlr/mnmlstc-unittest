@@ -7,12 +7,20 @@
 #include <unittest/error.hpp>
 
 struct custom { };
+struct base { bool operator <= (base const&) const { return true; } };
+struct derived : base { using base::operator <=; };
 
 void v1 () {
   using unittest::v1::error;
   namespace assert = unittest::v1::assert;
 
   try { assert::less_equal(1, 2); }
+  catch (...) {
+    std::clog << "unexpected error was thrown" << std::endl;
+    std::exit(EXIT_FAILURE);
+  }
+
+  try { assert::less_equal(derived { }, derived { }); }
   catch (...) {
     std::clog << "unexpected error was thrown" << std::endl;
     std::exit(EXIT_FAILURE);
@@ -30,7 +38,7 @@ void v1 () {
     std::exit(EXIT_FAILURE);
   }
 
-  try { assert::less_equal(custom(), custom()); }
+  try { assert::less_equal(custom { }, custom { }); }
   catch (error const& e) {
     if (std::string { "less-equal" } != e.type()) {
       std::clog << "unexpected error '" << e.type() << "' was thrown"
