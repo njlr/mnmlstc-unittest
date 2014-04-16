@@ -37,6 +37,13 @@ using enable_if = std::enable_if<all_of<T...>::value>;
 
 namespace trait {
 
+// NOTE: Not a huge fan of placing ifdefs, but this is an extremely helpful
+//       fix for clang freaking out about the SFINAE usage here
+#if defined(__clang__)
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wunused-comparison"
+#endif /* __clang__ */
+
 template <class T, class U>
 class eq {
   template <class X, class Y>
@@ -91,6 +98,9 @@ public:
   static constexpr auto value = noexcept(check<T, U>(0));
 };
 
+#if defined(__clang__)
+  #pragma clang diagnostic pop
+#endif /* defined(__clang__) */
 
 template <typename T>
 class begin {
